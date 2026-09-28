@@ -13,48 +13,36 @@ const hasResume = existsSync(join(process.cwd(), 'public', site.resumePath));
 const education = [
   {
     title: 'BFA in Interaction (UI/UX) Design',
-    org: 'University of Kansas',
-    dates: 'Expected Spring 2027',
-    details: ['GPA 3.97', 'KU Excellence Scholarship, 2023 – present'],
+    meta: 'University of Kansas · Expected Spring 2027',
+    note: 'GPA 3.97 · KU Excellence Scholarship',
   },
 ];
 
 const awards = [
   {
     title: 'Dick Sloan Scholarship for Best Sophomore Portfolio',
-    org: 'National Student Show & Conference',
-    dates: '2025',
+    meta: 'National Student Show & Conference · 2025',
   },
 ];
 
+// Short summaries; the full bullets are in the resume PDF.
 const experience = [
   {
     title: 'Graphic Design Intern',
-    org: 'Latigo Creative',
-    dates: 'Jun – Jul 2026',
-    details: [
-      'Collaborated with multiple client brands to develop visual concepts aligned with their identities, audiences and project goals.',
-      'Designed packaging and physical product graphics, translating creative direction into cohesive brand experiences.',
-      'Took concepts from initial ideation through revisions, incorporating feedback and working with designers toward final production.',
-    ],
+    meta: 'Latigo Creative · Jun – Jul 2026',
+    note: 'Designed packaging and product graphics for multiple client brands, from first concepts through revisions to production.',
   },
   {
     title: 'Apparel Product Design Intern',
-    org: 'The Wellness Society',
-    dates: 'Mar 2025 – Mar 2026',
-    details: [
-      'Led end-to-end product development and sourcing with overseas manufacturers, taking seasonal merchandise from concept through production while balancing quality, cost and standards.',
-      'Partnered with company executives to ideate and refine product concepts, translating brand strategy into creative direction across seasonal collections.',
-      'Built technical design files, product specifications and production-ready assets in Illustrator and Photoshop.',
-      'Kept projects aligned in a fast-paced environment, communicating across leadership, design and production teams.',
-    ],
+    meta: 'The Wellness Society · Mar 2025 – Mar 2026',
+    note: 'Led seasonal merchandise from concept to production, partnering with executives on creative direction and with overseas manufacturers on sourcing.',
   },
 ];
 
 const involvement = [
-  { title: 'Executive Board Member, Design & Photography', org: 'KU Wellness Society', dates: 'Mar 2025 – present' },
-  { title: 'Member', org: 'KU Prototype Design', dates: 'Aug 2023 – present' },
-  { title: 'Member', org: 'Delta Gamma Sorority, Beta Kappa Chapter', dates: 'Aug 2023 – present' },
+  { title: 'KU Wellness Society', meta: 'Executive Board, Design & Photography · 2025 – present' },
+  { title: 'KU Prototype Design', meta: 'Member · 2023 – present' },
+  { title: 'Delta Gamma, Beta Kappa Chapter', meta: 'Member · 2023 – present' },
 ];
 
 const skills = [
@@ -92,6 +80,13 @@ const tools = [
     group: 'AI',
     items: ['Claude', 'Claude Code', 'ChatGPT', 'Figma Make', 'Google Stitch', 'Google AI Studio'],
   },
+];
+
+// Right-hand column blocks
+const sideBlocks = [
+  { id: 'education', heading: 'Education', entries: education },
+  { id: 'awards', heading: 'Awards', entries: awards },
+  { id: 'involvement', heading: 'Involvement', entries: involvement },
 ];
 ---
 
@@ -139,106 +134,67 @@ const tools = [
     </div>
   </section>
 
-  <section class="section container row" aria-labelledby="education-title">
-    <h2 id="education-title" class="eyebrow">Education</h2>
-    <ol class="timeline" role="list">
-      {
-        education.map(({ title, org, dates, details }) => (
-          <li class="timeline__item">
-            <p class="meta">{dates}</p>
-            <div>
+  <section class="section container columns">
+    <div class="block">
+      <h2 id="experience-title" class="eyebrow">Experience</h2>
+      <ul class="entries" role="list">
+        {
+          experience.map(({ title, meta, note }) => (
+            <li class="entry">
               <h3>{title}</h3>
-              <p>{org}</p>
-              <ul class="timeline__details meta">
-                {details.map((d) => <li>{d}</li>)}
-              </ul>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
-  </section>
+              <p class="meta">{meta}</p>
+              <p class="entry__note">{note}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
 
-  <section class="section container row" aria-labelledby="awards-title">
-    <h2 id="awards-title" class="eyebrow">Awards</h2>
-    <ol class="timeline" role="list">
+    <div class="side">
       {
-        awards.map(({ title, org, dates }) => (
-          <li class="timeline__item">
-            <p class="meta">{dates}</p>
-            <div>
-              <h3>{title}</h3>
-              <p>{org}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
-  </section>
-
-  <section class="section container row" aria-labelledby="experience-title">
-    <h2 id="experience-title" class="eyebrow">Experience</h2>
-    <ol class="timeline" role="list">
-      {
-        experience.map(({ title, org, dates, details }) => (
-          <li class="timeline__item">
-            <p class="meta">{dates}</p>
-            <div>
-              <h3>{title}</h3>
-              <p>{org}</p>
-              <ul class="timeline__details timeline__details--bullets">
-                {details.map((d) => <li>{d}</li>)}
-              </ul>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
-  </section>
-
-  <section class="section container row" aria-labelledby="involvement-title">
-    <h2 id="involvement-title" class="eyebrow">Involvement</h2>
-    <ol class="timeline" role="list">
-      {
-        involvement.map(({ title, org, dates }) => (
-          <li class="timeline__item">
-            <p class="meta">{dates}</p>
-            <div>
-              <h3>{org}</h3>
-              <p>{title}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
-  </section>
-
-  <section class="section container row" aria-labelledby="skills-title">
-    <h2 id="skills-title" class="eyebrow">Skills</h2>
-    <div class="groups">
-      {
-        skills.map(({ group, items }) => (
-          <div class="group">
-            <h3>{group}</h3>
-            <ul class="tag-list">{items.map((s) => <li class="tag">{s}</li>)}</ul>
+        sideBlocks.map(({ id, heading, entries }) => (
+          <div class="block">
+            <h2 id={`${id}-title`} class="eyebrow">
+              {heading}
+            </h2>
+            <ul class="entries" role="list">
+              {entries.map((e) => (
+                <li class="entry">
+                  <h3>{e.title}</h3>
+                  <p class="meta">{e.meta}</p>
+                  {'note' in e && <p class="meta">{e.note}</p>}
+                </li>
+              ))}
+            </ul>
           </div>
         ))
       }
     </div>
   </section>
 
-  <section class="section container row" aria-labelledby="tools-title">
-    <h2 id="tools-title" class="eyebrow">Tools</h2>
-    <div class="groups">
-      {
-        tools.map(({ group, items }) => (
-          <div class="group">
-            <h3>{group}</h3>
-            <ul class="tag-list">{items.map((t) => <li class="tag">{t}</li>)}</ul>
-          </div>
-        ))
-      }
-    </div>
+  <section class="section container columns columns--even">
+    {
+      [
+        { id: 'skills', heading: 'Skills', groups: skills },
+        { id: 'tools', heading: 'Tools', groups: tools },
+      ].map(({ id, heading, groups }) => (
+        <div class="block">
+          <h2 id={`${id}-title`} class="eyebrow">
+            {heading}
+          </h2>
+          {groups.map(({ group, items }) => (
+            <div class="group">
+              <h3 class="group__title">{group}</h3>
+              <ul class="tag-list">
+                {items.map((item) => (
+                  <li class="tag">{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ))
+    }
   </section>
 </BaseLayout>
 
@@ -256,56 +212,54 @@ const tools = [
     padding-top: var(--space-2);
   }
 
-  /* Section label on the left, content on the right (desktop) */
-  .row {
+  .columns {
     display: grid;
-    gap: var(--space-6);
+    gap: var(--space-8);
     padding-block: var(--space-8);
   }
 
-  .timeline {
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .block > .eyebrow {
+    margin-bottom: var(--space-5);
+  }
+
+  .entries {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
     padding: 0;
     list-style: none;
   }
 
-  .timeline__item {
-    display: grid;
-    gap: var(--space-2);
-    padding-block: var(--space-5);
-    border-top: var(--border);
+  .entry h3 {
+    font-size: var(--text-body);
+    line-height: var(--leading-heading);
+    letter-spacing: normal;
   }
 
-  .timeline__item:first-child {
-    padding-top: 0;
-    border-top: 0;
+  .entry .meta {
+    margin-top: var(--space-1);
   }
 
-  .timeline__item p:not(.meta) {
-    color: var(--color-text-secondary);
+  .entry__note {
+    margin-top: var(--space-2);
   }
 
-  .timeline__details {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    margin-top: var(--space-3);
-    padding: 0;
-    list-style: none;
+  .group + .group {
+    margin-top: var(--space-5);
   }
 
-  .timeline__details--bullets {
-    padding-left: var(--space-5);
-    list-style: disc;
-  }
-
-  .groups {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-  }
-
-  .group h3 {
+  .group__title {
     margin-bottom: var(--space-3);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: normal;
+    color: var(--color-text-secondary);
   }
 
   @media (min-width: 48rem) {
@@ -313,14 +267,13 @@ const tools = [
       grid-template-columns: 1fr 2fr;
     }
 
-    .row {
-      grid-template-columns: 1fr 3fr;
-      gap: var(--grid-gap);
+    .columns {
+      grid-template-columns: 3fr 2fr;
+      gap: var(--space-9);
     }
 
-    .timeline__item {
-      grid-template-columns: 1fr 3fr;
-      gap: var(--grid-gap);
+    .columns--even {
+      grid-template-columns: 1fr 1fr;
     }
   }
 </style>
