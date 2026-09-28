@@ -4,6 +4,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ImageSlot from '../../components/ImageSlot.astro';
 import { getProjects } from '../../lib/projects';
 import '../../styles/themes/impact.css';
+import '../../styles/themes/courtsync.css';
+import CourtSyncHero from '../../components/projects/courtsync/CourtSyncHero.astro';
+
+// Projects whose hero is built as a custom section rather than a single image
+const heroComponents = { courtsync: CourtSyncHero };
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -15,7 +20,8 @@ export async function getStaticPaths() {
 }
 
 const { project, next } = Astro.props;
-const { title, summary, role, timeline, tools, team, tags, hero, gallery, links, theme } = project.data;
+const { title, summary, role, timeline, tools, team, tags, hero, heroComponent, gallery, links, theme } = project.data;
+const HeroComponent = heroComponent ? heroComponents[heroComponent] : undefined;
 const { Content } = await render(project);
 
 const meta = [
@@ -37,7 +43,13 @@ const meta = [
         <p class="lead">{summary}</p>
       </div>
 
-      <ImageSlot {...hero} ratio={hero.ratio ?? 'hero'} sizes="(min-width: 75rem) 1200px, 100vw" eager />
+      {
+        HeroComponent ? (
+          <HeroComponent />
+        ) : (
+          hero && <ImageSlot {...hero} ratio={hero.ratio ?? 'hero'} sizes="(min-width: 75rem) 1200px, 100vw" eager />
+        )
+      }
 
       <dl class="meta-row">
         {

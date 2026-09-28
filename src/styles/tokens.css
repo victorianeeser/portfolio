@@ -73,6 +73,7 @@
   /* ---------- Shape ---------- */
   --radius-sm: 4px;
   --radius-md: 8px;
+  --radius-pill: 999px;
   --border-width: 1px;
   --border: var(--border-width) solid var(--color-border);
 

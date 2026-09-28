@@ -38,7 +38,9 @@ const projects = defineCollection({
       theme: z.string().optional(), // project theme for custom sections, see src/styles/themes/
       links: z.array(z.object({ label: z.string(), url: z.string().url() })).default([]),
       cover: media, // card thumbnail
-      hero: media, // case study hero
+      hero: media.optional(), // case study hero image
+      // A custom-built hero section instead of an image (see src/pages/work/[slug].astro)
+      heroComponent: z.enum(['courtsync']).optional(),
       gallery: z.array(media).default([]),
     });
   },

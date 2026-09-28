@@ -1,0 +1,89 @@
+---
+// CourtSync title section, rebuilt from the Figma title slide as layered elements:
+// label pill, wordmark, three app screens and two pairs of earbuds.
+// Positions are percentages of the stage, taken from the 1920×1080 slide on desktop,
+// with a taller arrangement for phones.
+import { Image } from 'astro:assets';
+import wordmark from '../../../assets/projects/courtsync/wordmark.svg';
+import phonePerform from '../../../assets/projects/courtsync/phone-perform.png';
+import phoneSettings from '../../../assets/projects/courtsync/phone-settings.png';
+import phoneRecover from '../../../assets/projects/courtsync/phone-recover.png';
+import earbudsWhite from '../../../assets/projects/courtsync/earbuds-white.png';
+import earbudsSilver from '../../../assets/projects/courtsync/earbuds-silver.png';
+
+const phoneSizes = '(min-width: 48rem) 240px, 35vw';
+---
+
+<div class="cs-hero" role="img" aria-label="CourtSync: AI-driven UI/UX product launch design. Three app screens (Perform, earbud settings and Recover) with white and silver CourtSync earbuds.">
+  <p class="cs-hero__pill" aria-hidden="true">AI-Driven UI/UX Product Launch Design</p>
+  <Image src={wordmark} alt="" class="cs-hero__wordmark" />
+
+  <Image src={phoneRecover} alt="" class="cs-hero__phone cs-hero__phone--recover" widths={[400, phoneRecover.width]} sizes={phoneSizes} loading="eager" />
+  <Image src={phoneSettings} alt="" class="cs-hero__phone cs-hero__phone--settings" widths={[400, phoneSettings.width]} sizes={phoneSizes} loading="eager" />
+  <Image src={phonePerform} alt="" class="cs-hero__phone cs-hero__phone--perform" widths={[400, phonePerform.width]} sizes={phoneSizes} loading="eager" />
+
+  <Image src={earbudsWhite} alt="" class="cs-hero__earbuds cs-hero__earbuds--white" loading="eager" />
+  <Image src={earbudsSilver} alt="" class="cs-hero__earbuds cs-hero__earbuds--silver" loading="eager" />
+</div>
+
+<style>
+  /* Phones: taller stage so the screens stay legible */
+  .cs-hero {
+    --pill-x: 6%;   --pill-y: 5%;   --pill-size: 3.2cqw;
+    --mark-x: 6%;   --mark-y: 12%;  --mark-w: 62%;
+    --perform-x: 4%;   --perform-y: 33%; --perform-w: 31%;
+    --settings-x: 34%; --settings-y: 32%; --settings-w: 31%;
+    --recover-x: 61%;  --recover-y: 31%; --recover-w: 38%;
+    --white-x: 71%;  --white-y: 7%;  --white-w: 27%;
+    --silver-x: -4%; --silver-y: 70%; --silver-w: 30%;
+
+    position: relative;
+    container-type: inline-size;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-md);
+    background: var(--case-bg, var(--color-text));
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .cs-hero > :global(*) {
+    position: absolute;
+    height: auto;
+  }
+
+  .cs-hero__pill {
+    left: var(--pill-x);
+    top: var(--pill-y);
+    padding: 0.35em 1.05em;
+    border-radius: var(--radius-pill);
+    background: var(--case-pill-bg);
+    color: var(--case-text, var(--color-bg));
+    font-size: var(--pill-size);
+    line-height: 1.275;
+    white-space: nowrap;
+  }
+
+  .cs-hero :global(.cs-hero__wordmark) { left: var(--mark-x); top: var(--mark-y); width: var(--mark-w); }
+
+  .cs-hero :global(.cs-hero__phone--perform)  { left: var(--perform-x);  top: var(--perform-y);  width: var(--perform-w); }
+  .cs-hero :global(.cs-hero__phone--settings) { left: var(--settings-x); top: var(--settings-y); width: var(--settings-w); }
+  .cs-hero :global(.cs-hero__phone--recover)  { left: var(--recover-x);  top: var(--recover-y);  width: var(--recover-w); }
+
+  .cs-hero :global(.cs-hero__earbuds--white)  { left: var(--white-x);  top: var(--white-y);  width: var(--white-w); }
+  .cs-hero :global(.cs-hero__earbuds--silver) { left: var(--silver-x); top: var(--silver-y); width: var(--silver-w); }
+
+  /* Desktop: the slide's own 16:9 layout (1920×1080 coordinates as percentages) */
+  @media (min-width: 48rem) {
+    .cs-hero {
+      --pill-x: 26.5%;  --pill-y: 14.6%; --pill-size: 1.05cqw;
+      --mark-x: 26.8%;  --mark-y: 20.6%; --mark-w: 27%;
+      --perform-x: 26.5%;  --perform-y: 31.6%; --perform-w: 14.6%;
+      --settings-x: 42.2%; --settings-y: 30.9%; --settings-w: 14.8%;
+      --recover-x: 55.6%;  --recover-y: 30.1%; --recover-w: 18.9%;
+      --white-x: 66.5%;  --white-y: 20%;   --white-w: 15.6%;
+      --silver-x: 16.9%; --silver-y: 61.1%; --silver-w: 15.6%;
+
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>
