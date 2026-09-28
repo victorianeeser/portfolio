@@ -1,0 +1,174 @@
+---
+// User persona: a profile card (name, round photo, key facts) beside stacked detail cards.
+// In `text` and `items`, wrap words in **double asterisks** to highlight them in the accent color.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Section {
+  title: string;
+  text?: string;
+  items?: string[];
+}
+
+interface Props {
+  name: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  /** Which part of the photo stays in the circle, e.g. "50% 100%" */
+  imageFocus?: string;
+  facts: { label: string; value: string }[];
+  sections: Section[];
+}
+
+const { name, image, imageAlt, imageFocus = 'center', facts, sections } = Astro.props;
+
+// Turn **highlight** into <strong>; everything else is escaped
+const escape = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+---
+
+<div class="persona-profile">
+  <div class="persona-profile__card">
+    <h3 class="persona-profile__name">{name}</h3>
+    <Image
+      src={image}
+      alt={imageAlt}
+      class="persona-profile__photo"
+      style={`object-position: ${imageFocus}`}
+      widths={[320, 640]}
+      sizes="(min-width: 48rem) 320px, 70vw"
+    />
+    <dl class="persona-profile__facts">
+      {
+        facts.map(({ label, value }) => (
+          <div>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <div class="persona-profile__sections">
+    {
+      sections.map(({ title, text, items }) => (
+        <section class="persona-profile__section">
+          <h4>{title}</h4>
+          {text && <p set:html={rich(text)} />}
+          {items && (
+            <ul>
+              {items.map((item) => (
+                <li set:html={rich(item)} />
+              ))}
+            </ul>
+          )}
+        </section>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .persona-profile {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .persona-profile__card,
+  .persona-profile__section {
+    border-radius: var(--radius-md);
+    background: var(--case-surface);
+  }
+
+  .persona-profile__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    padding: var(--space-7) var(--space-6);
+  }
+
+  .persona-profile__name {
+    font-family: var(--case-font, var(--font-sans));
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    color: var(--case-accent-1-text);
+    text-align: center;
+  }
+
+  /* :global because <Image> doesn't receive this component's scoped style marker */
+  .persona-profile :global(.persona-profile__photo) {
+    width: 75%;
+    max-width: var(--persona-card-max);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .persona-profile__facts {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .persona-profile__facts div {
+    display: grid;
+    grid-template-columns: var(--fact-label-width) 1fr;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  .persona-profile__facts dt {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .persona-profile__facts dd {
+    margin: 0;
+    font-weight: var(--weight-medium);
+    color: var(--case-text);
+  }
+
+  .persona-profile__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .persona-profile__section {
+    flex: 1;
+    padding: var(--space-6);
+    color: var(--case-text);
+  }
+
+  .persona-profile__section h4 {
+    margin-bottom: var(--space-4);
+    font-family: var(--case-font, var(--font-sans));
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    color: var(--case-accent-1-text);
+  }
+
+  .persona-profile__section ul {
+    padding-left: var(--space-5);
+  }
+
+  .persona-profile__section li + li {
+    margin-top: var(--space-2);
+  }
+
+  .persona-profile__section :global(strong) {
+    font-weight: var(--weight-bold);
+    color: var(--case-accent-1-text);
+  }
+
+  @media (min-width: 48rem) {
+    .persona-profile {
+      grid-template-columns: 1fr 1.8fr;
+    }
+  }
+</style>

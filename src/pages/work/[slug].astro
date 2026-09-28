@@ -155,8 +155,15 @@ const meta = [
 
   /* Project-themed panels run edge to edge */
   .case-body > :global(.panel),
-  .case-body > :global(.stack-slides) {
+  .case-body > :global(.stack-slides),
+  .case-body > :global(.full-bleed) {
     grid-column: full;
+  }
+
+  /* Back-to-back full-width bands touch, with no white strip between them.
+     Each band has --space-8 of vertical margin; this cancels the pair between them. */
+  .case-body > :global(:is(.panel, .stack-slides, .full-bleed) + :is(.panel, .stack-slides, .full-bleed)) {
+    margin-top: calc(var(--space-8) * -1);
   }
 
   /* Whatever follows a panel uses only the panel's spacing, so the gap matches the one above it */

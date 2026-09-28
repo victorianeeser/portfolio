@@ -91,6 +91,7 @@
   --swatch-min: 7.5rem;             /* narrowest color swatch */
   --persona-card-max: 20rem;
   --competitor-label-width: 6.5rem;  /* category label column on phones */
+  --fact-label-width: 7rem;         /* label column in persona facts */
 
   /* ---------- Motion ---------- */
   --duration-fast: 150ms;

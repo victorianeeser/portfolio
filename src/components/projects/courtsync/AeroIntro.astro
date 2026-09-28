@@ -1,0 +1,190 @@
+---
+// "Meet Aero" section, rebuilt from the Figma frame: two app screens beside the
+// wordmark, intro copy and three feature cards on CourtSync green.
+import { Image } from 'astro:assets';
+import meetAero from '../../../assets/projects/courtsync/meet-aero.svg';
+import screenPerform from '../../../assets/projects/courtsync/aero-screen-1.jpg';
+import screenLive from '../../../assets/projects/courtsync/aero-screen-2.jpg';
+import iconForm from '../../../assets/projects/courtsync/icon-form.svg?raw';
+import iconZones from '../../../assets/projects/courtsync/icon-zones.svg?raw';
+import iconProgramming from '../../../assets/projects/courtsync/icon-programming.svg?raw';
+
+const hideIcon = (svg: string) => svg.replace('<svg ', '<svg aria-hidden="true" ');
+
+// Card colors from the Figma frame
+const features = [
+  {
+    icon: iconForm,
+    tile: '#bfff65',
+    title: 'Real-Time Form Analysis',
+    text: 'Advanced motion tracking provides instant feedback on technique and movement efficiency.',
+  },
+  {
+    icon: iconZones,
+    tile: '#155dfc',
+    title: 'Adaptive Training Zones',
+    text: 'Dynamic heart rate optimization keeps you training in the ideal zone for your goals.',
+  },
+  {
+    icon: iconProgramming,
+    tile: '#08e249',
+    title: 'Intelligent Programming',
+    text: 'Personalized training plans that evolve based on your progress and performance data.',
+  },
+];
+---
+
+<section class="aero full-bleed" aria-labelledby="meet-aero">
+  <div class="aero__inner">
+    <div class="aero__copy">
+      <h2 id="meet-aero" class="aero__title">
+        <Image src={meetAero} alt="Meet Aero" class="aero__wordmark" />
+      </h2>
+      <p class="aero__subtitle">Your AI training &amp; performance coach</p>
+      <p class="aero__text">
+        With Sync Pros, your AI trainer Aero keeps you connected to your goals, offering real-time insights that help
+        you stay focused, push harder and recover smarter. Aero learns your rhythm: tracking your focus, guiding your
+        performance and helping you recover.
+      </p>
+
+      <ul class="aero__features" role="list">
+        {
+          features.map(({ icon, tile, title, text }) => (
+            <li class="aero__feature">
+              <span class="aero__icon" style={`background: ${tile}`} set:html={hideIcon(icon)} />
+              <div>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="aero__screens">
+      <Image src={screenPerform} alt="Perform screen with Aero Performance Tracking: jump vertical, hitting power, block height and arm swing" class="aero__screen" widths={[400, screenPerform.width]} sizes="(min-width: 48rem) 22vw, 45vw" />
+      <Image src={screenLive} alt="Live Aero tracking session: 12 hitting reps completed, session metrics and a suggestion that arm swing speed increased 5%" class="aero__screen" widths={[400, screenLive.width]} sizes="(min-width: 48rem) 22vw, 45vw" />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Colors from the Figma frame */
+  .aero {
+    --aero-green: #01e24a;
+    --aero-card: #f9fafb;
+    --aero-card-border: #b8b8b8;
+    --aero-card-text: #4a5565;
+    --aero-wordmark-width: 16rem;
+    --aero-features-width: 28rem;
+
+    margin-block: var(--space-8);
+    padding-block: var(--space-8);
+    background: var(--aero-green);
+    color: var(--color-text);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .aero__inner {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    width: 100%;
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .aero__title {
+    margin-bottom: var(--space-4);
+  }
+
+  /* :global because <Image> doesn't receive this component's scoped style marker */
+  .aero :global(.aero__wordmark) {
+    width: var(--aero-wordmark-width);
+    max-width: 70%;
+    height: auto;
+  }
+
+  .aero__subtitle {
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+  }
+
+  .aero__text {
+    max-width: var(--container-narrow);
+    margin-top: var(--space-5);
+  }
+
+  .aero__features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: var(--aero-features-width);
+    margin-top: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .aero__feature {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--aero-card-border);
+    border-radius: var(--radius-md);
+    background: var(--aero-card);
+  }
+
+  .aero__icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: var(--tap-target);
+    height: var(--tap-target);
+    border-radius: var(--radius-md);
+    color: var(--color-bg);
+  }
+
+  .aero__icon :global(svg) {
+    width: 50%;
+    height: 50%;
+  }
+
+  .aero__feature h3 {
+    font-family: inherit;
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    letter-spacing: normal;
+  }
+
+  .aero__feature p {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    line-height: var(--leading-heading);
+    color: var(--aero-card-text);
+  }
+
+  .aero__screens {
+    display: grid;
+    grid-template-columns: 1fr 1.07fr;
+    align-items: center;
+  }
+
+  .aero :global(.aero__screen) {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Desktop: screens on the left, copy on the right, as on the slide */
+  @media (min-width: 48rem) {
+    .aero__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-9);
+    }
+
+    .aero__screens {
+      order: -1;
+    }
+  }
+</style>

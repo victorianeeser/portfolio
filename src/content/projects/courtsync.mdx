@@ -24,6 +24,14 @@ import BrandBoard from '../../components/projects/courtsync/BrandBoard.astro';
 import LogoAnatomy from '../../components/projects/courtsync/LogoAnatomy.astro';
 import SlideStack from '../../components/case/SlideStack.astro';
 import Slide from '../../components/case/Slide.astro';
+import PersonaProfile from '../../components/case/PersonaProfile.astro';
+import PhoneRow from '../../components/case/PhoneRow.astro';
+import AeroIntro from '../../components/projects/courtsync/AeroIntro.astro';
+import personaRachel from '../../assets/projects/courtsync/persona-rachel.jpg';
+import appHome from '../../assets/projects/courtsync/app-home.jpg';
+import appFocus from '../../assets/projects/courtsync/app-focus.jpg';
+import appPerform from '../../assets/projects/courtsync/app-perform.jpg';
+import appRecover from '../../assets/projects/courtsync/app-recover.jpg';
 
 <SectionTitle accent={2}>Overview</SectionTitle>
 
@@ -119,5 +127,38 @@ Unlike standard sport headphones that only play music, CourtSync combines intell
 
 </Slide>
 </SlideStack>
+
+<Panel level={2} tone="light" eyebrow="User persona" title="Who CourtSync is for" highlight="CourtSync">
+  <PersonaProfile
+    name="Rachel Smith"
+    image={personaRachel}
+    imageAlt="Black-and-white photo of a volleyball player bumping the ball on an outdoor court"
+    imageFocus="50% 75%"
+    facts={[
+      { label: 'Age', value: '18' },
+      { label: 'Education', value: 'High School' },
+      { label: 'Location', value: 'Missouri' },
+      { label: 'Sport', value: 'Club & High School VB' },
+    ]}
+    sections={[
+      { title: 'Lifestyle', text: 'Practices 5–6 days a week, **balancing intense training with school.** Travels for matches and tournaments. Uses gear that supports peak focus, precision and endurance on and off the court.' },
+      { title: 'Goals', items: ['Stay mentally sharp and physically prepared year-round.', 'Improve athletic performance and track progress.', 'Use tech that simplifies rather than complicates training.', '**Prepare for higher level training.**'] },
+      { title: 'Frustrations', items: ['Struggles to find useful tools that balance performance and rest.', 'Switching between multiple apps for warmup, coaching and recovery is a hassle.', '**Earbuds that fall out of the ears mid workout.**'] },
+    ]}
+  />
+</Panel>
+
+<Panel level={2} eyebrow="Software design" title="The CourtSync app" highlight="app">
+  <PhoneRow
+    items={[
+      { image: appHome, alt: 'CourtSync home screen: connected Sync Pros, today’s progress, this week’s sessions and recent sessions', title: 'Home screen', text: 'is an overview of the athlete’s progress, showing today’s progress and logged sessions from the week with improvement.' },
+      { image: appFocus, alt: 'Focus screen: breath pacing options and guided warm-ups with play buttons', title: 'Focus Mode', text: 'helps athletes warm up before with breath pacing, guided stretches and curated playlists to enhance performance.' },
+      { image: appPerform, alt: 'Perform screen: Aero Performance Tracking with jump vertical, hitting power, block height and arm swing', title: 'Perform Mode', text: 'uses AI to track form, pace and heart rate in real time, while giving the athlete feedback in their ear.' },
+      { image: appRecover, alt: 'Recover screen: recovery status, sleep and readiness score, and guided cool downs', title: 'Recover Mode', text: 'supports post-training balance with guided cooldown videos, recovery yoga and relaxation tools.' },
+    ]}
+  />
+</Panel>
+
+<AeroIntro />
 
 {/* Next sections are added one at a time, following the Figma slides from the top. */}

@@ -35,6 +35,11 @@ const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     font-family: var(--case-font, var(--font-sans));
   }
 
+  /* The last slide has nothing stacking on top of it, so it only needs to fit its content */
+  .slide:last-child {
+    min-height: auto;
+  }
+
   .slide__inner {
     width: 100%;
     max-width: calc(var(--container-max) + var(--gutter) * 2);
