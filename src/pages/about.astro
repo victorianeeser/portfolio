@@ -53,8 +53,8 @@ const involvement = [
   { title: 'Delta Gamma, Beta Kappa Chapter', meta: 'Member · 2023 – present' },
 ];
 
-// Right-hand column blocks
-const sideBlocks = [
+// Blocks in the three-column section
+const infoBlocks = [
   { id: 'education', heading: 'Education', entries: education },
   { id: 'awards', heading: 'Awards', entries: awards },
   { id: 'involvement', heading: 'Involvement', entries: involvement },
@@ -105,34 +105,34 @@ const sideBlocks = [
     </div>
   </section>
 
-  <section class="section container columns">
-    <div class="block">
-      <h2 id="experience-title" class="eyebrow">Experience</h2>
-      <ul class="entries" role="list">
-        {
-          experience.map(({ title, meta, details }) => (
-            <li class="entry">
-              <h3>{title}</h3>
-              <p class="meta">{meta}</p>
-              <ul class="entry__details">
-                {details.map((d) => (
-                  <li>{d}</li>
-                ))}
-              </ul>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-
-    <div class="side">
+  <section class="section container about-section" aria-labelledby="experience-title">
+    <h2 id="experience-title" class="eyebrow section-title">Experience</h2>
+    <ul class="grid grid--2 entries" role="list">
       {
-        sideBlocks.map(({ id, heading, entries }) => (
-          <div class="block">
-            <h2 id={`${id}-title`} class="eyebrow">
+        experience.map(({ title, meta, details }) => (
+          <li class="entry">
+            <h3>{title}</h3>
+            <p class="meta">{meta}</p>
+            <ul class="entry__details">
+              {details.map((d) => (
+                <li>{d}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section container about-section" aria-label="Education, awards and involvement">
+    <div class="grid grid--3">
+      {
+        infoBlocks.map(({ id, heading, entries }) => (
+          <div>
+            <h2 id={`${id}-title`} class="eyebrow section-title">
               {heading}
             </h2>
-            <ul class="entries" role="list">
+            <ul class="entries entries--stack" role="list">
               {entries.map((e) => (
                 <li class="entry">
                   <h3>{e.title}</h3>
@@ -146,7 +146,6 @@ const sideBlocks = [
       }
     </div>
   </section>
-
 </BaseLayout>
 
 <style>
@@ -163,28 +162,23 @@ const sideBlocks = [
     padding-top: var(--space-2);
   }
 
-  .columns {
-    display: grid;
-    gap: var(--space-8);
+  .about-section {
     padding-block: var(--space-8);
   }
 
-  .side {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-7);
-  }
-
-  .block > .eyebrow {
+  .section-title {
     margin-bottom: var(--space-5);
   }
 
   .entries {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
     padding: 0;
     list-style: none;
+  }
+
+  .entries--stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
   }
 
   .entry h3 {
@@ -209,11 +203,6 @@ const sideBlocks = [
   @media (min-width: 48rem) {
     .bio {
       grid-template-columns: 1fr 2fr;
-    }
-
-    .columns {
-      grid-template-columns: 3fr 2fr;
-      gap: var(--space-9);
     }
   }
 </style>
