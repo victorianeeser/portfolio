@@ -5,20 +5,99 @@ import { join } from 'node:path';
 import ImageSlot from '../components/ImageSlot.astro';
 import { site } from '../site.config';
 
-// The resume link appears once public/resume.pdf exists.
+// The resume buttons appear once public/resume.pdf exists.
 const hasResume = existsSync(join(process.cwd(), 'public', site.resumePath));
 
-// [Placeholders] Replace with your real skills, tools and experience.
-const skills = ['[Skill 1]', '[Skill 2]', '[Skill 3]', '[Skill 4]', '[Skill 5]', '[Skill 6]'];
-const tools = ['Figma', 'TouchDesigner', '[Tool 3]', '[Tool 4]', '[Tool 5]', '[Tool 6]'];
+// Content below comes from the resume. Update both together.
+const education = [
+  {
+    title: 'BFA in Interaction (UI/UX) Design',
+    org: 'University of Kansas',
+    dates: 'Expected Spring 2027',
+    details: ['GPA 3.97', 'KU Excellence Scholarship, 2023 – present'],
+  },
+];
+
+const awards = [
+  {
+    title: 'Dick Sloan Scholarship for Best Sophomore Portfolio',
+    org: 'National Student Show & Conference',
+    dates: '2025',
+  },
+];
+
 const experience = [
-  { role: '[Role title]', org: '[Company / organization]', dates: '[Start – End]', note: '[One line on what you did]' },
-  { role: '[Role title]', org: '[Company / organization]', dates: '[Start – End]', note: '[One line on what you did]' },
-  { role: '[Degree / program]', org: '[School]', dates: '[Start – End]', note: '[Focus or honors]' },
+  {
+    title: 'Graphic Design Intern',
+    org: 'Latigo Creative',
+    dates: 'Jun – Jul 2026',
+    details: [
+      'Collaborated with multiple client brands to develop visual concepts aligned with their identities, audiences and project goals.',
+      'Designed packaging and physical product graphics, translating creative direction into cohesive brand experiences.',
+      'Took concepts from initial ideation through revisions, incorporating feedback and working with designers toward final production.',
+    ],
+  },
+  {
+    title: 'Apparel Product Design Intern',
+    org: 'The Wellness Society',
+    dates: 'Mar 2025 – Mar 2026',
+    details: [
+      'Led end-to-end product development and sourcing with overseas manufacturers, taking seasonal merchandise from concept through production while balancing quality, cost and standards.',
+      'Partnered with company executives to ideate and refine product concepts, translating brand strategy into creative direction across seasonal collections.',
+      'Built technical design files, product specifications and production-ready assets in Illustrator and Photoshop.',
+      'Kept projects aligned in a fast-paced environment, communicating across leadership, design and production teams.',
+    ],
+  },
+];
+
+const involvement = [
+  { title: 'Executive Board Member, Design & Photography', org: 'KU Wellness Society', dates: 'Mar 2025 – present' },
+  { title: 'Member', org: 'KU Prototype Design', dates: 'Aug 2023 – present' },
+  { title: 'Member', org: 'Delta Gamma Sorority, Beta Kappa Chapter', dates: 'Aug 2023 – present' },
+];
+
+const skills = [
+  {
+    group: 'UI/UX & product design',
+    items: [
+      'UI Design',
+      'Interaction Design',
+      'User Research',
+      'Information Architecture',
+      'User Flows',
+      'Wireframing',
+      'Prototyping',
+      'Usability Testing',
+      'Design Systems',
+      'Responsive Design',
+    ],
+  },
+  {
+    group: 'Foundations',
+    items: ['Adaptability', 'Time Management', 'Organization', 'Collaboration', 'Communication'],
+  },
+];
+
+const tools = [
+  {
+    group: 'Design',
+    items: ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'Procreate', 'Rive', 'TouchDesigner'],
+  },
+  {
+    group: 'Code & web',
+    items: ['GitHub', 'Visual Studio Code', 'Framer', 'Shopify', 'Squarespace', 'Wix'],
+  },
+  {
+    group: 'AI',
+    items: ['Claude', 'Claude Code', 'ChatGPT', 'Figma Make', 'Google Stitch', 'Google AI Studio'],
+  },
 ];
 ---
 
-<BaseLayout title="About" description="About me: background, skills, tools and experience.">
+<BaseLayout
+  title="About"
+  description="Victoria Neeser is an interaction (UI/UX) designer studying at the University of Kansas."
+>
   <section class="container page-head">
     <h1>About</h1>
   </section>
@@ -26,52 +105,133 @@ const experience = [
   <section class="container bio" aria-label="Bio">
     <ImageSlot label="Portrait (about page)" ratio="portrait" eager />
     <div class="prose">
-      <p class="lead">[Placeholder: opening line. The one sentence you want a hiring manager to remember.]</p>
-      <p>[Placeholder: bio paragraph 1. Background and how you got into design and code.]</p>
-      <p>[Placeholder: bio paragraph 2. How you work, what you care about, the kinds of problems you like.]</p>
-      <p>[Placeholder: bio paragraph 3. Outside of work / what you're looking for next.]</p>
-    </div>
-  </section>
-
-  <section class="section container" aria-labelledby="skills-title">
-    <div class="grid grid--2">
-      <div class="stack">
-        <h2 id="skills-title" class="eyebrow">Skills</h2>
-        <ul class="tag-list">{skills.map((s) => <li class="tag">{s}</li>)}</ul>
-      </div>
-      <div class="stack">
-        <h2 class="eyebrow">Tools</h2>
-        <ul class="tag-list">{tools.map((t) => <li class="tag">{t}</li>)}</ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="section container" aria-labelledby="experience-title">
-    <h2 id="experience-title" class="eyebrow experience-title">Experience & education</h2>
-    <ol class="experience" role="list">
+      <p class="lead">
+        I'm an interaction designer studying UI/UX at the University of Kansas, graduating in Spring 2027.
+      </p>
+      <p>
+        I design interfaces and experiences across screens, products and brands, from user research and
+        wireframes through to polished UI and working prototypes. I also build: I use TouchDesigner for
+        interactive and motion work, and I'm comfortable taking a design into code.
+      </p>
+      <p>
+        My internships have spanned brand and packaging design at Latigo Creative and product development
+        at The Wellness Society, where I took seasonal collections from concept to production alongside
+        executives and overseas manufacturers.
+      </p>
+      <p class="meta">Based in St. Louis, MO</p>
       {
-        experience.map(({ role, org, dates, note }) => (
-          <li class="experience__item">
+        hasResume && (
+          <div class="resume-links">
+            <a href={site.resumePath} class="button">View resume (PDF)</a>
+            <a href={site.resumePath} class="button button--outline" download>
+              Download
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section container row" aria-labelledby="education-title">
+    <h2 id="education-title" class="eyebrow">Education</h2>
+    <ol class="timeline" role="list">
+      {
+        education.map(({ title, org, dates, details }) => (
+          <li class="timeline__item">
             <p class="meta">{dates}</p>
             <div>
-              <h3>{role}</h3>
+              <h3>{title}</h3>
               <p>{org}</p>
-              <p class="meta">{note}</p>
+              <ul class="timeline__details meta">
+                {details.map((d) => <li>{d}</li>)}
+              </ul>
             </div>
           </li>
         ))
       }
     </ol>
-    {
-      hasResume ? (
-        <div class="resume-links">
-          <a href={site.resumePath} class="button">View resume (PDF)</a>
-          <a href={site.resumePath} class="button button--outline" download>Download</a>
-        </div>
-      ) : (
-        <p class="meta">[Placeholder: add public/resume.pdf and resume buttons appear here]</p>
-      )
-    }
+  </section>
+
+  <section class="section container row" aria-labelledby="awards-title">
+    <h2 id="awards-title" class="eyebrow">Awards</h2>
+    <ol class="timeline" role="list">
+      {
+        awards.map(({ title, org, dates }) => (
+          <li class="timeline__item">
+            <p class="meta">{dates}</p>
+            <div>
+              <h3>{title}</h3>
+              <p>{org}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="section container row" aria-labelledby="experience-title">
+    <h2 id="experience-title" class="eyebrow">Experience</h2>
+    <ol class="timeline" role="list">
+      {
+        experience.map(({ title, org, dates, details }) => (
+          <li class="timeline__item">
+            <p class="meta">{dates}</p>
+            <div>
+              <h3>{title}</h3>
+              <p>{org}</p>
+              <ul class="timeline__details timeline__details--bullets">
+                {details.map((d) => <li>{d}</li>)}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="section container row" aria-labelledby="involvement-title">
+    <h2 id="involvement-title" class="eyebrow">Involvement</h2>
+    <ol class="timeline" role="list">
+      {
+        involvement.map(({ title, org, dates }) => (
+          <li class="timeline__item">
+            <p class="meta">{dates}</p>
+            <div>
+              <h3>{org}</h3>
+              <p>{title}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="section container row" aria-labelledby="skills-title">
+    <h2 id="skills-title" class="eyebrow">Skills</h2>
+    <div class="groups">
+      {
+        skills.map(({ group, items }) => (
+          <div class="group">
+            <h3>{group}</h3>
+            <ul class="tag-list">{items.map((s) => <li class="tag">{s}</li>)}</ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section container row" aria-labelledby="tools-title">
+    <h2 id="tools-title" class="eyebrow">Tools</h2>
+    <div class="groups">
+      {
+        tools.map(({ group, items }) => (
+          <div class="group">
+            <h3>{group}</h3>
+            <ul class="tag-list">{items.map((t) => <li class="tag">{t}</li>)}</ul>
+          </div>
+        ))
+      }
+    </div>
   </section>
 </BaseLayout>
 
@@ -82,27 +242,63 @@ const experience = [
     align-items: start;
   }
 
-  .experience-title {
-    margin-bottom: var(--space-6);
-  }
-
-  .experience {
-    padding: 0;
-    margin-bottom: var(--space-7);
-    list-style: none;
-  }
-
   .resume-links {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
+    padding-top: var(--space-2);
   }
 
-  .experience__item {
+  /* Section label on the left, content on the right (desktop) */
+  .row {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+  }
+
+  .timeline {
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline__item {
     display: grid;
     gap: var(--space-2);
     padding-block: var(--space-5);
     border-top: var(--border);
+  }
+
+  .timeline__item:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .timeline__item p:not(.meta) {
+    color: var(--color-text-secondary);
+  }
+
+  .timeline__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline__details--bullets {
+    padding-left: var(--space-5);
+    list-style: disc;
+  }
+
+  .groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .group h3 {
+    margin-bottom: var(--space-3);
   }
 
   @media (min-width: 48rem) {
@@ -110,7 +306,12 @@ const experience = [
       grid-template-columns: 1fr 2fr;
     }
 
-    .experience__item {
+    .row {
+      grid-template-columns: 1fr 3fr;
+      gap: var(--grid-gap);
+    }
+
+    .timeline__item {
       grid-template-columns: 1fr 3fr;
       gap: var(--grid-gap);
     }
