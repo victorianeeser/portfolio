@@ -5,11 +5,14 @@ import wordmarkRaw from '../../../assets/projects/courtsync/wordmark.svg?raw';
 import csMarkRaw from '../../../assets/projects/courtsync/cs-mark.svg?raw';
 
 // Tag the wordmark's two parts ("COURT" is white, "SYNC" is blue) so CSS can style each
-const wordmark = wordmarkRaw
+// Figma layer names come through as ids; drop them so repeated inline SVGs don't duplicate ids
+const stripIds = (svg: string) => svg.replace(/\s+id="[^"]*"/g, '');
+
+const wordmark = stripIds(wordmarkRaw)
   .replace(/<svg /, '<svg aria-hidden="true" ')
   .replaceAll('fill="white"', 'fill="currentColor" data-part="court"')
   .replaceAll('fill="#015AFF"', 'data-part="sync"');
-const csMark = csMarkRaw.replace(/<svg /, '<svg aria-hidden="true" ').replaceAll('fill="white"', 'fill="currentColor"');
+const csMark = stripIds(csMarkRaw).replace(/<svg /, '<svg aria-hidden="true" ').replaceAll('fill="white"', 'fill="currentColor"');
 
 const parts = [
   {

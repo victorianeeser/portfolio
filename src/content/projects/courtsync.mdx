@@ -22,6 +22,8 @@ import Panel from '../../components/case/Panel.astro';
 import ColorStory from '../../components/case/ColorStory.astro';
 import BrandBoard from '../../components/projects/courtsync/BrandBoard.astro';
 import LogoAnatomy from '../../components/projects/courtsync/LogoAnatomy.astro';
+import SlideStack from '../../components/case/SlideStack.astro';
+import Slide from '../../components/case/Slide.astro';
 
 <SectionTitle accent={2}>Overview</SectionTitle>
 
@@ -41,7 +43,7 @@ The brief: conceptualize, design and launch a new headphone product. Beyond the 
 
 <SectionTitle accent={1}>Branding & Strategy</SectionTitle>
 
-### Concept
+### Brand concept
 
 CourtSync embodies synchronization between athletes, movement and performance. The name and design reflect the idea of connecting mind and body through intelligent audio technology.
 
@@ -82,5 +84,40 @@ Each color represents a stage in the athlete's performance cycle: focus, perform
   <p>CourtSync is where human performance meets intelligent design.</p>
   <p>The brand empowers athletes to move in sync with their training, through data, rhythm and recovery, creating a seamless feedback loop between body and technology.</p>
 </blockquote>
+
+<SlideStack>
+<Slide title="Problem" bg="#000000" ink="#FFFFFF" accent="#015AFF">
+
+Athletes on the volleyball court train through a full cycle of preparation, performance and recovery.
+
+Yet most headphones designed for sports only deliver music during the workout, **ignoring the critical moments before and after.**
+
+Without guided focus, real-time coaching or structured recovery, athletes miss opportunities to maximize performance and protect long-term health.
+
+</Slide>
+<Slide title="Concept" bg="#015AFF" ink="#FFFFFF">
+
+CourtSync are smart headphones built for court athletes that guide you through the full cycle of training: focus before, perform during and recover after.
+
+- **Focus:** Prep Mode sharpens body and mind with guided warmups, breath pacing and focus tracks.
+- **Perform:** The AI Training Partner monitors form, pace and heart rate, delivering real-time coaching feedback.
+- **Recover:** Recovery Mode restores balance with cooldown guidance, binaural beats and heart-rate-based relaxation.
+
+</Slide>
+<Slide title="Mission" bg="#FFFFFF" ink="#000000" accent="#015AFF">
+
+At CourtSync, we believe true performance is **built before, during and after** when it comes to playing volleyball.
+
+**Our mission is to help court athletes focus, perform and recover through intelligent audio and AI coaching.**
+
+</Slide>
+<Slide title="Value Proposition" bg="#08E249" ink="#000000">
+
+CourtSync is the only smart system that supports the full cycle of performance.
+
+Unlike standard sport headphones that only play music, CourtSync combines intelligent audio with AI coaching to help athletes focus before, perform at their peak during and recover smarter after.
+
+</Slide>
+</SlideStack>
 
 {/* Next sections are added one at a time, following the Figma slides from the top. */}

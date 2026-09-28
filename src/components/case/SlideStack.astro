@@ -1,0 +1,32 @@
+---
+// A stack of full-screen color slides. Each slide sticks below the header while the
+// next one scrolls up over it, like cards piling on top of each other.
+// Put <Slide> components inside.
+---
+
+<div class="stack-slides">
+  <slot />
+</div>
+
+<script>
+  // A slide taller than the screen would have its bottom hidden under the next slide.
+  // Pin those by their bottom edge instead, so all their content scrolls into view first.
+  const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
+  const place = () => {
+    const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 0;
+    const headerPx = header * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    slides.forEach((slide) => {
+      slide.style.top = `${Math.min(headerPx, innerHeight - slide.offsetHeight)}px`;
+    });
+  };
+  if (slides.length) {
+    place();
+    addEventListener('resize', place);
+  }
+</script>
+
+<style>
+  .stack-slides {
+    margin-block: var(--space-8);
+  }
+</style>

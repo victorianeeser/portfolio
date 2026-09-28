@@ -1,0 +1,94 @@
+---
+// One full-screen slide inside <SlideStack>. Write the content as Markdown between the
+// tags; **bold** text is set in the `accent` color.
+interface Props {
+  title: string;
+  bg: string; // background color
+  ink: string; // text color
+  accent?: string; // color for **bold** text; defaults to the text color
+}
+
+const { title, bg, ink, accent = ink } = Astro.props;
+const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+
+<section class="slide" id={id} style={`--slide-bg: ${bg}; --slide-ink: ${ink}; --slide-accent: ${accent}`}>
+  <div class="slide__inner">
+    <h2 class="slide__title">{title}</h2>
+    <div class="slide__body">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .slide {
+    position: sticky;
+    top: var(--header-height);
+    display: flex;
+    align-items: center;
+    min-height: calc(100svh - var(--header-height));
+    padding-block: var(--space-8);
+    background: var(--slide-bg);
+    color: var(--slide-ink);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .slide__inner {
+    width: 100%;
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .slide__title {
+    margin-bottom: var(--space-6);
+    font-family: inherit;
+    font-size: var(--text-display);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-display);
+    color: inherit;
+  }
+
+  /* Text block with a short rule beside its first line, as on the slides */
+  .slide__body {
+    position: relative;
+    max-width: var(--container-slide);
+    padding-left: var(--space-8);
+    font-size: var(--text-h3);
+    line-height: var(--leading-body);
+  }
+
+  .slide__body::before {
+    content: '';
+    position: absolute;
+    top: 0.8em;
+    left: 0;
+    width: var(--space-6);
+    border-top: calc(var(--border-width) * 2) solid currentColor;
+  }
+
+  .slide__body > :global(* + *) {
+    margin-top: var(--space-5);
+  }
+
+  .slide__body :global(strong) {
+    color: var(--slide-accent);
+    font-weight: var(--weight-bold);
+  }
+
+  .slide__body :global(ul) {
+    padding-left: var(--space-5);
+  }
+
+  .slide__body :global(li + li) {
+    margin-top: var(--space-4);
+  }
+
+  @media (min-width: 48rem) {
+    .slide__body {
+      font-size: var(--text-h2);
+      line-height: var(--leading-heading);
+    }
+  }
+</style>
