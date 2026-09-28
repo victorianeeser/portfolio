@@ -4,7 +4,8 @@
 export const site = {
   name: 'Victoria Neeser',
   title: 'Victoria Neeser: Designer & Front-end Developer',
-  positioning: '[Placeholder: one-line positioning statement]',
+  positioning:
+    'I’m a UI/UX & product designer who blends visual design, user-centered thinking, and technology to create experiences that are intuitive and engaging.',
   description: '[Placeholder: meta description for search engines, ~150 characters]',
   email: 'vneeser1@gmail.com',
   links: {

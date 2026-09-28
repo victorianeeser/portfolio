@@ -15,16 +15,19 @@ const education = [
     title: 'BFA in Interaction (UI/UX) Design',
     org: 'University of Kansas',
     dates: 'Expected Spring 2027',
-    details: ['GPA 3.97', 'KU Excellence Scholarship, 2023 – present'],
+    details: ['GPA 3.97'],
   },
 ];
 
-const awards = [
+const awards: { title: string; org?: string; dates: string }[] = [
   {
     title: 'Dick Sloan Scholarship for Best Sophomore Portfolio',
     org: 'National Student Show & Conference',
     dates: '2025',
   },
+  { title: 'KU Excellence Scholarship', org: 'University of Kansas', dates: '2023 – present' },
+  { title: "Dean's List", org: 'University of Kansas', dates: '2023 – present' },
+  { title: 'American Hellenic Educational Progressive Association Scholarship', dates: '2023' },
 ];
 
 const experience = [
@@ -77,16 +80,18 @@ const involvement = [
     />
     <div class="prose">
       <p>
-        I'm an interaction designer studying UI/UX at the University of Kansas, graduating in Spring 2027.
+        With a background spanning graphic design, UI/UX, branding, and entrepreneurship, I approach each
+        project from both a visual and user-centered perspective. I love turning complex ideas into
+        experiences that feel simple, intuitive, and intentional.
       </p>
       <p>
-        I design interfaces and experiences across screens, products and brands, from user research and
-        wireframes through to polished UI and working prototypes.
+        I’m currently studying Interaction Design at the University of Kansas, where I’ve developed a
+        foundation in visual communication and expanded it into user experience and product design.
       </p>
       <p>
-        My internships have spanned brand and packaging design at Latigo Creative and product development
-        at The Wellness Society, where I took seasonal collections from concept to production alongside
-        executives and overseas manufacturers.
+        Outside of school, I’ve built and run my own creative business, worked with clients across different
+        industries, and collaborated with teams on everything from digital products to physical products and
+        brand experiences.
       </p>
       <p class="meta">Based in St. Louis, MO</p>
       {
@@ -131,7 +136,7 @@ const involvement = [
             <p class="meta">{dates}</p>
             <div>
               <h3>{title}</h3>
-              <p>{org}</p>
+              {org && <p>{org}</p>}
             </div>
           </li>
         ))
