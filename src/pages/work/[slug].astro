@@ -146,6 +146,11 @@ const meta = [
     grid-column: full;
   }
 
+  /* Whatever follows a panel uses only the panel's spacing, so the gap matches the one above it */
+  .case-body > :global(.panel + *) {
+    margin-top: 0;
+  }
+
   /* A panel that ends the case study sits flush with the section below */
   .case-body:has(> :global(.panel:last-child)) {
     padding-bottom: 0;

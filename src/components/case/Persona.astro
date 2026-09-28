@@ -110,7 +110,8 @@ const { image, imageAlt, profile, priorities, challenges, quotes } = Astro.props
 
   .persona__quotes blockquote {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
 
   @media (min-width: 48rem) {
@@ -123,10 +124,11 @@ const { image, imageAlt, profile, priorities, challenges, quotes } = Astro.props
     }
   }
 
+  /* Opening mark above the text on the left, closing mark below it on the right,
+     like the presentation board */
   blockquote {
     --accent: var(--case-accent-1);
-    position: relative;
-    padding: var(--space-7) var(--space-6) var(--space-6);
+    padding: var(--space-5) var(--space-6);
     border-radius: var(--radius-md);
     background: var(--case-surface);
     color: var(--case-text);
@@ -139,12 +141,24 @@ const { image, imageAlt, profile, priorities, challenges, quotes } = Astro.props
 
   blockquote::before {
     content: '“';
-    position: absolute;
-    top: var(--space-2);
-    left: var(--space-6);
+    display: block;
+    height: 0.5em;
+    margin-bottom: var(--space-2);
     font-size: var(--text-h1);
     font-weight: var(--weight-bold);
     line-height: 1;
+    color: var(--accent);
+  }
+
+  blockquote::after {
+    content: '\201D';
+    display: block;
+    height: 0.5em;
+    margin-top: var(--space-2);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    text-align: right;
     color: var(--accent);
   }
 
