@@ -6,17 +6,16 @@ export const site = {
   title: 'Victoria Neeser: Designer & Front-end Developer',
   positioning: '[Placeholder: one-line positioning statement]',
   description: '[Placeholder: meta description for search engines, ~150 characters]',
-  email: 'hello@example.com', // [Placeholder]
+  email: 'vneeser1@gmail.com',
   links: {
-    linkedin: 'https://www.linkedin.com/in/[placeholder]',
+    linkedin: 'https://www.linkedin.com/in/victoria-neeser-bb133b2a7/',
     github: 'https://github.com/victorianeeser',
   },
-  resumePath: '/resume.pdf', // drop the PDF into /public/resume.pdf
+  resumePath: '/resume.pdf', // drop the PDF into /public/resume.pdf; linked from the About page
 };
 
 export const nav = [
   { label: 'Work', href: '/work/' },
   { label: 'About', href: '/about/' },
-  { label: 'Resume', href: '/resume/' },
   { label: 'Contact', href: '/contact/' },
 ];

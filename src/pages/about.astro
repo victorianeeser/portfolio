@@ -1,6 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import ImageSlot from '../components/ImageSlot.astro';
+import { site } from '../site.config';
+
+// The resume link appears once public/resume.pdf exists.
+const hasResume = existsSync(join(process.cwd(), 'public', site.resumePath));
 
 // [Placeholders] Replace with your real skills, tools and experience.
 const skills = ['[Skill 1]', '[Skill 2]', '[Skill 3]', '[Skill 4]', '[Skill 5]', '[Skill 6]'];
@@ -56,7 +62,16 @@ const experience = [
         ))
       }
     </ol>
-    <a href="/resume/" class="link-arrow">Full resume</a>
+    {
+      hasResume ? (
+        <div class="resume-links">
+          <a href={site.resumePath} class="button">View resume (PDF)</a>
+          <a href={site.resumePath} class="button button--outline" download>Download</a>
+        </div>
+      ) : (
+        <p class="meta">[Placeholder: add public/resume.pdf and resume buttons appear here]</p>
+      )
+    }
   </section>
 </BaseLayout>
 
@@ -75,6 +90,12 @@ const experience = [
     padding: 0;
     margin-bottom: var(--space-7);
     list-style: none;
+  }
+
+  .resume-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
   }
 
   .experience__item {

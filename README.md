@@ -22,7 +22,7 @@ Needs Node 22.12 or newer.
 | Projects (one Markdown file each) | `src/content/projects/` |
 | Project fields (the schema) | `src/content.config.ts` |
 | Pages | `src/pages/` |
-| Resume PDF | `public/resume.pdf` (add it; the Resume page picks it up) |
+| Resume PDF | `public/resume.pdf` (add it; the About page links to it) |
 | Images and videos | `public/images/` |
 
 ## Adding a project
