@@ -38,6 +38,7 @@ import { Image } from 'astro:assets';
 import Panel from '../../components/case/Panel.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
 import Insights from '../../components/case/Insights.astro';
+import Features from '../../components/case/Features.astro';
 import Competitors from '../../components/case/Competitors.astro';
 import Persona from '../../components/case/Persona.astro';
 import Stats from '../../components/case/Stats.astro';
@@ -46,6 +47,9 @@ import Split from '../../components/case/Split.astro';
 import Swatches from '../../components/case/Swatches.astro';
 import TypeSpecimen from '../../components/case/TypeSpecimen.astro';
 
+import featureTracking from '../../assets/projects/impact/feature-tracking.jpg';
+import featureRisk from '../../assets/projects/impact/feature-risk.jpg';
+import featureRecovery from '../../assets/projects/impact/feature-recovery.jpg';
 import photoPractice from '../../assets/projects/impact/photo-practice.jpg';
 import photo7v7 from '../../assets/projects/impact/photo-7v7.jpg';
 import photoTesting from '../../assets/projects/impact/photo-testing.jpg';
@@ -66,7 +70,15 @@ IMPACT is a smart shin guard and companion app for the 2026 FIFA World Cup. Sens
 
 I designed IMPACT as a solo project for IXD 412, Interaction Design 3, at the University of Kansas, from field research and competitive analysis through branding, a design system and a high-fidelity prototype.
 
-![Three core features, each paired with an app card over match photography: Impact Tracking with an overall performance score, Injury Risk Alerts, and Recovery Integration with a recovery score](../../assets/projects/impact/features.jpg)
+<Panel title="Built for Practice & Match Day" highlight="Practice & Match Day" tone="light">
+  <Features
+    items={[
+      { icon: 'trending', accent: 1, title: 'Impact Tracking', text: 'Measures force intensity and frequency during play.', image: featureTracking, imageAlt: 'App card showing an overall performance score of 91 out of 100, with stamina, speed and power, over a close-up of a player’s cleats' },
+      { icon: 'shield', accent: 2, title: 'Injury Risk Alerts', text: 'AI-driven notifications when impact exceeds safe thresholds.', image: featureRisk, imageAlt: 'App card showing low injury risk, with workload balance, training load and recovery ratio, over a match in progress' },
+      { icon: 'activity', accent: 3, title: 'Recovery Integration', text: 'Syncs with post-game recovery insights and wellness metrics.', image: featureRecovery, imageAlt: 'App card showing a 78% recovery score, over two players contesting the ball' },
+    ]}
+  />
+</Panel>
 
 <SectionTitle accent={2}>Problem</SectionTitle>
 

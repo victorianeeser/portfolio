@@ -15,7 +15,9 @@
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 
-.theme-impact {
+/* Dark palette: the default, and for dark elements placed inside a light panel */
+.theme-impact,
+.theme-impact [data-tone='dark'] {
   --case-font: 'Instrument Sans', var(--font-sans);
   --case-bg: #000000;
   --case-surface: #1a1a1a;

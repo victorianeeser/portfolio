@@ -1,0 +1,110 @@
+---
+// Feature rows: a dark text card beside a photo, alternating sides each row.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon, { type IconName } from './Icon.astro';
+
+interface Feature {
+  icon: IconName;
+  accent?: 1 | 2 | 3;
+  title: string;
+  text: string;
+  image: ImageMetadata;
+  imageAlt: string;
+}
+
+interface Props {
+  items: Feature[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="features" role="list">
+  {
+    items.map(({ icon, accent = 1, title, text, image, imageAlt }) => (
+      <li class="feature">
+        <div class="feature__card" data-tone="dark" data-accent={accent}>
+          <span class="feature__icon">
+            <Icon name={icon} />
+          </span>
+          <h4>{title}</h4>
+          <p>{text}</p>
+        </div>
+        <Image src={image} alt={imageAlt} class="feature__image" widths={[600, 1200, image.width]} sizes="(min-width: 48rem) 60vw, 100vw" />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .feature {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .feature__card {
+    --accent: var(--case-accent-1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--case-bg);
+    color: var(--case-muted);
+  }
+
+  .feature__card[data-accent='2'] { --accent: var(--case-accent-2); }
+  .feature__card[data-accent='3'] { --accent: var(--case-accent-3-text); }
+
+  .feature__icon {
+    margin-bottom: var(--space-4);
+    color: var(--accent);
+  }
+
+  .feature__icon :global(.icon) {
+    width: var(--icon-tile);
+    height: var(--icon-tile);
+  }
+
+  .feature__card h4 {
+    font-size: var(--text-h2);
+    color: var(--case-text);
+  }
+
+  .feature__card p {
+    font-style: italic;
+  }
+
+  /* :global because <Image> doesn't receive this component's scoped style marker */
+  .feature :global(.feature__image) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+
+  /* Desktop: narrow card + wide photo, swapping sides on every other row */
+  @media (min-width: 48rem) {
+    .feature {
+      grid-template-columns: 1fr 1.76fr;
+    }
+
+    .feature:nth-child(even) {
+      grid-template-columns: 1.76fr 1fr;
+    }
+
+    .feature:nth-child(even) .feature__card {
+      order: 2;
+    }
+  }
+</style>
