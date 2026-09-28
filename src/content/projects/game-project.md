@@ -6,7 +6,7 @@ timeline: "[Month Year – Month Year]"
 tools: ["Figma", "[Engine / framework]", "[Language]"]
 team: "[Solo / team of N: roles]"
 tags: ["UI", "Front-end", "Game"]
-order: 1
+order: 2
 featured: true
 # figma: "https://www.figma.com/design/..."  # link to the source Figma file
 cover:

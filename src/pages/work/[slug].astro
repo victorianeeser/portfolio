@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 
 const { project, next } = Astro.props;
-const { title, summary, role, timeline, tools, team, tags, hero, gallery } = project.data;
+const { title, summary, role, timeline, tools, team, tags, hero, gallery, links } = project.data;
 const { Content } = await render(project);
 
 const meta = [
@@ -36,7 +36,7 @@ const meta = [
         <p class="lead">{summary}</p>
       </div>
 
-      <ImageSlot {...hero} eager />
+      <ImageSlot {...hero} ratio={hero.ratio ?? 'hero'} sizes="(min-width: 75rem) 1200px, 100vw" eager />
 
       <dl class="meta-row">
         {
@@ -48,9 +48,23 @@ const meta = [
           ))
         }
       </dl>
+
+      {
+        links.length > 0 && (
+          <ul class="case-links" role="list">
+            {links.map(({ label, url }, i) => (
+              <li>
+                <a href={url} class:list={['button', i > 0 && 'button--outline']} rel="noopener" target="_blank">
+                  {label} ↗<span class="visually-hidden"> (opens in a new tab)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
     </header>
 
-    <div class="container container--narrow prose case-body">
+    <div class="prose case-body">
       <Content />
     </div>
 
@@ -60,7 +74,7 @@ const meta = [
           <h2 id="gallery-title" class="eyebrow gallery-title">Gallery</h2>
           <div class="grid grid--2">
             {gallery.map((item) => (
-              <ImageSlot {...item} ratio="card" />
+              <ImageSlot {...item} ratio={item.ratio ?? 'card'} />
             ))}
           </div>
         </section>
@@ -108,8 +122,49 @@ const meta = [
     font-size: var(--text-small);
   }
 
+  /* Text sits in a narrow reading column; images break out to the full container width */
   .case-body {
+    --wide-extra: calc((var(--container-max) - var(--container-narrow)) / 2);
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(var(--gutter), 1fr)
+      [wide-start] minmax(0, var(--wide-extra))
+      [content-start] min(var(--container-narrow), 100% - var(--gutter) * 2)
+      [content-end] minmax(0, var(--wide-extra))
+      [wide-end] minmax(var(--gutter), 1fr)
+      [full-end];
     padding-block: var(--space-6) var(--space-8);
+  }
+
+  .case-body > :global(*) {
+    grid-column: content;
+  }
+
+  .case-body > :global(p:has(> img)),
+  .case-body > :global(.image-slot) {
+    grid-column: wide;
+    margin-block: var(--space-7);
+  }
+
+  .case-body :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  .case-body > :global(blockquote) {
+    padding-left: var(--space-5);
+    border-left: var(--border-width) solid var(--color-text);
+    font-size: var(--text-h3);
+    color: var(--color-text);
+  }
+
+  .case-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: 0;
+    list-style: none;
   }
 
   .gallery-title {
