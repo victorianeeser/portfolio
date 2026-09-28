@@ -13,7 +13,7 @@ interface Props {
   alt?: string;
   type?: 'image' | 'video';
   /** 'auto' keeps the image's own proportions (no cropping) */
-  ratio?: 'hero' | 'card' | 'portrait' | 'square' | 'auto';
+  ratio?: 'hero' | 'card' | 'thumb' | 'portrait' | 'square' | 'auto';
   caption?: string;
   eager?: boolean;
   /** Which part of the image stays in frame when cropped, e.g. "50% 30%" */
@@ -90,6 +90,7 @@ const slotRatio = embed && ratio === 'auto' ? 'hero' : ratio;
     --slot-ratio: var(--ratio-hero);
   }
   .slot[data-ratio='card'] { --slot-ratio: var(--ratio-card); }
+  .slot[data-ratio='thumb'] { --slot-ratio: var(--ratio-thumb); }
   .slot[data-ratio='portrait'] { --slot-ratio: var(--ratio-portrait); }
   .slot[data-ratio='square'] { --slot-ratio: var(--ratio-square); }
   .slot[data-ratio='auto'] { --slot-ratio: auto; }

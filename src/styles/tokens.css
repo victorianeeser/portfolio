@@ -79,6 +79,7 @@
   /* ---------- Aspect ratios for image slots ---------- */
   --ratio-hero: 16 / 9;
   --ratio-card: 4 / 3;
+  --ratio-thumb: 3 / 2;             /* project card thumbnails */
   --ratio-portrait: 4 / 5;
   --ratio-square: 1 / 1;
 
