@@ -1,0 +1,145 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import { getProjects } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    // Loop back to the first project after the last
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+const { project, next } = Astro.props;
+const { title, summary, role, timeline, tools, team, tags, hero, gallery } = project.data;
+const { Content } = await render(project);
+
+const meta = [
+  { label: 'Role', value: role },
+  { label: 'Timeline', value: timeline },
+  { label: 'Tools', value: tools.join(', ') },
+  { label: 'Team', value: team },
+];
+---
+
+<BaseLayout title={title} description={summary}>
+  <article>
+    <header class="container case-head">
+      <div class="page-head">
+        <ul class="tag-list" aria-label="Tags">
+          {tags.map((tag) => <li class="tag">{tag}</li>)}
+        </ul>
+        <h1>{title}</h1>
+        <p class="lead">{summary}</p>
+      </div>
+
+      <ImageSlot {...hero} eager />
+
+      <dl class="meta-row">
+        {
+          meta.map(({ label, value }) => (
+            <div>
+              <dt class="eyebrow">{label}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </header>
+
+    <div class="container container--narrow prose case-body">
+      <Content />
+    </div>
+
+    {
+      gallery.length > 0 && (
+        <section class="container section" aria-labelledby="gallery-title">
+          <h2 id="gallery-title" class="eyebrow gallery-title">Gallery</h2>
+          <div class="grid grid--2">
+            {gallery.map((item) => (
+              <ImageSlot {...item} ratio="card" />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      next.id !== project.id && (
+        <nav class="container next" aria-label="Next project">
+          <a href={`/work/${next.id}/`} class="next__link">
+            <span class="eyebrow">Next project</span>
+            <span class="next__title">{next.data.title} →</span>
+          </a>
+        </nav>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .case-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .case-head .page-head {
+    padding-bottom: 0;
+  }
+
+  .meta-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-block: var(--border);
+  }
+
+  .meta-row dt {
+    margin-bottom: var(--space-1);
+  }
+
+  .meta-row dd {
+    margin: 0;
+    font-size: var(--text-small);
+  }
+
+  .case-body {
+    padding-block: var(--space-6) var(--space-8);
+  }
+
+  .gallery-title {
+    margin-bottom: var(--space-6);
+  }
+
+  .next {
+    padding-top: var(--space-8);
+  }
+
+  .next__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-top: var(--space-6);
+    border-top: var(--border);
+    text-decoration: none;
+  }
+
+  .next__title {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-heading);
+    line-height: var(--leading-heading);
+    color: var(--color-text);
+  }
+
+  @media (min-width: 48rem) {
+    .meta-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

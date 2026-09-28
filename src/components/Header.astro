@@ -1,0 +1,160 @@
+---
+import { site, nav } from '../site.config';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="header__logo link-quiet" aria-label={`${site.name}, home`}>
+      {site.name}
+    </a>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      hidden
+    >
+      Menu
+    </button>
+
+    <nav id="site-nav" class="header__nav" aria-label="Main">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="link-quiet"
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile menu. Without JS the links simply stay visible.
+  const toggle = document.querySelector<HTMLButtonElement>('.header__toggle');
+  const nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    const mobile = window.matchMedia('(max-width: 47.99rem)');
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open ? 'Close' : 'Menu';
+      nav.dataset.open = String(open);
+    };
+    const sync = () => {
+      toggle.hidden = !mobile.matches;
+      setOpen(false);
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    mobile.addEventListener('change', sync);
+    sync();
+  }
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--color-bg);
+    border-bottom: var(--border);
+  }
+
+  .header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: var(--space-6);
+  }
+
+  /* Fixed-height top row, so it doesn't shift when the mobile menu opens */
+  .header__logo,
+  .header__toggle {
+    display: flex;
+    align-items: center;
+    min-height: var(--header-height);
+  }
+
+  .header__logo {
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+  }
+
+  .header__toggle {
+    padding-inline: var(--space-3);
+    margin-right: calc(var(--space-3) * -1);
+    background: none;
+    border: 0;
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  .header__toggle[hidden] {
+    display: none;
+  }
+
+  .header__nav ul {
+    display: flex;
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .header__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-target);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  .header__nav a[aria-current='page'] {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  .header__nav a:hover {
+    color: var(--color-text);
+  }
+
+  /* Mobile: collapse the nav behind the toggle (only once JS has shown the button) */
+  @media (max-width: 47.99rem) {
+    .header__nav[data-open='false'] {
+      display: none;
+    }
+
+    .header__nav[data-open='true'] {
+      flex-basis: 100%;
+      padding-bottom: var(--space-4);
+    }
+
+    .header__nav[data-open='true'] ul {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .header__nav[data-open='true'] a {
+      font-size: var(--text-h3);
+    }
+  }
+</style>

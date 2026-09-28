@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects } from '../../lib/projects';
+import { TAGS } from '../../content.config';
+
+const projects = await getProjects();
+// Only offer filters for tags that are actually used
+const usedTags = TAGS.filter((tag) => projects.some((p) => p.data.tags.includes(tag)));
+---
+
+<BaseLayout title="Work" description="All projects: UI, UX and front-end work.">
+  <section class="container page-head">
+    <h1>Work</h1>
+    <p class="lead">[Placeholder: one line framing the body of work.]</p>
+  </section>
+
+  <section class="container" aria-labelledby="projects-title">
+    <h2 id="projects-title" class="visually-hidden">Projects</h2>
+
+    <div class="filters" role="group" aria-label="Filter projects by tag" hidden>
+      <button type="button" class="filter" data-filter="all" aria-pressed="true">All</button>
+      {
+        usedTags.map((tag) => (
+          <button type="button" class="filter" data-filter={tag} aria-pressed="false">
+            {tag}
+          </button>
+        ))
+      }
+    </div>
+    <p class="meta filter-status" aria-live="polite"></p>
+
+    <ul class="grid grid--2 project-list" role="list">
+      {
+        projects.map((project) => (
+          <li data-tags={project.data.tags.join('|')}>
+            <ProjectCard project={project} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<script>
+  // Tag filter. Without JS the buttons stay hidden and every project shows.
+  const group = document.querySelector<HTMLElement>('.filters');
+  const status = document.querySelector<HTMLElement>('.filter-status');
+  const items = [...document.querySelectorAll<HTMLElement>('.project-list > li')];
+
+  if (group && status) {
+    group.hidden = false;
+    const buttons = [...group.querySelectorAll<HTMLButtonElement>('.filter')];
+
+    const apply = (filter: string) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+      let shown = 0;
+      items.forEach((item) => {
+        const match = filter === 'all' || item.dataset.tags!.split('|').includes(filter);
+        item.hidden = !match;
+        if (match) shown++;
+      });
+      status.textContent =
+        filter === 'all' ? '' : `Showing ${shown} ${shown === 1 ? 'project' : 'projects'} tagged ${filter}`;
+    };
+
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter!)));
+  }
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .filters[hidden] {
+    display: none;
+  }
+
+  .filter {
+    min-height: var(--tap-target);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-bg);
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .filter:hover {
+    border-color: var(--color-text);
+    color: var(--color-text);
+  }
+
+  .filter[aria-pressed='true'] {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .filter-status {
+    min-height: calc(var(--text-small) * var(--leading-body));
+    margin-block: var(--space-4) var(--space-6);
+  }
+
+  .project-list {
+    padding: 0;
+    list-style: none;
+  }
+</style>

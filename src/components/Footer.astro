@@ -1,0 +1,75 @@
+---
+import { site } from '../site.config';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="stack">
+      <p class="eyebrow">Get in touch</p>
+      <a href={`mailto:${site.email}`} class="footer__email">{site.email}</a>
+    </div>
+
+    <ul class="footer__links" aria-label="Elsewhere">
+      <li><a href={site.links.linkedin} rel="me noopener">LinkedIn</a></li>
+      <li><a href={site.links.github} rel="me noopener">GitHub</a></li>
+    </ul>
+
+    <p class="footer__copy">© {year} {site.name}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: var(--section-gap);
+    padding-block: var(--space-8) var(--space-6);
+    border-top: var(--border);
+  }
+
+  .footer__inner {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .footer__email {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-heading);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .footer__email:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .footer .stack {
+    --stack-gap: var(--space-3);
+  }
+
+  .footer__links {
+    display: flex;
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Incidental text: the one sanctioned use of the tertiary grey */
+  .footer__copy {
+    font-size: var(--text-small);
+    color: var(--color-text-tertiary);
+  }
+
+  @media (min-width: 48rem) {
+    .footer__inner {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .footer__copy {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

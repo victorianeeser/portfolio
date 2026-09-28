@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../site.config';
+---
+
+<BaseLayout title="Contact" description={`Get in touch with ${site.name}.`}>
+  <section class="container page-head">
+    <h1>Contact</h1>
+    <p class="lead">[Placeholder: one line inviting people to reach out, e.g. what roles you're open to.]</p>
+  </section>
+
+  <section class="container contact">
+    <div class="stack">
+      <h2 class="eyebrow">Email</h2>
+      <a href={`mailto:${site.email}`} class="contact__email">{site.email}</a>
+
+      <h2 class="eyebrow">Elsewhere</h2>
+      <ul class="contact__links">
+        <li><a href={site.links.linkedin} rel="me noopener">LinkedIn</a></li>
+        <li><a href={site.links.github} rel="me noopener">GitHub</a></li>
+      </ul>
+    </div>
+
+    <!-- No backend yet. To go live, add Netlify Forms (data-netlify="true") or a service like Formspree. -->
+    <form class="form" aria-labelledby="form-title" novalidate>
+      <h2 id="form-title" class="eyebrow">Send a message</h2>
+
+      <div class="field">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" autocomplete="name" required />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+      </div>
+
+      <button type="submit" class="button">Send message</button>
+      <p class="meta form__status" role="status"></p>
+    </form>
+  </section>
+</BaseLayout>
+
+<script>
+  import { site } from '../site.config';
+
+  // Placeholder behavior until the form is connected to a backend.
+  const form = document.querySelector<HTMLFormElement>('.form');
+  const status = document.querySelector<HTMLElement>('.form__status');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (status) {
+      status.textContent = `This form isn't connected yet. Please email ${site.email} directly.`;
+    }
+  });
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .contact .stack > h2:not(:first-child) {
+    margin-top: var(--space-7);
+  }
+
+  .contact__email {
+    display: inline-block;
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    word-break: break-word;
+  }
+
+  .contact__links {
+    display: flex;
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  label {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    min-height: var(--tap-target);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg);
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  input:hover,
+  textarea:hover {
+    border-color: var(--color-text-secondary);
+  }
+
+  input:focus-visible,
+  textarea:focus-visible {
+    border-color: var(--color-text);
+    outline-offset: 0;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .form .button {
+    align-self: flex-start;
+  }
+
+  @media (min-width: 48rem) {
+    .contact {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

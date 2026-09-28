@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+
+// [Placeholders] Replace with your real skills, tools and experience.
+const skills = ['[Skill 1]', '[Skill 2]', '[Skill 3]', '[Skill 4]', '[Skill 5]', '[Skill 6]'];
+const tools = ['Figma', 'TouchDesigner', '[Tool 3]', '[Tool 4]', '[Tool 5]', '[Tool 6]'];
+const experience = [
+  { role: '[Role title]', org: '[Company / organization]', dates: '[Start – End]', note: '[One line on what you did]' },
+  { role: '[Role title]', org: '[Company / organization]', dates: '[Start – End]', note: '[One line on what you did]' },
+  { role: '[Degree / program]', org: '[School]', dates: '[Start – End]', note: '[Focus or honors]' },
+];
+---
+
+<BaseLayout title="About" description="About me: background, skills, tools and experience.">
+  <section class="container page-head">
+    <h1>About</h1>
+  </section>
+
+  <section class="container bio" aria-label="Bio">
+    <ImageSlot label="Portrait (about page)" ratio="portrait" eager />
+    <div class="prose">
+      <p class="lead">[Placeholder: opening line. The one sentence you want a hiring manager to remember.]</p>
+      <p>[Placeholder: bio paragraph 1. Background and how you got into design and code.]</p>
+      <p>[Placeholder: bio paragraph 2. How you work, what you care about, the kinds of problems you like.]</p>
+      <p>[Placeholder: bio paragraph 3. Outside of work / what you're looking for next.]</p>
+    </div>
+  </section>
+
+  <section class="section container" aria-labelledby="skills-title">
+    <div class="grid grid--2">
+      <div class="stack">
+        <h2 id="skills-title" class="eyebrow">Skills</h2>
+        <ul class="tag-list">{skills.map((s) => <li class="tag">{s}</li>)}</ul>
+      </div>
+      <div class="stack">
+        <h2 class="eyebrow">Tools</h2>
+        <ul class="tag-list">{tools.map((t) => <li class="tag">{t}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" aria-labelledby="experience-title">
+    <h2 id="experience-title" class="eyebrow experience-title">Experience & education</h2>
+    <ol class="experience" role="list">
+      {
+        experience.map(({ role, org, dates, note }) => (
+          <li class="experience__item">
+            <p class="meta">{dates}</p>
+            <div>
+              <h3>{role}</h3>
+              <p>{org}</p>
+              <p class="meta">{note}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    <a href="/resume/" class="link-arrow">Full resume</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .bio {
+    display: grid;
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .experience-title {
+    margin-bottom: var(--space-6);
+  }
+
+  .experience {
+    padding: 0;
+    margin-bottom: var(--space-7);
+    list-style: none;
+  }
+
+  .experience__item {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-5);
+    border-top: var(--border);
+  }
+
+  @media (min-width: 48rem) {
+    .bio {
+      grid-template-columns: 1fr 2fr;
+    }
+
+    .experience__item {
+      grid-template-columns: 1fr 3fr;
+      gap: var(--grid-gap);
+    }
+  }
+</style>

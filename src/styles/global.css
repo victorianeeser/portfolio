@@ -1,0 +1,344 @@
+/*
+ * Global base styles and shared utility classes.
+ * All values come from tokens.css.
+ */
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/700.css';
+@import './tokens.css';
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--header-height);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1;
+}
+
+img,
+video,
+svg,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--color-selection-bg);
+  color: var(--color-selection-text);
+}
+
+/* ---------- Typography ---------- */
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); }
+
+p {
+  text-wrap: pretty;
+}
+
+.display {
+  font-size: var(--text-display);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--color-text);
+}
+
+.lead {
+  font-size: var(--text-h3);
+  color: var(--color-text-secondary);
+}
+
+.meta {
+  font-size: var(--text-small);
+  color: var(--color-text-secondary);
+}
+
+/* Section label, e.g. "Selected work" */
+.eyebrow {
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+strong {
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+/* ---------- Links ---------- */
+a {
+  color: var(--color-link);
+  text-decoration-thickness: var(--border-width);
+  text-underline-offset: 0.2em;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+  opacity: var(--hover-opacity);
+}
+
+/* Links without underline at rest get one on hover instead of fading */
+.link-quiet {
+  text-decoration: none;
+}
+
+.link-quiet:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Arrow link, e.g. "More about me →" */
+.link-arrow {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.link-arrow::after {
+  content: '→';
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.link-arrow:hover {
+  opacity: 1;
+}
+
+.link-arrow:hover::after {
+  transform: translateX(var(--space-1));
+}
+
+/* ---------- Focus ---------- */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container-max) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--narrow {
+  max-width: calc(var(--container-narrow) + var(--gutter) * 2);
+}
+
+.section {
+  padding-block: var(--section-gap);
+}
+
+.section + .section {
+  border-top: var(--border);
+}
+
+.stack > * + * {
+  margin-top: var(--stack-gap);
+}
+
+.grid {
+  display: grid;
+  gap: var(--grid-gap);
+}
+
+@media (min-width: 48rem) {
+  .grid--2 { grid-template-columns: repeat(2, 1fr); }
+  .grid--3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- Buttons ---------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding: var(--space-3) var(--space-5);
+  border: var(--border-width) solid var(--color-text);
+  border-radius: var(--radius-sm);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.button:hover {
+  opacity: var(--hover-opacity);
+}
+
+.button--outline {
+  background: transparent;
+  color: var(--color-text);
+}
+
+/* ---------- Tags ---------- */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  border: var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-small);
+  line-height: var(--leading-heading);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Image slots (placeholders for Figma exports) ---------- */
+.image-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: var(--ratio-hero);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Accessibility helpers ---------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-skip-link);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-text);
+  color: var(--color-bg);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* The skip link moves focus to <main>; no ring needed on the container itself */
+main:focus {
+  outline: none;
+}
+
+/* Top-of-page title block used by inner pages */
+.page-head {
+  padding-block: var(--space-9) var(--space-7);
+}
+
+.page-head > * + * {
+  margin-top: var(--space-4);
+}
+
+/* Long-form text (Markdown bodies, bios) */
+.prose > * + * {
+  margin-top: var(--space-4);
+}
+
+.prose > h2 {
+  margin-top: var(--space-8);
+}
+
+.prose > h3 {
+  margin-top: var(--space-6);
+}
+
+.prose > .image-slot,
+.prose > figure,
+.prose > img {
+  margin-block: var(--space-7);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: var(--space-5);
+}
+
+.prose li + li {
+  margin-top: var(--space-2);
+}

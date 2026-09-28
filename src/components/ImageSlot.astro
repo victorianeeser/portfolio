@@ -1,0 +1,54 @@
+---
+// Renders a Figma export once `src` is set; until then, a labeled gray placeholder.
+interface Props {
+  label: string;
+  src?: string;
+  alt?: string;
+  type?: 'image' | 'video';
+  ratio?: 'hero' | 'card' | 'portrait' | 'square';
+  caption?: string;
+  eager?: boolean;
+}
+
+const { label, src, alt = '', type = 'image', ratio = 'hero', caption, eager = false } = Astro.props;
+---
+
+<figure class="slot" data-ratio={ratio}>
+  {
+    src ? (
+      type === 'video' ? (
+        <video src={src} controls muted playsinline preload="metadata" aria-label={alt || label} />
+      ) : (
+        <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+      )
+    ) : (
+      <div class="image-slot" role="img" aria-label={`Placeholder: ${label}`}>
+        {type === 'video' ? 'Figma video' : 'Figma'}: {label}
+      </div>
+    )
+  }
+  {caption && <figcaption class="meta">{caption}</figcaption>}
+</figure>
+
+<style>
+  .slot {
+    --slot-ratio: var(--ratio-hero);
+  }
+  .slot[data-ratio='card'] { --slot-ratio: var(--ratio-card); }
+  .slot[data-ratio='portrait'] { --slot-ratio: var(--ratio-portrait); }
+  .slot[data-ratio='square'] { --slot-ratio: var(--ratio-square); }
+
+  .image-slot,
+  img,
+  video {
+    width: 100%;
+    aspect-ratio: var(--slot-ratio);
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    background: var(--color-surface);
+  }
+
+  figcaption {
+    margin-top: var(--space-3);
+  }
+</style>

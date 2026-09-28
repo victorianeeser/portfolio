@@ -1,0 +1,85 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ImageSlot from './ImageSlot.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { project, headingLevel: Heading = 'h3' } = Astro.props;
+const { title, role, tags, cover } = project.data;
+---
+
+<article class="card">
+  <ImageSlot {...cover} ratio="card" />
+  <div class="card__body">
+    <Heading class="card__title">
+      <a href={`/work/${project.id}/`} class="card__link">{title}</a>
+    </Heading>
+    <p class="meta">{role}</p>
+    <ul class="tag-list" aria-label="Tags">
+      {tags.map((tag) => <li class="tag">{tag}</li>)}
+    </ul>
+  </div>
+</article>
+
+<style>
+  /* The whole card is clickable via the title link's stretched ::after */
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .card__title {
+    font-size: var(--text-h3);
+  }
+
+  .card__link {
+    text-decoration: none;
+  }
+
+  .card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card__link:hover {
+    opacity: 1;
+  }
+
+  .card:hover .card__link {
+    text-decoration: underline;
+  }
+
+  .card :global(.slot) {
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  .card:hover :global(.slot) {
+    opacity: var(--hover-opacity);
+  }
+
+  .card__link:focus-visible {
+    outline: none;
+  }
+
+  .card__link:focus-visible::after {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--radius-md);
+  }
+
+  .tag-list {
+    margin-top: var(--space-2);
+  }
+</style>

@@ -31,3 +31,9 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Astro generated types
+.astro/
+
+# Local Claude settings
+.claude/settings.local.json

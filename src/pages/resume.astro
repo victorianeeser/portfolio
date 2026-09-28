@@ -1,0 +1,61 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../site.config';
+
+// Shows the embedded PDF once public/resume.pdf exists; a placeholder until then.
+const hasPdf = existsSync(join(process.cwd(), 'public', site.resumePath));
+---
+
+<BaseLayout title="Resume" description={`Resume of ${site.name}.`}>
+  <section class="container container--narrow page-head resume-head">
+    <h1>Resume</h1>
+    {
+      hasPdf && (
+        <a href={site.resumePath} class="button" download>
+          Download PDF
+        </a>
+      )
+    }
+  </section>
+
+  <section class="container container--narrow" aria-label="Resume document">
+    {
+      hasPdf ? (
+        <object data={site.resumePath} type="application/pdf" class="resume-embed" aria-label="Resume PDF">
+          <p>
+            Your browser can't display the PDF here. <a href={site.resumePath}>Open the resume</a> instead.
+          </p>
+        </object>
+      ) : (
+        <div class="image-slot resume-embed" role="img" aria-label="Placeholder: resume PDF">
+          PDF: Add your resume at public/resume.pdf
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .resume-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .resume-head > * + * {
+    margin-top: 0;
+  }
+
+  .resume-embed {
+    display: flex;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--ratio-letter);
+    border: var(--border);
+    border-radius: var(--radius-md);
+  }
+</style>
