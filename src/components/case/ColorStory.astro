@@ -1,0 +1,141 @@
+---
+// Large color tiles that explain what each brand color means, e.g. a stage in a cycle.
+// `ink` is the text color on the tile; pick one that meets contrast on that color.
+interface Swatch {
+  label?: string; // e.g. "Focus"
+  name: string; // e.g. "Charged Lime"
+  hex: string; // e.g. "#BFFF65"
+  ink: string; // text color on the tile
+  text: string;
+}
+
+interface Props {
+  items: Swatch[];
+  /** Colors that support the others, shown as a split bar underneath */
+  neutrals?: { name: string; hex: string; ink: string }[];
+  neutralsText?: string;
+}
+
+const { items, neutrals = [], neutralsText } = Astro.props;
+---
+
+<div class="colors case-wide">
+  <ol class="colors__cycle" role="list">
+    {
+      items.map(({ label, name, hex, ink, text }) => (
+        <li class="colors__tile" style={`background: ${hex}; color: ${ink}`}>
+          {label && <p class="colors__label">{label}</p>}
+          <p class="colors__name">
+            {name} <span class="colors__hex">{hex}</span>
+          </p>
+          <p class="colors__text">{text}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  {
+    neutrals.length > 0 && (
+      <div class="colors__neutrals">
+        <div class="colors__bar" aria-hidden="true">
+          {neutrals.map(({ name, hex, ink }) => (
+            <span style={`background: ${hex}; color: ${ink}`}>
+              {name} <span class="colors__hex">{hex}</span>
+            </span>
+          ))}
+        </div>
+        {neutralsText && <p class="colors__neutrals-text">{neutralsText}</p>}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .colors {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-block: var(--space-6);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .colors__cycle {
+    display: grid;
+    gap: var(--space-4);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .colors__tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+  }
+
+  .colors__label {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-tight);
+  }
+
+  .colors__name {
+    margin-top: var(--space-4);
+    font-weight: var(--weight-medium);
+  }
+
+  .colors__hex {
+    font-size: var(--text-small);
+    font-weight: var(--weight-regular);
+    opacity: 0.8;
+  }
+
+  .colors__text {
+    font-size: var(--text-small);
+  }
+
+  .colors__neutrals {
+    display: grid;
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .colors__bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    border: var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .colors__bar > span {
+    padding: var(--space-5);
+    font-weight: var(--weight-medium);
+  }
+
+  .colors__neutrals-text {
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .colors__cycle {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Desktop: taller tiles with the stage name at the top and details at the bottom */
+    .colors__tile {
+      min-height: calc(var(--space-10) * 2);
+    }
+
+    .colors__label {
+      margin-bottom: auto;
+    }
+
+    .colors__neutrals {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+</style>

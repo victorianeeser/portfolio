@@ -18,13 +18,17 @@ cover:
 
 import SectionTitle from '../../components/case/SectionTitle.astro';
 import SwipeCards from '../../components/case/SwipeCards.astro';
+import KeyPoints from '../../components/case/KeyPoints.astro';
+import ColorStory from '../../components/case/ColorStory.astro';
+import BrandBoard from '../../components/projects/courtsync/BrandBoard.astro';
 
-<SectionTitle accent={1}>Overview</SectionTitle>
+<SectionTitle accent={2}>Overview</SectionTitle>
 
 The brief: conceptualize, design and launch a new headphone product. Beyond the user experience, that meant crafting a brand narrative, designing the physical product with AI tools, and building a launch website that tells a story and builds anticipation, simulating a real-world launch where visual design, branding and storytelling capture the market's attention.
 
 <SwipeCards
   label="Deliverables"
+  accent={2}
   items={[
     { title: 'Branding & Strategy', text: 'A complete brand identity with a clear reason to exist.', items: ['Company name and logo', 'Company backstory', 'User persona', 'Value proposition'] },
     { title: 'Product Design', text: 'An earbud concept brought to life with AI tools.', items: ['Earbud concept', '3–5 AI-generated renderings', 'Lifestyle shots in context'] },
@@ -33,5 +37,57 @@ The brief: conceptualize, design and launch a new headphone product. Beyond the 
     { title: 'Launch Talk', text: 'A scripted presentation that simulates a live launch event.', items: ['Brand and product', 'App and website', 'Launch slides'] },
   ]}
 />
+
+<SectionTitle accent={1}>Branding & Strategy</SectionTitle>
+
+### Concept
+
+CourtSync embodies synchronization between athletes, movement and performance. The name and design reflect the idea of connecting mind and body through intelligent audio technology.
+
+The brand voice is bold, athletic and modern, made for serious court athletes who thrive on precision and rhythm.
+
+<ul class="tag-list" aria-label="Brand voice">
+  <li class="tag">Bold</li>
+  <li class="tag">Athletic</li>
+  <li class="tag">Modern</li>
+</ul>
+
+<BrandBoard />
+
+### Logo
+
+The wordmark "COURTSYNC" combines strength and motion.
+
+<KeyPoints
+  items={[
+    { title: 'Strength', text: 'The bold, geometric typeface represents stability and power, echoing the structure and discipline of athletic training.' },
+    { title: 'Motion', text: 'The italicized “SYNC” adds movement and forward momentum, symbolizing speed, energy and technological innovation.' },
+    { title: 'Mark', text: 'The “CS” abbreviation is a compact logo mark that adapts easily to app icons, the earbuds themselves and apparel.' },
+  ]}
+/>
+
+### Color palette
+
+Each color represents a stage in the athlete's performance cycle: focus, perform, recover. Together, the palette blends sport energy with tech intelligence: bold but clean, athletic yet futuristic.
+
+<ColorStory
+  items={[
+    { label: 'Focus', name: 'Charged Lime', hex: '#BFFF65', ink: '#000000', text: 'Bright and alert, tied to focus and mental clarity during pre-game preparation.' },
+    { label: 'Perform', name: 'Pulse Green', hex: '#3ADE6B', ink: '#000000', text: 'Energizing and dynamic, representing performance and movement on the court.' },
+    { label: 'Recover', name: 'Sync Blue', hex: '#015AFF', ink: '#FFFFFF', text: 'Recovery, calm and rhythm: the “sync” between the athlete’s body and technology.' },
+  ]}
+  neutrals={[
+    { name: 'Core Black', hex: '#000000', ink: '#FFFFFF' },
+    { name: 'Refreshed White', hex: '#FFFFFF', ink: '#000000' },
+  ]}
+  neutralsText="Grounding and contrast, reinforcing professionalism and balance across every application."
+/>
+
+### Overall brand message
+
+<blockquote>
+  <p>CourtSync is where human performance meets intelligent design.</p>
+  <p>The brand empowers athletes to move in sync with their training, through data, rhythm and recovery, creating a seamless feedback loop between body and technology.</p>
+</blockquote>
 
 {/* Next sections are added one at a time, following the Figma slides from the top. */}

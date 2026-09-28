@@ -199,6 +199,8 @@ const meta = [
     color: var(--quote-color);
   }
 
+  /* A second paragraph in a pull quote is supporting text, set small like a caption */
+  .case-body > :global(blockquote p + p),
   .case-body > :global(blockquote cite) {
     display: block;
     margin-top: var(--space-4);

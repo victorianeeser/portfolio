@@ -1,0 +1,177 @@
+---
+// CourtSync brand board, rebuilt from the Figma frame as color tiles, vector marks and text.
+// Desktop keeps the board's proportions (1536×873); phones stack the tiles.
+import { Image } from 'astro:assets';
+import wordmark from '../../../assets/projects/courtsync/wordmark.svg';
+import wordmarkStacked from '../../../assets/projects/courtsync/wordmark-stacked.svg';
+import csMark from '../../../assets/projects/courtsync/cs-mark.svg';
+
+// Label colors follow the board, except Pulse Green uses black text: white on it is 1.8:1
+const palette = [
+  { name: 'Pulse Green', hex: '3ADE6B', text: '#000000' },
+  { name: 'Charged Lime', hex: 'BFFF65', text: '#015AFF' },
+  { name: 'Sync Blue', hex: '015AFF', text: '#FFFFFF' },
+  { name: 'Refreshed White', hex: 'FFFFFF', text: '#000000' },
+  { name: 'Core Black', hex: '000000', text: '#FFFFFF' },
+];
+---
+
+<figure class="board case-wide" aria-label="CourtSync brand board">
+  <div class="board__tile board__tile--primary">
+    <Image src={wordmark} alt="CourtSync" class="board__wordmark" />
+    <p class="board__tagline">Focus. Perform. Recover.</p>
+  </div>
+
+  <ul class="board__tile board__tile--palette" role="list" aria-label="Color palette">
+    {
+      palette.map(({ name, hex, text }) => (
+        <li class="board__swatch" style={`background: #${hex}; color: ${text}`}>
+          <span>{name}</span>
+          <span class="board__hex">{hex}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="board__tile board__tile--lime">
+    <Image src={csMark} alt="CS logo mark" class="board__mark" />
+  </div>
+
+  <div class="board__tile board__tile--green">
+    <Image src={wordmarkStacked} alt="CourtSync stacked wordmark" class="board__stacked" />
+  </div>
+
+  <div class="board__tile board__tile--blue">
+    <div class="board__lockup">
+      <Image src={csMark} alt="CS logo mark" class="board__mark" />
+      <p class="board__tagline board__tagline--stacked">Focus.<br />Perform.<br />Recover.</p>
+    </div>
+  </div>
+</figure>
+
+<style>
+  /* Board colors, from the Figma frame */
+  .board {
+    --board-black: #000000;
+    --board-grey: #ebebeb;
+    --board-lime: #bfff65;
+    --board-green: #08e249;
+    --board-blue: #015aff;
+    --board-white: #ffffff;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'primary primary'
+      'palette palette'
+      'green green'
+      'lime blue';
+    container-type: inline-size;
+    overflow: hidden;
+    margin-block: var(--space-7);
+    border-radius: var(--radius-md);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .board__tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 6cqw;
+  }
+
+  .board__tile--primary { grid-area: primary; flex-direction: column; gap: 3cqw; aspect-ratio: 16 / 9; background: var(--board-black); }
+  .board__tile--palette { grid-area: palette; background: var(--board-grey); }
+  .board__tile--lime { grid-area: lime; aspect-ratio: 1; background: var(--board-lime); }
+  .board__tile--green { grid-area: green; aspect-ratio: 16 / 9; background: var(--board-green); }
+  .board__tile--blue { grid-area: blue; aspect-ratio: 1; gap: 3cqw; background: var(--board-blue); }
+
+  /* :global because <Image> doesn't receive this component's scoped style marker */
+  .board :global(.board__wordmark) { width: 80%; height: auto; }
+  .board :global(.board__stacked) { width: 55%; height: auto; }
+  .board :global(.board__mark) { width: auto; height: 60%; }
+
+  .board__tagline {
+    color: var(--board-white);
+    font-size: 3.6cqw;
+    letter-spacing: 0.04em;
+    line-height: 1.21;
+    text-transform: uppercase;
+  }
+
+  /* Mark with the tagline tucked beside the top of the "C", as on the board
+     (offsets measured from the mark: 71% across, 10.5% down) */
+  .board__lockup {
+    position: relative;
+    height: 60%;
+    aspect-ratio: 181 / 322; /* the CS mark's proportions */
+    container-type: size;
+  }
+
+  .board__lockup :global(.board__mark) {
+    height: 100%;
+  }
+
+  /* Sized from the mark's height (20px type on a 322px mark), so it scales with it */
+  .board__tagline.board__tagline--stacked {
+    position: absolute;
+    top: 10.5%;
+    left: 71%;
+    font-size: 6.2cqh;
+    white-space: nowrap;
+  }
+
+  /* Palette: stacked color bars with name and hex */
+  .board__tile--palette {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2cqw;
+    margin: 0;
+    padding: 6cqw;
+    list-style: none;
+  }
+
+  .board__swatch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.4cqw 3cqw;
+    border-radius: var(--radius-sm);
+    font-size: 3.4cqw;
+    text-transform: uppercase;
+  }
+
+  .board__hex {
+    font-size: 0.7em;
+  }
+
+  /* Desktop: the board's own proportions (1536×873), measured from the Figma frame */
+  @media (min-width: 48rem) {
+    .board {
+      grid-template-columns: 342fr 677fr 517fr;
+      grid-template-rows: 415fr 458fr;
+      grid-template-areas:
+        'primary primary palette'
+        'lime green blue';
+      aspect-ratio: 1536 / 873;
+    }
+
+    .board__tile { padding: 3cqw; }
+    .board__tile--primary,
+    .board__tile--lime,
+    .board__tile--green,
+    .board__tile--blue { aspect-ratio: auto; }
+    .board__tile--primary { gap: 1.6cqw; }
+    .board__tile--blue { gap: 1.5cqw; }
+
+    .board :global(.board__wordmark) { width: 69%; }
+    .board :global(.board__stacked) { width: 55%; }
+
+    .board__tagline { font-size: 1.75cqw; }
+    .board__lockup { height: 70%; }
+
+    .board__tile--palette { gap: 0.6cqw; padding: 2.9cqw 2.9cqw; justify-content: center; }
+    .board__swatch { padding: 1cqw 1.6cqw; font-size: 1.25cqw; }
+  }
+</style>
