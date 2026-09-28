@@ -40,3 +40,6 @@ Thumbs.db
 
 # Full-size originals (kept locally, not published)
 originals/
+
+# macOS folder settings
+.DS_Store
