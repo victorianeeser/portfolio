@@ -146,6 +146,15 @@ const meta = [
     grid-column: full;
   }
 
+  /* A panel that ends the case study sits flush with the section below */
+  .case-body:has(> :global(.panel:last-child)) {
+    padding-bottom: 0;
+  }
+
+  .case-body > :global(.panel:last-child) {
+    margin-bottom: 0;
+  }
+
   .case-body > :global(p:has(> img)),
   .case-body > :global(.image-slot),
   .case-body > :global(.case-wide) {
@@ -159,11 +168,27 @@ const meta = [
     border-radius: var(--radius-md);
   }
 
+  /* Pull quote in the project's accent color. Set at h2 size so bright accents still meet
+     WCAG AA for large text on white. */
   .case-body > :global(blockquote) {
+    --quote-color: var(--case-accent-2, var(--color-text));
+    margin-block: var(--space-7);
     padding-left: var(--space-5);
-    border-left: var(--border-width) solid var(--color-text);
-    font-size: var(--text-h3);
-    color: var(--color-text);
+    border-left: var(--border-width) solid var(--quote-color);
+    font-family: var(--case-font, var(--font-sans));
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-heading);
+    color: var(--quote-color);
+  }
+
+  .case-body > :global(blockquote cite) {
+    display: block;
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+    font-style: normal;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
   }
 
   .case-links {
