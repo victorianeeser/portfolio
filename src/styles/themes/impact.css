@@ -5,8 +5,8 @@
  * Accent slots used by the case study components:
  *   1 = green (secondary action)  2 = pink (error / risk)  3 = blue (primary action)
  * Blue is too dark for small text on black (3.5:1), so text uses a lighter tint.
- * Light panels use darker green and pink for text, since the brand ones are too
- * light to read on white. Icons, markers and swatches keep the brand colors.
+ * Light panels use darker green and pink, since the brand ones are too light to
+ * read on white. Swatches always show the true brand colors.
  */
 @import '@fontsource/instrument-sans/400.css';
 @import '@fontsource/instrument-sans/500.css';
@@ -43,8 +43,10 @@
   --case-border: var(--color-border);
   --case-text: var(--color-text);
   --case-muted: var(--color-text-secondary);
-  --case-accent-1-text: #00794a;
-  --case-accent-2-text: #c8007f;
+  --case-accent-1: #00794a;
+  --case-accent-2: #c8007f;
+  --case-accent-1-text: var(--case-accent-1);
+  --case-accent-2-text: var(--case-accent-2);
   --case-accent-3-text: var(--case-accent-3);
   --case-glow: none;
 }
