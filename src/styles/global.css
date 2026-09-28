@@ -251,7 +251,7 @@ a:hover {
   border-radius: var(--radius-sm);
   font-size: var(--text-small);
   line-height: var(--leading-heading);
-  color: var(--color-text-secondary);
+  color: var(--color-text-tertiary);
 }
 
 /* ---------- Image slots (placeholders for Figma exports) ---------- */
