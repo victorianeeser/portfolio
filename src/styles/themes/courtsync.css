@@ -2,20 +2,16 @@
  * CourtSync project theme, applied via `theme: courtsync`.
  * Values come from the CourtSync slides in Figma.
  *
- * The slides set body text in Akkurat, a commercial font, so Inter stands in
- * on the web. The CourtSync wordmark is a vector, so it keeps its real font.
+ * Body copy uses the portfolio's own font (DM Sans). The CourtSync wordmark
+ * is a vector, so it keeps its real font.
  *
  * Accent slots used by the case study components:
  *   1 = green   2 = blue   3 = blue (same; CourtSync has two accents)
  */
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-
 /* Dark palette: the default, and for dark elements placed inside a light panel */
 .theme-courtsync,
 .theme-courtsync [data-tone='dark'] {
-  --case-font: 'Inter', var(--font-sans);
+  --case-font: var(--font-sans);
   --case-bg: #000000;
   --case-surface: #141414;
   --case-surface-2: #1f1f1f;
