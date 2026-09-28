@@ -5,8 +5,8 @@
  * Body copy uses the portfolio's own font (DM Sans). The CourtSync wordmark
  * is a vector, so it keeps its real font.
  *
- * Accent slots used by the case study components:
- *   1 = green   2 = blue   3 = blue (same; CourtSync has two accents)
+ * Sync Blue (#015AFF) is the primary accent everywhere. Green and lime appear only
+ * in the palette and brand board. All accent slots point to blue.
  */
 /* Dark palette: the default, and for dark elements placed inside a light panel */
 .theme-courtsync,
@@ -19,22 +19,25 @@
   --case-text: #ffffff;
   --case-muted: #a3a3a3;
 
-  --case-accent-1: #3ade6b;
+  --case-accent-1: #015aff;
   --case-accent-2: #015aff;
   --case-accent-3: #015aff;
-  --case-accent-1-text: var(--case-accent-1);
-  /* #015AFF is too dark for small text on black (3.9:1), so text uses a lighter tint */
+  /* #015AFF is too dark for small text on black (3.9:1), so small text on dark
+     backgrounds uses a lighter tint. Large text, icons and markers use the true blue. */
+  --case-accent-1-text: #4d8bff;
   --case-accent-2-text: #4d8bff;
   --case-accent-3-text: #4d8bff;
+
+  /* Panel title highlights are large text, where #015AFF passes AA (3.9:1 ≥ 3:1) */
+  --case-title-accent: var(--case-accent-1);
 
   --case-pill-bg: rgb(189 189 189 / 0.22);
   --case-glow: none;
 
-  /* Section headings on white: green is unreadable on white (1.8:1), so it's darkened.
-     Blue passes as-is. */
-  --case-heading-1: #157533;
-  --case-heading-2: var(--case-accent-2);
-  --case-heading-3: var(--case-accent-2);
+  /* Section headings on white: blue passes AA (5.4:1) */
+  --case-heading-1: var(--case-accent-1);
+  --case-heading-2: var(--case-accent-1);
+  --case-heading-3: var(--case-accent-1);
 }
 
 .theme-courtsync [data-tone='light'] {
@@ -43,8 +46,7 @@
   --case-border: var(--color-border);
   --case-text: var(--color-text);
   --case-muted: var(--color-text-secondary);
-  --case-accent-1: #157533;
   --case-accent-1-text: var(--case-accent-1);
   --case-accent-2-text: var(--case-accent-2);
-  --case-accent-3-text: var(--case-accent-2);
+  --case-accent-3-text: var(--case-accent-3);
 }

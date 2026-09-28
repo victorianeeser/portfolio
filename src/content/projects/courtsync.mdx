@@ -18,9 +18,10 @@ cover:
 
 import SectionTitle from '../../components/case/SectionTitle.astro';
 import SwipeCards from '../../components/case/SwipeCards.astro';
-import KeyPoints from '../../components/case/KeyPoints.astro';
+import Panel from '../../components/case/Panel.astro';
 import ColorStory from '../../components/case/ColorStory.astro';
 import BrandBoard from '../../components/projects/courtsync/BrandBoard.astro';
+import LogoAnatomy from '../../components/projects/courtsync/LogoAnatomy.astro';
 
 <SectionTitle accent={2}>Overview</SectionTitle>
 
@@ -54,17 +55,9 @@ The brand voice is bold, athletic and modern, made for serious court athletes wh
 
 <BrandBoard />
 
-### Logo
-
-The wordmark "COURTSYNC" combines strength and motion.
-
-<KeyPoints
-  items={[
-    { title: 'Strength', text: 'The bold, geometric typeface represents stability and power, echoing the structure and discipline of athletic training.' },
-    { title: 'Motion', text: 'The italicized “SYNC” adds movement and forward momentum, symbolizing speed, energy and technological innovation.' },
-    { title: 'Mark', text: 'The “CS” abbreviation is a compact logo mark that adapts easily to app icons, the earbuds themselves and apparel.' },
-  ]}
-/>
+<Panel eyebrow="Logo" title="The wordmark combines strength and motion" highlight="motion">
+  <LogoAnatomy />
+</Panel>
 
 ### Color palette
 

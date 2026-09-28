@@ -78,8 +78,9 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
     color: var(--case-text, var(--color-bg));
   }
 
+  /* Titles are large text, so a theme may use a brighter accent here than in body text */
   .panel__highlight {
-    color: var(--accent);
+    color: var(--case-title-accent, var(--accent));
   }
 
   .panel__intro {
