@@ -4,6 +4,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import { site } from '../site.config';
 import { getProjects } from '../lib/projects';
+import headshot from '../assets/headshot.jpg';
 
 const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 6);
 ---
@@ -26,7 +27,14 @@ const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 6
 
   <section class="section container" aria-labelledby="about-title">
     <div class="about-teaser">
-      <ImageSlot label="Portrait (home teaser)" ratio="portrait" />
+      <ImageSlot
+        label="Portrait (home teaser)"
+        src={headshot}
+        alt={`Portrait of ${site.name}`}
+        ratio="portrait"
+        focus="50% 25%"
+        sizes="(min-width: 48rem) 33vw, 100vw"
+      />
       <div class="stack">
         <h2 id="about-title" class="eyebrow">About me</h2>
         <p class="about-teaser__text">

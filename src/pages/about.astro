@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import ImageSlot from '../components/ImageSlot.astro';
 import { site } from '../site.config';
+import headshot from '../assets/headshot.jpg';
 
 // The resume buttons appear once public/resume.pdf exists.
 const hasResume = existsSync(join(process.cwd(), 'public', site.resumePath));
@@ -103,7 +104,15 @@ const tools = [
   </section>
 
   <section class="container bio" aria-label="Bio">
-    <ImageSlot label="Portrait (about page)" ratio="portrait" eager />
+    <ImageSlot
+      label="Portrait (about page)"
+      src={headshot}
+      alt={`Portrait of ${site.name}`}
+      ratio="portrait"
+      focus="50% 25%"
+      sizes="(min-width: 48rem) 33vw, 100vw"
+      eager
+    />
     <div class="prose">
       <p class="lead">
         I'm an interaction designer studying UI/UX at the University of Kansas, graduating in Spring 2027.

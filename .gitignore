@@ -37,3 +37,6 @@ Thumbs.db
 
 # Local Claude settings
 .claude/settings.local.json
+
+# Full-size originals (kept locally, not published)
+originals/
