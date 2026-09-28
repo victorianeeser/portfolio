@@ -27,6 +27,14 @@ import Slide from '../../components/case/Slide.astro';
 import PersonaProfile from '../../components/case/PersonaProfile.astro';
 import PhoneRow from '../../components/case/PhoneRow.astro';
 import AeroIntro from '../../components/projects/courtsync/AeroIntro.astro';
+import ColorPicker from '../../components/case/ColorPicker.astro';
+import BrowserFrame from '../../components/case/BrowserFrame.astro';
+import earbudsBlack from '../../assets/projects/courtsync/earbuds-black.png';
+import earbudsSilver from '../../assets/projects/courtsync/earbuds-silver.png';
+import earbudsWhiteColor from '../../assets/projects/courtsync/earbuds-white.png';
+import earbudsBlue from '../../assets/projects/courtsync/earbuds-blue.png';
+import earbudsGreen from '../../assets/projects/courtsync/earbuds-green.png';
+import launchSite from '../../assets/projects/courtsync/launch-site.jpg';
 import personaRachel from '../../assets/projects/courtsync/persona-rachel.jpg';
 import appHome from '../../assets/projects/courtsync/app-home.jpg';
 import appFocus from '../../assets/projects/courtsync/app-focus.jpg';
@@ -148,7 +156,30 @@ Unlike standard sport headphones that only play music, CourtSync combines intell
   />
 </Panel>
 
-<Panel level={2} eyebrow="Software design" title="The CourtSync app" highlight="app">
+<SectionTitle accent={1}>Product Design</SectionTitle>
+
+SyncPros earbuds were designed with AI tools, with secure ear hooks for athletes whose earbuds fall out mid-workout, and come in five colorways.
+
+<ColorPicker
+  label="Colorways"
+  items={[
+    { name: 'Core Black', description: 'Sleek matte finish with stealth aesthetics', swatch: 'linear-gradient(135deg, #1e2939, #000000)', image: earbudsBlack, alt: 'SyncPros earbuds in Core Black with the CS logo' },
+    { name: 'Sleek Silver', description: 'Brushed metal with premium feel', swatch: 'linear-gradient(135deg, #d4d4d4, #8a8a8a)', image: earbudsSilver, alt: 'SyncPros earbuds in Sleek Silver with the CS logo' },
+    { name: 'Refreshed White', description: 'Classic clean look with glossy finish', swatch: 'linear-gradient(135deg, #ffffff, #f0f0f0)', image: earbudsWhiteColor, alt: 'SyncPros earbuds in Refreshed White with the CS logo' },
+    { name: 'Sync Blue', description: 'Sync blue with premium gloss', swatch: 'linear-gradient(135deg, #bfd5ff, #3d81ff)', image: earbudsBlue, alt: 'SyncPros earbuds in Sync Blue with the CS logo' },
+    { name: 'Pulse Green', description: 'Fresh mint with soft-touch coating', swatch: 'linear-gradient(138deg, #dcffe6, #53ff87)', image: earbudsGreen, alt: 'SyncPros earbuds in Pulse Green with the CS logo' },
+  ]}
+/>
+
+<SectionTitle accent={1}>Software Design</SectionTitle>
+
+### Wireframes
+
+I started on paper, sketching the home screen, earbud settings and the three training modes: Focus, Train and Recover. The notes capture early decisions, like Aero analyzing movement and speaking real-time feedback directly to the athlete, and connecting focus tracks to Spotify or Apple Music.
+
+![Hand-drawn wireframes: home, device connection and settings screens, plus Focus, Train and Recover mode screens with notes](../../assets/projects/courtsync/wireframes.jpg)
+
+<Panel eyebrow="App" title="The CourtSync app" highlight="app">
   <PhoneRow
     items={[
       { image: appHome, alt: 'CourtSync home screen: connected Sync Pros, today’s progress, this week’s sessions and recent sessions', title: 'Home screen', text: 'is an overview of the athlete’s progress, showing today’s progress and logged sessions from the week with improvement.' },
@@ -160,5 +191,15 @@ Unlike standard sport headphones that only play music, CourtSync combines intell
 </Panel>
 
 <AeroIntro />
+
+<SectionTitle accent={1}>Launch Website</SectionTitle>
+
+A responsive landing page that introduces SyncPros, tells the story behind the product, highlights its key features and lets athletes pre-order.
+
+<BrowserFrame
+  image={launchSite}
+  url="courtsync.com"
+  alt="CourtSync launch website: SyncPros hero with a volleyball player, the earbuds, The Complete Training Cycle with focus, perform and recover cards, Meet Aero, action photos, a pre-order section with five colorways, features that redefine training, and the CourtSync footer"
+/>
 
 {/* Next sections are added one at a time, following the Figma slides from the top. */}
