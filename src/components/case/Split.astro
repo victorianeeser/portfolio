@@ -1,15 +1,18 @@
 ---
 // Two columns side by side on desktop, stacked on phones. Pass content in the
 // "left" and "right" slots. `ratio` sets the column widths, e.g. "1fr 2fr".
+// `imageRatio` crops images to a set shape, e.g. "card" (4:3) to shorten a tall photo.
 interface Props {
   ratio?: string;
   align?: 'start' | 'center';
+  imageRatio?: 'card' | 'square' | 'hero';
 }
 
-const { ratio = '1fr 1fr', align = 'start' } = Astro.props;
+const { ratio = '1fr 1fr', align = 'start', imageRatio } = Astro.props;
+const imageStyle = imageRatio ? `; --split-image-ratio: var(--ratio-${imageRatio})` : '';
 ---
 
-<div class="split" style={`--split-cols: ${ratio}; --split-align: ${align}`}>
+<div class="split" style={`--split-cols: ${ratio}; --split-align: ${align}${imageStyle}`}>
   <div><slot name="left" /></div>
   <div class="split__right"><slot name="right" /></div>
 </div>
@@ -30,6 +33,8 @@ const { ratio = '1fr 1fr', align = 'start' } = Astro.props;
   .split :global(img) {
     width: 100%;
     height: auto;
+    aspect-ratio: var(--split-image-ratio, auto);
+    object-fit: cover;
   }
 
   @media (min-width: 48rem) {

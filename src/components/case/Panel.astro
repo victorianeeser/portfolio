@@ -10,9 +10,12 @@ interface Props {
   intro?: string;
   /** 'light' swaps to the theme's light palette, to alternate with dark panels */
   tone?: 'dark' | 'light';
+  /** Heading level: 2 when the panel starts a new case study section, else 3 */
+  level?: 2 | 3;
 }
 
-const { eyebrow, title, highlight, accent = 1, intro, tone = 'dark' } = Astro.props;
+const { eyebrow, title, highlight, accent = 1, intro, tone = 'dark', level = 3 } = Astro.props;
+const Heading = `h${level}` as const;
 
 const [before, after] = highlight && title.includes(highlight) ? title.split(highlight) : [title, undefined];
 ---
@@ -21,9 +24,9 @@ const [before, after] = highlight && title.includes(highlight) ? title.split(hig
   <div class="panel__inner">
     <header class="panel__head">
       {eyebrow && <p class="panel__eyebrow">{eyebrow}</p>}
-      <h3 class="panel__title">
+      <Heading class="panel__title">
         {before}{after !== undefined && <span class="panel__highlight">{highlight}</span>}{after}
-      </h3>
+      </Heading>
       {intro && <p class="panel__intro">{intro}</p>}
     </header>
     <slot />

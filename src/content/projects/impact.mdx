@@ -72,9 +72,8 @@ Performance tracking today relies on satellite GPS units worn on the back of the
 
 The shin guards players already wear don't help either: they absorb sweat and slip, need readjusting during games, and offer no performance feedback.
 
-## Research
-
 <Panel
+  level={2}
   eyebrow="Research"
   title="The Shift in Performance Tracking"
   highlight="Performance"
@@ -191,12 +190,12 @@ I mapped the full journey from sign-up and onboarding through finding a team, pa
 </Panel>
 
 <Panel eyebrow="User testing" title="Real-user feedback" highlight="Real-user" accent={2} tone="light" intro="Tested the IMPACT app with 3 users.">
-  <Split ratio="1fr 2fr" align="center">
+  <Split ratio="1fr 2fr" align="center" imageRatio="card">
     <Image slot="left" src={photoTesting} alt="A participant tapping through the IMPACT prototype on a phone, with a shin guard on the table" />
-    <Fragment slot="right">
+    <div slot="right" class="case-grid-2">
       <Checklist title="Users valued" accent={1} items={['Easy-to-navigate onboarding', 'Consistent use of icons', 'Knowing where they are in the system']} />
       <Checklist title="Could improve on" accent={2} items={['Condensing colors', 'Simplifying animations', 'Primary vs. secondary buttons']} />
-    </Fragment>
+    </div>
   </Split>
 </Panel>
 
@@ -205,8 +204,6 @@ I mapped the full journey from sign-up and onboarding through finding a team, pa
 The core app brings everything together: a dashboard to start sessions, insights with a position heat map and 30-day trends, recovery tracking, and a profile with achievements. Error states cover sensors that stop responding, low battery and incomplete data.
 
 ![Core app screens: dashboard, insights, recovery, profile, settings, live session and error states](../../assets/projects/impact/flow-core-app.jpg)
-
-Live sessions track distance, speed, ball touches and left vs. right foot usage in real time.
 
 ![A player checking a live session on their phone at the edge of a soccer field, with live stats overlaid](../../assets/projects/impact/live-sessions.jpg)
 

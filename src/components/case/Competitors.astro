@@ -33,8 +33,10 @@ const columns = [
       <li class="competitor" data-accent={c.accent ?? 1}>
         <div class="competitor__id">
           {c.image && <Image src={c.image} alt="" class="competitor__image" height={120} />}
-          <h4>{c.name}</h4>
-          <p class="competitor__type">{c.type}</p>
+          <div>
+            <h4>{c.name}</h4>
+            <p class="competitor__type">{c.type}</p>
+          </div>
         </div>
         {columns.map(({ key, label }) => (
           <div class="competitor__col">
@@ -61,27 +63,30 @@ const columns = [
   }
 
   .competitor {
+    --accent: var(--case-accent-1);
     --accent-text: var(--case-accent-1-text);
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-4);
     padding-block: var(--space-6);
     border-top: var(--border-width) solid var(--case-border);
   }
 
-  .competitor[data-accent='2'] { --accent-text: var(--case-accent-2-text); }
-  .competitor[data-accent='3'] { --accent-text: var(--case-accent-3-text); }
+  .competitor[data-accent='2'] { --accent: var(--case-accent-2); --accent-text: var(--case-accent-2-text); }
+  .competitor[data-accent='3'] { --accent: var(--case-accent-3); --accent-text: var(--case-accent-3-text); }
 
+  /* Phones: product image beside the name */
   .competitor__id {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-2);
   }
 
   /* :global because <Image> doesn't receive this component's scoped style marker */
   .competitor__id :global(.competitor__image) {
-    width: auto;
-    height: var(--space-9);
-    margin-bottom: var(--space-3);
+    flex: none;
+    width: var(--space-9);
+    height: var(--space-8);
     object-fit: contain;
   }
 
@@ -90,17 +95,26 @@ const columns = [
     color: var(--accent-text);
   }
 
-  .competitor__label {
-    margin-bottom: var(--space-2);
+  /* Phones: label on the left, bullets on the right */
+  .competitor__col {
+    display: grid;
+    grid-template-columns: var(--competitor-label-width) 1fr;
+    gap: var(--space-3);
     font-size: var(--text-small);
+  }
+
+  .competitor__label {
     font-weight: var(--weight-medium);
     color: var(--case-text);
   }
 
   .competitor__col ul {
-    padding: 0;
-    list-style: none;
-    font-size: var(--text-small);
+    padding-left: var(--space-4);
+    list-style: disc;
+  }
+
+  .competitor__col li::marker {
+    color: var(--accent);
   }
 
   .competitor__col li + li {
@@ -112,11 +126,28 @@ const columns = [
     font-weight: var(--weight-medium);
   }
 
+  /* Desktop: one row per competitor, one column per category */
   @media (min-width: 48rem) {
     .competitor {
       grid-template-columns: 1.2fr repeat(3, 1fr);
       gap: var(--grid-gap);
       align-items: start;
+    }
+
+    .competitor__id {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 0;
+    }
+
+    .competitor__id :global(.competitor__image) {
+      width: auto;
+      height: var(--space-9);
+    }
+
+    .competitor__col {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
     }
   }
 </style>

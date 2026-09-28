@@ -87,6 +87,7 @@
   --icon-tile: 3.5rem;              /* colored square behind an icon */
   --swatch-min: 7.5rem;             /* narrowest color swatch */
   --persona-card-max: 20rem;
+  --competitor-label-width: 6.5rem;  /* category label column on phones */
 
   /* ---------- Motion ---------- */
   --duration-fast: 150ms;
