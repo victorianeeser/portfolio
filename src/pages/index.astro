@@ -53,7 +53,8 @@ const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 6
   }
 
   .hero__statement {
-    max-width: var(--container-narrow);
+    max-width: var(--container-statement);
+    text-wrap: balance;
     margin-top: var(--space-5);
   }
 
