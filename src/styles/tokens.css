@@ -17,6 +17,7 @@
   --color-surface: #f5f5f5;         /* image placeholders, subtle blocks       */
 
   --color-link: var(--color-text);
+  --color-hover: var(--color-text-tertiary); /* links and buttons on hover */
   --color-focus: var(--color-text);
   --color-selection-bg: var(--color-text);
   --color-selection-text: var(--color-bg);
@@ -85,7 +86,7 @@
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --hover-opacity: 0.6;
+  --hover-opacity: 0.6;             /* image fade on hover */
 
   /* ---------- Focus ---------- */
   --focus-ring-width: 2px;

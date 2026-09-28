@@ -125,16 +125,15 @@ const isCurrent = (href: string) => path === href || path.startsWith(href);
     align-items: center;
     min-height: var(--tap-target);
     font-size: var(--text-small);
-    color: var(--color-text-secondary);
+    color: var(--color-text);
   }
 
   .header__nav a[aria-current='page'] {
-    color: var(--color-text);
     text-decoration: underline;
   }
 
   .header__nav a:hover {
-    color: var(--color-text);
+    color: var(--color-hover);
   }
 
   /* Mobile: collapse the nav behind the toggle (only once JS has shown the button) */

@@ -126,21 +126,16 @@ a {
   color: var(--color-link);
   text-decoration-thickness: var(--border-width);
   text-underline-offset: 0.2em;
-  transition: opacity var(--duration-fast) var(--ease-out);
+  transition: color var(--duration-fast) var(--ease-out);
 }
 
 a:hover {
-  opacity: var(--hover-opacity);
+  color: var(--color-hover);
 }
 
-/* Links without underline at rest get one on hover instead of fading */
+/* Links without an underline */
 .link-quiet {
   text-decoration: none;
-}
-
-.link-quiet:hover {
-  opacity: 1;
-  text-decoration: underline;
 }
 
 /* Arrow link, e.g. "More about me →" */
@@ -159,7 +154,7 @@ a:hover {
 }
 
 .link-arrow:hover {
-  opacity: 1;
+  color: var(--color-hover);
 }
 
 .link-arrow:hover::after {
@@ -223,16 +218,26 @@ a:hover {
   font-weight: var(--weight-medium);
   text-decoration: none;
   cursor: pointer;
-  transition: opacity var(--duration-fast) var(--ease-out);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
 }
 
 .button:hover {
-  opacity: var(--hover-opacity);
+  background: var(--color-hover);
+  border-color: var(--color-hover);
+  color: var(--color-bg);
 }
 
 .button--outline {
   background: transparent;
   color: var(--color-text);
+}
+
+.button--outline:hover {
+  background: transparent;
+  color: var(--color-hover);
 }
 
 /* ---------- Tags ---------- */
