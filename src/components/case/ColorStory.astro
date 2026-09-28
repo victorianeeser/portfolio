@@ -102,16 +102,17 @@ const { items, neutrals = [], neutralsText } = Astro.props;
     align-items: center;
   }
 
+  /* Each neutral is its own rounded tile; the border keeps white visible on white */
   .colors__bar {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    overflow: hidden;
-    border: var(--border);
-    border-radius: var(--radius-md);
+    gap: var(--space-4);
   }
 
   .colors__bar > span {
     padding: var(--space-5);
+    border: var(--border);
+    border-radius: var(--radius-md);
     font-weight: var(--weight-medium);
   }
 
