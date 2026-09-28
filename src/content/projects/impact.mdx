@@ -36,6 +36,7 @@ gallery:
 
 import { Image } from 'astro:assets';
 import Panel from '../../components/case/Panel.astro';
+import SectionTitle from '../../components/case/SectionTitle.astro';
 import Insights from '../../components/case/Insights.astro';
 import Competitors from '../../components/case/Competitors.astro';
 import Persona from '../../components/case/Persona.astro';
@@ -59,7 +60,7 @@ import abPerformance from '../../assets/projects/impact/ab-performance.png';
 import dsDataViz from '../../assets/projects/impact/ds-data-viz.png';
 import dsLogos from '../../assets/projects/impact/ds-logos.png';
 
-## Overview
+<SectionTitle accent={1}>Overview</SectionTitle>
 
 IMPACT is a smart shin guard and companion app for the 2026 FIFA World Cup. Sensors in the shin guard measure impact, workload and recovery right at the leg, and the app turns that data into insights players can use on practice and match day.
 
@@ -67,7 +68,7 @@ I designed IMPACT as a solo project for IXD 412, Interaction Design 3, at the Un
 
 ![Three core features, each paired with an app card over match photography: Impact Tracking with an overall performance score, Injury Risk Alerts, and Recovery Integration with a recovery score](../../assets/projects/impact/features.jpg)
 
-## Problem
+<SectionTitle accent={2}>Problem</SectionTitle>
 
 Performance tracking today relies on satellite GPS units worn on the back of the jersey or in a chest strap. They only work outdoors, capture movement rather than technical performance, and players find chest straps restrictive.
 
@@ -90,7 +91,7 @@ The shin guards players already wear don't help either: they absorb sweat and sl
   />
 </Panel>
 
-### Field research
+<SectionTitle level={3} accent={3}>Field research</SectionTitle>
 
 I observed 35 athletes at a KU Women's Soccer practice focused on footwork, passing, shooting and using both legs. Shin guards were rarely adjusted in practice, but more often in high-intensity games. I also ran a user study where architecture and design students played warmups, drills and a 7v7 game, to understand player movement, decision-making and physical demands.
 
@@ -166,9 +167,7 @@ Players value lightweight, low-profile gear, equipment that doesn't distract dur
   />
 </Panel>
 
-## Process
-
-### User flows
+<SectionTitle accent={3}>Process</SectionTitle>
 
 I mapped the full journey from sign-up and onboarding through finding a team, pairing the shin guards and granting permissions, including error states such as a device not being found.
 
@@ -200,7 +199,7 @@ I mapped the full journey from sign-up and onboarding through finding a team, pa
   </Split>
 </Panel>
 
-## Final design
+<SectionTitle accent={1}>Final design</SectionTitle>
 
 The core app brings everything together: a dashboard to start sessions, insights with a position heat map and 30-day trends, recovery tracking, and a profile with achievements. Error states cover sensors that stop responding, low battery and incomplete data.
 

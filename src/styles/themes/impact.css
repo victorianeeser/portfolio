@@ -31,6 +31,13 @@
   --case-accent-2-text: var(--case-accent-2);
   --case-accent-3-text: #6b87ff;
 
+  /* Section headings on white. Bright green is unreadable on white (1.6:1),
+     so green headings use the same darker green as light panels. Pink and
+     blue pass AA for large text as-is. */
+  --case-heading-1: #00794a;
+  --case-heading-2: var(--case-accent-2);
+  --case-heading-3: var(--case-accent-3);
+
   /* Soft color glow behind panels, like the presentation boards */
   --case-glow:
     radial-gradient(60% 80% at 100% 0%, rgb(26 74 255 / 0.28), transparent 70%),

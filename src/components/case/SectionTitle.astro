@@ -1,0 +1,27 @@
+---
+// A case study section heading in the project's font and an accent color,
+// sized to match panel titles. Colors come from the theme's --case-heading-* values,
+// which are chosen to stay readable on white.
+interface Props {
+  level?: 2 | 3;
+  accent?: 1 | 2 | 3;
+}
+
+const { level = 2, accent = 1 } = Astro.props;
+const Tag = `h${level}` as const;
+---
+
+<Tag class="section-title" data-accent={accent}><slot /></Tag>
+
+<style>
+  .section-title {
+    --heading-color: var(--case-heading-1, var(--color-text));
+    font-family: var(--case-font, var(--font-sans));
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    color: var(--heading-color);
+  }
+
+  .section-title[data-accent='2'] { --heading-color: var(--case-heading-2, var(--color-text)); }
+  .section-title[data-accent='3'] { --heading-color: var(--case-heading-3, var(--color-text)); }
+</style>
