@@ -53,43 +53,6 @@ const involvement = [
   { title: 'Delta Gamma, Beta Kappa Chapter', meta: 'Member · 2023 – present' },
 ];
 
-const skills = [
-  {
-    group: 'UI/UX & product design',
-    items: [
-      'UI Design',
-      'Interaction Design',
-      'User Research',
-      'Information Architecture',
-      'User Flows',
-      'Wireframing',
-      'Prototyping',
-      'Usability Testing',
-      'Design Systems',
-      'Responsive Design',
-    ],
-  },
-  {
-    group: 'Foundations',
-    items: ['Adaptability', 'Time Management', 'Organization', 'Collaboration', 'Communication'],
-  },
-];
-
-const tools = [
-  {
-    group: 'Design',
-    items: ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'Procreate', 'Rive', 'TouchDesigner'],
-  },
-  {
-    group: 'Code & web',
-    items: ['GitHub', 'Visual Studio Code', 'Framer', 'Shopify', 'Squarespace', 'Wix'],
-  },
-  {
-    group: 'AI',
-    items: ['Claude', 'Claude Code', 'ChatGPT', 'Figma Make', 'Google Stitch', 'Google AI Studio'],
-  },
-];
-
 // Right-hand column blocks
 const sideBlocks = [
   { id: 'education', heading: 'Education', entries: education },
@@ -184,30 +147,6 @@ const sideBlocks = [
     </div>
   </section>
 
-  <section class="section container columns columns--even">
-    {
-      [
-        { id: 'skills', heading: 'Skills', groups: skills },
-        { id: 'tools', heading: 'Tools', groups: tools },
-      ].map(({ id, heading, groups }) => (
-        <div class="block">
-          <h2 id={`${id}-title`} class="eyebrow">
-            {heading}
-          </h2>
-          {groups.map(({ group, items }) => (
-            <div class="group">
-              <h3 class="group__title">{group}</h3>
-              <ul class="tag-list">
-                {items.map((item) => (
-                  <li class="tag">{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      ))
-    }
-  </section>
 </BaseLayout>
 
 <style>
@@ -267,18 +206,6 @@ const sideBlocks = [
     list-style: disc;
   }
 
-  .group + .group {
-    margin-top: var(--space-5);
-  }
-
-  .group__title {
-    margin-bottom: var(--space-3);
-    font-size: var(--text-small);
-    font-weight: var(--weight-medium);
-    letter-spacing: normal;
-    color: var(--color-text-secondary);
-  }
-
   @media (min-width: 48rem) {
     .bio {
       grid-template-columns: 1fr 2fr;
@@ -287,10 +214,6 @@ const sideBlocks = [
     .columns {
       grid-template-columns: 3fr 2fr;
       gap: var(--space-9);
-    }
-
-    .columns--even {
-      grid-template-columns: 1fr 1fr;
     }
   }
 </style>
