@@ -16,4 +16,22 @@ cover:
   alt: "Three CourtSync app screens in black iPhone mockups over a sports court"
 ---
 
-{/* Sections are added one at a time, following the Figma slides from the top. */}
+import SectionTitle from '../../components/case/SectionTitle.astro';
+import SwipeCards from '../../components/case/SwipeCards.astro';
+
+<SectionTitle accent={1}>Overview</SectionTitle>
+
+The brief: conceptualize, design and launch a new headphone product. Beyond the user experience, that meant crafting a brand narrative, designing the physical product with AI tools, and building a launch website that tells a story and builds anticipation, simulating a real-world launch where visual design, branding and storytelling capture the market's attention.
+
+<SwipeCards
+  label="Deliverables"
+  items={[
+    { title: 'Branding & Strategy', text: 'A complete brand identity with a clear reason to exist.', items: ['Company name and logo', 'Company backstory', 'User persona', 'Value proposition'] },
+    { title: 'Product Design', text: 'An earbud concept brought to life with AI tools.', items: ['Earbud concept', '3–5 AI-generated renderings', 'Lifestyle shots in context'] },
+    { title: 'Software Design', text: 'A simple companion app that reflects the brand.', items: ['2–3 key app screens', 'Settings and controls'] },
+    { title: 'Launch Website', text: 'A responsive landing page that builds anticipation.', items: ['Product story', 'Key features', 'Pre-order'] },
+    { title: 'Launch Talk', text: 'A scripted presentation that simulates a live launch event.', items: ['Brand and product', 'App and website', 'Launch slides'] },
+  ]}
+/>
+
+{/* Next sections are added one at a time, following the Figma slides from the top. */}

@@ -1,0 +1,208 @@
+---
+// A row of dark cards people can swipe or scroll through, with previous/next buttons.
+// Works without JavaScript (native horizontal scroll with snapping); the script only
+// wires up the buttons and keeps their disabled state in sync.
+interface Card {
+  title: string;
+  text: string;
+  /** Short list under the text, e.g. the items in a deliverable */
+  items?: string[];
+}
+
+interface Props {
+  label: string; // heading above the cards, e.g. "Deliverables"
+  items: Card[];
+  accent?: 1 | 2 | 3;
+}
+
+const { label, items, accent = 1 } = Astro.props;
+const id = `swipe-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+---
+
+<section class="swipe case-wide" data-accent={accent} aria-labelledby={`${id}-title`}>
+  <div class="swipe__head">
+    <h3 id={`${id}-title`} class="swipe__label">{label}</h3>
+    <div class="swipe__controls" hidden>
+      <button type="button" class="swipe__btn" data-dir="-1" aria-controls={id} aria-label="Previous cards">←</button>
+      <button type="button" class="swipe__btn" data-dir="1" aria-controls={id} aria-label="Next cards">→</button>
+    </div>
+  </div>
+
+  <ol id={id} class="swipe__track" role="list" tabindex="0" aria-label={`${label}, scrollable`}>
+    {
+      items.map(({ title, text, items: list }, i) => (
+        <li class="swipe__card" data-tone="dark">
+          <span class="swipe__num" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h4>{title}</h4>
+          <p>{text}</p>
+          {list && (
+            <ul class="swipe__list">
+              {list.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.swipe').forEach((swipe) => {
+    const track = swipe.querySelector<HTMLElement>('.swipe__track')!;
+    const controls = swipe.querySelector<HTMLElement>('.swipe__controls')!;
+    const [prev, next] = swipe.querySelectorAll<HTMLButtonElement>('.swipe__btn');
+    controls.hidden = false;
+
+    const step = () => {
+      const card = track.querySelector<HTMLElement>('.swipe__card');
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return card ? card.offsetWidth + gap : track.clientWidth;
+    };
+    const sync = () => {
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+    };
+
+    [prev, next].forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        track.scrollBy({ left: Number(btn.dataset.dir) * step(), behavior: reduce ? 'auto' : 'smooth' });
+      }),
+    );
+    track.addEventListener('scroll', sync, { passive: true });
+    addEventListener('resize', sync);
+    sync();
+  });
+</script>
+
+<style>
+  .swipe {
+    --accent: var(--case-accent-1);
+    --card-width: 80%;
+  }
+
+  .swipe[data-accent='2'] { --accent: var(--case-accent-2-text); }
+  .swipe[data-accent='3'] { --accent: var(--case-accent-3-text); }
+
+  .swipe__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .swipe__label {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .swipe__controls {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .swipe__controls[hidden] {
+    display: none;
+  }
+
+  .swipe__btn {
+    width: var(--tap-target);
+    height: var(--tap-target);
+    border: var(--border-width) solid var(--color-text);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: var(--text-body);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .swipe__btn:hover:not(:disabled) {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .swipe__btn:disabled {
+    border-color: var(--color-border);
+    color: var(--color-text-tertiary);
+    cursor: default;
+  }
+
+  .swipe__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--card-width);
+    gap: var(--space-4);
+    padding: 0 0 var(--space-3);
+    margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    list-style: none;
+  }
+
+  .swipe__track:focus-visible {
+    outline-offset: var(--space-1);
+  }
+
+  .swipe__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-height: 100%;
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--case-bg);
+    color: var(--case-muted);
+    font-family: var(--case-font, var(--font-sans));
+    scroll-snap-align: start;
+  }
+
+  .swipe__num {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    color: var(--accent);
+  }
+
+  .swipe__card h4 {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-heading);
+    color: var(--case-text);
+  }
+
+  .swipe__list {
+    margin-top: auto;
+    padding-top: var(--space-4);
+    padding-left: var(--space-4);
+    border-top: var(--border-width) solid var(--case-border);
+    font-size: var(--text-small);
+    list-style: disc;
+  }
+
+  .swipe__list li + li {
+    margin-top: var(--space-1);
+  }
+
+  .swipe__list li::marker {
+    color: var(--accent);
+  }
+
+  @media (min-width: 48rem) {
+    .swipe {
+      --card-width: calc((100% - var(--space-4) * 2) / 3.25);
+    }
+  }
+</style>
