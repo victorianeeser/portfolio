@@ -26,7 +26,8 @@ const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     position: sticky;
     top: var(--header-height);
     display: flex;
-    align-items: center;
+    /* Content starts at the same height on every slide, so titles line up as they stack */
+    align-items: flex-start;
     min-height: calc(100svh - var(--header-height));
     padding-block: var(--space-8);
     background: var(--slide-bg);
