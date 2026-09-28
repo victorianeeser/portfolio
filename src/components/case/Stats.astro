@@ -1,0 +1,87 @@
+---
+// Big-number results, e.g. A/B test preferences, each with an optional supporting image.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Stat {
+  value: string; // e.g. "75%"
+  label: string; // e.g. "of users preferred A"
+  detail?: string; // what was tested
+  accent?: 1 | 2 | 3;
+  image?: ImageMetadata;
+  imageAlt?: string;
+}
+
+interface Props {
+  items: Stat[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="stats" role="list">
+  {
+    items.map(({ value, label, detail, accent = 1, image, imageAlt = '' }) => (
+      <li class="stat" data-accent={accent}>
+        <p class="stat__line">
+          <span class="stat__value">{value}</span> <span class="stat__label">{label}</span>
+        </p>
+        {detail && <p class="stat__detail">{detail}</p>}
+        {image && <Image src={image} alt={imageAlt} class="stat__image" />}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .stats {
+    display: grid;
+    gap: var(--space-8) var(--grid-gap);
+    padding: 0;
+    list-style: none;
+  }
+
+  .stat {
+    --accent: var(--case-accent-1-text);
+  }
+
+  .stat[data-accent='2'] { --accent: var(--case-accent-2-text); }
+  .stat[data-accent='3'] { --accent: var(--case-accent-3-text); }
+
+  .stat__line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .stat__value {
+    font-size: var(--text-display);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-tight);
+    color: var(--accent);
+  }
+
+  .stat__label {
+    font-size: var(--text-h3);
+    color: var(--case-text);
+  }
+
+  .stat__detail {
+    margin-top: var(--space-2);
+    font-size: var(--text-small);
+  }
+
+  /* :global because <Image> doesn't receive this component's scoped style marker */
+  .stat :global(.stat__image) {
+    width: 100%;
+    height: auto;
+    margin-top: var(--space-5);
+  }
+
+  @media (min-width: 48rem) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

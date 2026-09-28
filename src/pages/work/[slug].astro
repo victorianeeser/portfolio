@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ImageSlot from '../../components/ImageSlot.astro';
 import { getProjects } from '../../lib/projects';
+import '../../styles/themes/impact.css';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -14,7 +15,7 @@ export async function getStaticPaths() {
 }
 
 const { project, next } = Astro.props;
-const { title, summary, role, timeline, tools, team, tags, hero, gallery, links } = project.data;
+const { title, summary, role, timeline, tools, team, tags, hero, gallery, links, theme } = project.data;
 const { Content } = await render(project);
 
 const meta = [
@@ -26,7 +27,7 @@ const meta = [
 ---
 
 <BaseLayout title={title} description={summary}>
-  <article>
+  <article class={theme ? `theme-${theme}` : undefined}>
     <header class="container case-head">
       <div class="page-head">
         <ul class="tag-list" aria-label="Tags">
@@ -140,8 +141,14 @@ const meta = [
     grid-column: content;
   }
 
+  /* Project-themed panels run edge to edge */
+  .case-body > :global(.panel) {
+    grid-column: full;
+  }
+
   .case-body > :global(p:has(> img)),
-  .case-body > :global(.image-slot) {
+  .case-body > :global(.image-slot),
+  .case-body > :global(.case-wide) {
     grid-column: wide;
     margin-block: var(--space-7);
   }

@@ -1,0 +1,140 @@
+---
+// User persona: portrait card, profile facts, priorities, challenges and quotes.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  image: ImageMetadata;
+  imageAlt: string;
+  profile: { label: string; value: string }[];
+  priorities: string[];
+  challenges: string[];
+  quotes: { text: string; accent?: 1 | 2 | 3 }[];
+}
+
+const { image, imageAlt, profile, priorities, challenges, quotes } = Astro.props;
+---
+
+<div class="persona">
+  <Image src={image} alt={imageAlt} class="persona__card" widths={[400, image.width]} sizes="(min-width: 48rem) 25vw, 80vw" />
+
+  <div class="persona__facts">
+    <div>
+      <h4>Player profile</h4>
+      <dl class="persona__profile">
+        {
+          profile.map(({ label, value }) => (
+            <div>
+              <dt>{label}:</dt> <dd>{value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+    <div>
+      <h4>Performance priorities</h4>
+      <ul>{priorities.map((p) => <li>{p}</li>)}</ul>
+    </div>
+    <div>
+      <h4>On-field challenges</h4>
+      <ul>{challenges.map((c) => <li>{c}</li>)}</ul>
+    </div>
+  </div>
+
+  <div class="persona__quotes">
+    {
+      quotes.map(({ text, accent = 1 }) => (
+        <blockquote data-accent={accent}>
+          <p>{text}</p>
+        </blockquote>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .persona {
+    display: grid;
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  /* :global because <Image> doesn't receive this component's scoped style marker */
+  .persona :global(.persona__card) {
+    width: 100%;
+    max-width: var(--persona-card-max);
+    height: auto;
+  }
+
+  .persona__facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    font-size: var(--text-small);
+  }
+
+  .persona__facts h4 {
+    margin-bottom: var(--space-3);
+  }
+
+  .persona__profile div + div,
+  .persona__facts li + li {
+    margin-top: var(--space-1);
+  }
+
+  .persona__profile dt {
+    display: inline;
+    color: var(--case-accent-1-text);
+    font-weight: var(--weight-medium);
+  }
+
+  .persona__profile dd {
+    display: inline;
+    margin: 0;
+  }
+
+  .persona__facts ul {
+    padding-left: var(--space-5);
+  }
+
+  .persona__facts li::marker {
+    color: var(--case-accent-1);
+  }
+
+  .persona__quotes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  blockquote {
+    --accent: var(--case-accent-1);
+    position: relative;
+    padding: var(--space-7) var(--space-6) var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--case-surface);
+    color: var(--case-text);
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+  }
+
+  blockquote[data-accent='2'] { --accent: var(--case-accent-2); }
+  blockquote[data-accent='3'] { --accent: var(--case-accent-3); }
+
+  blockquote::before {
+    content: '“';
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-6);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  @media (min-width: 48rem) {
+    .persona {
+      grid-template-columns: 1fr 1.2fr 1.3fr;
+    }
+  }
+</style>

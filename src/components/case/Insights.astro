@@ -1,0 +1,87 @@
+---
+// A grid of insight cards with a colored icon, a two-part title and a short explanation.
+import Icon, { type IconName } from './Icon.astro';
+
+interface Insight {
+  icon: IconName;
+  accent?: 1 | 2 | 3;
+  /** First line of the title, e.g. "Leg Placement" */
+  title: string;
+  /** Colored second line, e.g. "= Better Data" */
+  subtitle?: string;
+  text: string;
+}
+
+interface Props {
+  items: Insight[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="insights" role="list">
+  {
+    items.map(({ icon, accent = 1, title, subtitle, text }) => (
+      <li class="insight" data-accent={accent}>
+        <span class="insight__icon">
+          <Icon name={icon} />
+        </span>
+        <h4 class="insight__title">
+          {title}
+          {subtitle && <span class="insight__subtitle">{subtitle}</span>}
+        </h4>
+        <p>{text}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .insights {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+    padding: 0;
+    list-style: none;
+  }
+
+  .insight {
+    --accent: var(--case-accent-1);
+    --accent-text: var(--case-accent-1-text);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3) var(--space-5);
+    align-items: center;
+  }
+
+  .insight[data-accent='2'] { --accent: var(--case-accent-2); --accent-text: var(--case-accent-2-text); }
+  .insight[data-accent='3'] { --accent: var(--case-accent-3); --accent-text: var(--case-accent-3-text); }
+
+  .insight__icon {
+    display: grid;
+    place-items: center;
+    width: var(--icon-tile);
+    height: var(--icon-tile);
+    border-radius: var(--radius-md);
+    background: var(--accent);
+    color: var(--case-bg);
+  }
+
+  .insight__title {
+    line-height: var(--leading-heading);
+  }
+
+  .insight__subtitle {
+    display: block;
+    color: var(--accent-text);
+  }
+
+  .insight p {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 48rem) {
+    .insights {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,36 @@
+/*
+ * IMPACT project theme, applied to case study panels via `theme: impact`.
+ * Values come from the IMPACT design system in Figma.
+ *
+ * Accent slots used by the case study components:
+ *   1 = green (secondary action)  2 = pink (error / risk)  3 = blue (primary action)
+ * Blue is too dark for small text on black (3.5:1), so text uses a lighter tint.
+ */
+@import '@fontsource/instrument-sans/400.css';
+@import '@fontsource/instrument-sans/500.css';
+@import '@fontsource/instrument-sans/600.css';
+@import '@fontsource/instrument-sans/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+
+.theme-impact {
+  --case-font: 'Instrument Sans', var(--font-sans);
+  --case-bg: #000000;
+  --case-surface: #1a1a1a;
+  --case-surface-2: #262626;
+  --case-border: #262626;
+  --case-text: #ffffff;
+  --case-muted: #a3a3a3;
+
+  --case-accent-1: #00e786;
+  --case-accent-2: #ff10aa;
+  --case-accent-3: #1a4aff;
+  --case-accent-1-text: var(--case-accent-1);
+  --case-accent-2-text: var(--case-accent-2);
+  --case-accent-3-text: #6b87ff;
+
+  /* Soft color glow behind panels, like the presentation boards */
+  --case-glow:
+    radial-gradient(60% 80% at 100% 0%, rgb(26 74 255 / 0.28), transparent 70%),
+    radial-gradient(50% 70% at 0% 100%, rgb(0 231 134 / 0.18), transparent 70%);
+}

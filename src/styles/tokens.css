@@ -82,6 +82,12 @@
   --ratio-portrait: 4 / 5;
   --ratio-square: 1 / 1;
 
+  /* ---------- Case study components ---------- */
+  --icon-size: 1.5rem;
+  --icon-tile: 3.5rem;              /* colored square behind an icon */
+  --swatch-min: 7.5rem;             /* narrowest color swatch */
+  --persona-card-max: 20rem;
+
   /* ---------- Motion ---------- */
   --duration-fast: 150ms;
   --duration-base: 250ms;

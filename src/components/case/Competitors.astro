@@ -1,0 +1,122 @@
+---
+// Competitive analysis: one row per competitor with strengths, weaknesses and takeaways.
+// Start a list item with "!" to highlight it in the row's accent color.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Competitor {
+  name: string;
+  type: string; // e.g. "Direct competitor"
+  image?: ImageMetadata;
+  accent?: 1 | 2 | 3;
+  strengths: string[];
+  weaknesses: string[];
+  takeaways: string[];
+}
+
+interface Props {
+  items: Competitor[];
+}
+
+const { items } = Astro.props;
+
+const columns = [
+  { key: 'strengths', label: 'Strengths' },
+  { key: 'weaknesses', label: 'Weaknesses' },
+  { key: 'takeaways', label: 'Key takeaways' },
+] as const;
+---
+
+<ul class="competitors" role="list">
+  {
+    items.map((c) => (
+      <li class="competitor" data-accent={c.accent ?? 1}>
+        <div class="competitor__id">
+          {c.image && <Image src={c.image} alt="" class="competitor__image" height={120} />}
+          <h4>{c.name}</h4>
+          <p class="competitor__type">{c.type}</p>
+        </div>
+        {columns.map(({ key, label }) => (
+          <div class="competitor__col">
+            <p class="competitor__label">{label}</p>
+            <ul role="list">
+              {c[key].map((item) => {
+                const highlighted = item.startsWith('!');
+                return <li class:list={[highlighted && 'is-highlighted']}>{highlighted ? item.slice(1) : item}</li>;
+              })}
+            </ul>
+          </div>
+        ))}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .competitors {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    list-style: none;
+  }
+
+  .competitor {
+    --accent-text: var(--case-accent-1-text);
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-top: var(--border-width) solid var(--case-border);
+  }
+
+  .competitor[data-accent='2'] { --accent-text: var(--case-accent-2-text); }
+  .competitor[data-accent='3'] { --accent-text: var(--case-accent-3-text); }
+
+  .competitor__id {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  /* :global because <Image> doesn't receive this component's scoped style marker */
+  .competitor__id :global(.competitor__image) {
+    width: auto;
+    height: var(--space-9);
+    margin-bottom: var(--space-3);
+    object-fit: contain;
+  }
+
+  .competitor__type {
+    font-size: var(--text-small);
+    color: var(--accent-text);
+  }
+
+  .competitor__label {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--case-text);
+  }
+
+  .competitor__col ul {
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+  }
+
+  .competitor__col li + li {
+    margin-top: var(--space-1);
+  }
+
+  .is-highlighted {
+    color: var(--accent-text);
+    font-weight: var(--weight-medium);
+  }
+
+  @media (min-width: 48rem) {
+    .competitor {
+      grid-template-columns: 1.2fr repeat(3, 1fr);
+      gap: var(--grid-gap);
+      align-items: start;
+    }
+  }
+</style>

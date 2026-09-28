@@ -1,0 +1,40 @@
+---
+// Two columns side by side on desktop, stacked on phones. Pass content in the
+// "left" and "right" slots. `ratio` sets the column widths, e.g. "1fr 2fr".
+interface Props {
+  ratio?: string;
+  align?: 'start' | 'center';
+}
+
+const { ratio = '1fr 1fr', align = 'start' } = Astro.props;
+---
+
+<div class="split" style={`--split-cols: ${ratio}; --split-align: ${align}`}>
+  <div><slot name="left" /></div>
+  <div class="split__right"><slot name="right" /></div>
+</div>
+
+<style>
+  .split {
+    display: grid;
+    gap: var(--grid-gap);
+    align-items: var(--split-align);
+  }
+
+  .split__right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .split :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 48rem) {
+    .split {
+      grid-template-columns: var(--split-cols);
+    }
+  }
+</style>

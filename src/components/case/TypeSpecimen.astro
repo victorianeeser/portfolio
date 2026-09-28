@@ -1,0 +1,54 @@
+---
+// Typography specimen: font name, a sample line and the weights used.
+interface Props {
+  family: string;
+  role: string; // e.g. "Headings and body"
+  sample?: string;
+  weights: { name: string; value: number }[];
+}
+
+const { family, role, sample = 'Measure Every Moment', weights } = Astro.props;
+---
+
+<div class="specimen" style={`--specimen-font: '${family}', var(--case-font)`}>
+  <p class="specimen__role">{role}</p>
+  <p class="specimen__family">{family}</p>
+  <p class="specimen__sample">{sample}</p>
+  <ul class="specimen__weights" role="list">
+    {weights.map(({ name, value }) => <li style={`font-weight: ${value}`}>{name} {value}</li>)}
+  </ul>
+</div>
+
+<style>
+  .specimen {
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--case-surface);
+    font-family: var(--specimen-font);
+  }
+
+  .specimen__role {
+    font-size: var(--text-small);
+  }
+
+  .specimen__family {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    color: var(--case-text);
+  }
+
+  .specimen__sample {
+    margin-block: var(--space-4);
+    font-size: var(--text-h3);
+    color: var(--case-text);
+  }
+
+  .specimen__weights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+  }
+</style>

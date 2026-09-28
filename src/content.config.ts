@@ -6,8 +6,9 @@ import { z } from 'astro/zod';
 export const TAGS = ['UI', 'UX', 'Front-end', 'Interactive', 'Motion', 'Game'] as const;
 
 const projects = defineCollection({
-  // One Markdown file per project in src/content/projects/. The file name becomes the URL slug.
-  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  // One Markdown (.md) or MDX (.mdx) file per project in src/content/projects/.
+  // The file name becomes the URL slug. Use .mdx to add custom sections (src/components/case/).
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
   schema: ({ image }) => {
     // A slot for one image or video. Leave `src` and `video` empty to show a labeled gray
     // placeholder. `src` is a path relative to the Markdown file, e.g.
@@ -34,6 +35,7 @@ const projects = defineCollection({
       featured: z.boolean().default(false), // show on the home page
       draft: z.boolean().default(false), // hide from the site entirely
       figma: z.string().url().optional(), // link to the Figma file the visuals come from
+      theme: z.string().optional(), // project theme for custom sections, see src/styles/themes/
       links: z.array(z.object({ label: z.string(), url: z.string().url() })).default([]),
       cover: media, // card thumbnail
       hero: media, // case study hero

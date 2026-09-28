@@ -1,0 +1,43 @@
+---
+// A short titled list with an accent-colored title and markers, e.g. "Users valued".
+interface Props {
+  title: string;
+  items: string[];
+  accent?: 1 | 2 | 3;
+}
+
+const { title, items, accent = 1 } = Astro.props;
+---
+
+<div class="checklist" data-accent={accent}>
+  <h4>{title}</h4>
+  <ul>{items.map((item) => <li>{item}</li>)}</ul>
+</div>
+
+<style>
+  .checklist {
+    --accent: var(--case-accent-1);
+    --accent-text: var(--case-accent-1-text);
+  }
+
+  .checklist[data-accent='2'] { --accent: var(--case-accent-2); --accent-text: var(--case-accent-2-text); }
+  .checklist[data-accent='3'] { --accent: var(--case-accent-3); --accent-text: var(--case-accent-3-text); }
+
+  /* Two classes deep so it beats the panel's default heading color */
+  .checklist h4 {
+    margin-bottom: var(--space-3);
+    color: var(--accent-text);
+  }
+
+  ul {
+    padding-left: var(--space-5);
+  }
+
+  li + li {
+    margin-top: var(--space-1);
+  }
+
+  li::marker {
+    color: var(--accent);
+  }
+</style>
