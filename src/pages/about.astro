@@ -56,43 +56,6 @@ const involvement = [
   { title: 'Member', org: 'KU Prototype Design', dates: 'Aug 2023 – present' },
   { title: 'Member', org: 'Delta Gamma Sorority, Beta Kappa Chapter', dates: 'Aug 2023 – present' },
 ];
-
-const skills = [
-  {
-    group: 'UI/UX & product design',
-    items: [
-      'UI Design',
-      'Interaction Design',
-      'User Research',
-      'Information Architecture',
-      'User Flows',
-      'Wireframing',
-      'Prototyping',
-      'Usability Testing',
-      'Design Systems',
-      'Responsive Design',
-    ],
-  },
-  {
-    group: 'Foundations',
-    items: ['Adaptability', 'Time Management', 'Organization', 'Collaboration', 'Communication'],
-  },
-];
-
-const tools = [
-  {
-    group: 'Design',
-    items: ['Figma', 'Illustrator', 'Photoshop', 'InDesign', 'Procreate', 'Rive', 'TouchDesigner'],
-  },
-  {
-    group: 'Code & web',
-    items: ['GitHub', 'Visual Studio Code', 'Framer', 'Shopify', 'Squarespace', 'Wix'],
-  },
-  {
-    group: 'AI',
-    items: ['Claude', 'Claude Code', 'ChatGPT', 'Figma Make', 'Google Stitch', 'Google AI Studio'],
-  },
-];
 ---
 
 <BaseLayout
@@ -213,33 +176,6 @@ const tools = [
     </ol>
   </section>
 
-  <section class="section container row" aria-labelledby="skills-title">
-    <h2 id="skills-title" class="eyebrow">Skills</h2>
-    <div class="groups">
-      {
-        skills.map(({ group, items }) => (
-          <div class="group">
-            <h3>{group}</h3>
-            <ul class="tag-list">{items.map((s) => <li class="tag">{s}</li>)}</ul>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="section container row" aria-labelledby="tools-title">
-    <h2 id="tools-title" class="eyebrow">Tools</h2>
-    <div class="groups">
-      {
-        tools.map(({ group, items }) => (
-          <div class="group">
-            <h3>{group}</h3>
-            <ul class="tag-list">{items.map((t) => <li class="tag">{t}</li>)}</ul>
-          </div>
-        ))
-      }
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
@@ -298,28 +234,19 @@ const tools = [
     list-style: disc;
   }
 
-  .groups {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-  }
-
-  .group h3 {
-    margin-bottom: var(--space-3);
-  }
-
   @media (min-width: 48rem) {
     .bio {
       grid-template-columns: 1fr 2fr;
     }
 
+    /* Narrower label and date columns leave more room for the content */
     .row {
-      grid-template-columns: 1fr 3fr;
+      grid-template-columns: 1fr 4fr;
       gap: var(--grid-gap);
     }
 
     .timeline__item {
-      grid-template-columns: 1fr 3fr;
+      grid-template-columns: 1fr 4fr;
       gap: var(--grid-gap);
     }
   }
