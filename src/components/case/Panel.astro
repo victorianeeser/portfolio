@@ -8,14 +8,16 @@ interface Props {
   highlight?: string;
   accent?: 1 | 2 | 3;
   intro?: string;
+  /** 'light' swaps to the theme's light palette, to alternate with dark panels */
+  tone?: 'dark' | 'light';
 }
 
-const { eyebrow, title, highlight, accent = 1, intro } = Astro.props;
+const { eyebrow, title, highlight, accent = 1, intro, tone = 'dark' } = Astro.props;
 
 const [before, after] = highlight && title.includes(highlight) ? title.split(highlight) : [title, undefined];
 ---
 
-<section class="panel" data-accent={accent}>
+<section class="panel" data-accent={accent} data-tone={tone}>
   <div class="panel__inner">
     <header class="panel__head">
       {eyebrow && <p class="panel__eyebrow">{eyebrow}</p>}
