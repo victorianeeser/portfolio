@@ -1,0 +1,236 @@
+---
+// An annotated product shot: the product in the center with callout lines pointing to
+// its features. Desktop places everything on a stage using percentages taken from the
+// design; phones show the product first and the callouts as a list underneath.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Callout {
+  title: string;
+  text: string;
+  side: 'left' | 'right'; // which side of the product the text sits on
+  y: number; // line height on the stage, % from the top
+  from: number; // line start, % from the left
+  to: number; // line end, % from the left (the dot sits on the product end)
+}
+
+interface Props {
+  image: ImageMetadata;
+  imageAlt: string;
+  /** Product position on the stage, % of its width/height */
+  imageBox: { left: number; top: number; width: number };
+  wordmark?: ImageMetadata;
+  wordmarkAlt?: string;
+  wordmarkBox?: { left: number; top: number; width: number };
+  /** Stage proportions, e.g. "1920 / 820" */
+  ratio: string;
+  callouts: Callout[];
+}
+
+const { image, imageAlt, imageBox, wordmark, wordmarkAlt = '', wordmarkBox, ratio, callouts } = Astro.props;
+const pct = (n: number) => `${n}%`;
+---
+
+<figure class="callouts case-wide" style={`--stage-ratio: ${ratio}`}>
+  <div class="callouts__stage">
+    {
+      wordmark && wordmarkBox && (
+        <Image
+          src={wordmark}
+          alt={wordmarkAlt}
+          class="callouts__wordmark"
+          style={`--left: ${pct(wordmarkBox.left)}; --top: ${pct(wordmarkBox.top)}; --width: ${pct(wordmarkBox.width)}`}
+        />
+      )
+    }
+    <Image
+      src={image}
+      alt={imageAlt}
+      class="callouts__product"
+      style={`--left: ${pct(imageBox.left)}; --top: ${pct(imageBox.top)}; --width: ${pct(imageBox.width)}`}
+      widths={[480, 800, image.width]}
+      sizes="(min-width: 48rem) 36vw, 90vw"
+    />
+    {
+      callouts.map(({ side, y, from, to }) => (
+        <span
+          class="callouts__line"
+          data-side={side}
+          style={`top: ${pct(y)}; left: ${pct(from)}; width: ${pct(to - from)}`}
+          aria-hidden="true"
+        />
+      ))
+    }
+  </div>
+
+  <ul class="callouts__list" role="list">
+    {
+      callouts.map(({ title, text, side, y, from, to }) => (
+        <li
+          class="callouts__item"
+          data-side={side}
+          style={side === 'left' ? `--x: ${100 - from}%; --y: ${y}%` : `--x: ${to}%; --y: ${y}%`}
+        >
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
+
+<style>
+  .callouts {
+    --callout-dot: var(--space-4);
+    margin-block: var(--space-6);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  /* ---------- Phones: product, then the callouts as a list ---------- */
+  .callouts__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .callouts :global(.callouts__wordmark) {
+    width: 55%;
+    height: auto;
+  }
+
+  .callouts :global(.callouts__product) {
+    width: 100%;
+    max-width: var(--picker-image-max);
+    height: auto;
+  }
+
+  .callouts__line {
+    display: none;
+  }
+
+  .callouts__list {
+    display: grid;
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .callouts__item {
+    position: relative;
+    padding-left: var(--space-6);
+  }
+
+  /* Blue dot marker, echoing the dots on the product */
+  .callouts__item::before {
+    content: '';
+    position: absolute;
+    top: 0.35em;
+    left: 0;
+    width: var(--callout-dot);
+    height: var(--callout-dot);
+    border-radius: var(--radius-pill);
+    background: var(--case-accent-1, var(--color-text));
+  }
+
+  .callouts__item h3 {
+    font-family: inherit;
+    font-size: var(--text-h3);
+    font-weight: var(--weight-regular);
+    letter-spacing: normal;
+  }
+
+  .callouts__item p {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  /* ---------- Desktop: everything placed on the stage, as in the design ---------- */
+  @media (min-width: 48rem) {
+    .callouts {
+      position: relative;
+      container-type: inline-size;
+      aspect-ratio: var(--stage-ratio);
+    }
+
+    .callouts__stage {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    /* Stage positions arrive as custom properties so the phone layout can ignore them */
+    .callouts__stage > :global(img) {
+      position: absolute;
+      left: var(--left);
+      top: var(--top);
+    }
+
+    .callouts :global(.callouts__wordmark),
+    .callouts :global(.callouts__product) {
+      width: var(--width);
+      max-width: none;
+    }
+
+    /* Line with a dot on the end that touches the product */
+    .callouts__line {
+      position: absolute;
+      display: block;
+      border-top: calc(var(--border-width) * 1.5) solid var(--case-accent-1, var(--color-text));
+    }
+
+    .callouts__line::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 1.1cqw;
+      height: 1.1cqw;
+      border-radius: var(--radius-pill);
+      background: var(--case-accent-1, var(--color-text));
+      transform: translateY(-50%) translateY(calc(var(--border-width) * -0.75));
+    }
+
+    .callouts__line[data-side='left']::after { right: -0.55cqw; }
+    .callouts__line[data-side='right']::after { left: -0.55cqw; }
+
+    .callouts__list {
+      display: contents;
+    }
+
+    /* Text sits just past the end of its line, with the title level with the line */
+    .callouts__item {
+      position: absolute;
+      top: var(--y);
+      width: 24cqw;
+      padding: 0;
+      transform: translateY(-0.55em);
+      font-size: 1.75cqw;
+    }
+
+    .callouts__item::before {
+      display: none;
+    }
+
+    .callouts__item[data-side='left'] {
+      right: calc(var(--x) + 1.1cqw);
+      text-align: right;
+    }
+
+    .callouts__item[data-side='right'] {
+      left: calc(var(--x) + 0.9cqw);
+    }
+
+    .callouts__item h3 {
+      font-size: 1em;
+      line-height: 1.1;
+    }
+
+    .callouts__item p {
+      margin-top: 0.4em;
+      font-size: max(0.8em, var(--text-small));
+      line-height: 1.3;
+    }
+  }
+</style>

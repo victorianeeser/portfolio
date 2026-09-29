@@ -28,6 +28,8 @@ import PersonaProfile from '../../components/case/PersonaProfile.astro';
 import PhoneRow from '../../components/case/PhoneRow.astro';
 import AeroIntro from '../../components/projects/courtsync/AeroIntro.astro';
 import ColorPicker from '../../components/case/ColorPicker.astro';
+import ProductCallouts from '../../components/case/ProductCallouts.astro';
+import syncProsWordmark from '../../assets/projects/courtsync/syncpros-wordmark.svg';
 import BrowserFrame from '../../components/case/BrowserFrame.astro';
 import earbudsBlack from '../../assets/projects/courtsync/earbuds-black.png';
 import earbudsSilver from '../../assets/projects/courtsync/earbuds-silver.png';
@@ -159,6 +161,23 @@ Unlike standard sport headphones that only play music, CourtSync combines intell
 <SectionTitle accent={1}>Product Design</SectionTitle>
 
 SyncPros earbuds were designed with AI tools, with secure ear hooks for athletes whose earbuds fall out mid-workout, and come in five colorways.
+
+{/* Stage is the Figma frame from y 90 to 910 (1920 × 820); positions are % of that */}
+<ProductCallouts
+  ratio="1920 / 820"
+  wordmark={syncProsWordmark}
+  wordmarkAlt="SyncPros"
+  wordmarkBox={{ left: 41, top: 4.3, width: 18.3 }}
+  image={earbudsBlack}
+  imageAlt="SyncPros earbuds in Core Black with callouts to their features"
+  imageBox={{ left: 36.2, top: 21.6, width: 30.5 }}
+  callouts={[
+    { title: 'Sweat & Water Resistance', text: 'Earbuds are durable enough to transition seamlessly to the court.', side: 'left', y: 34.6, from: 30.7, to: 38.4 },
+    { title: 'Hyper-soft Cushioning', text: 'Enables true all-day wear comfort by eliminating common pressure points while allowing precise customization for any ear shape.', side: 'left', y: 61.8, from: 30.7, to: 38.4 },
+    { title: 'Secure Flex Hook', text: 'Guarantees a non-slip, secure fit that stays put through intense movement.', side: 'right', y: 45.9, from: 61.7, to: 69.4 },
+    { title: 'Intuitive Sync Touch Control', text: 'The outer surface of the earbud is a customizable touch interface that registers multi-tap and swipe gestures.', side: 'right', y: 85.5, from: 61.7, to: 69.4 },
+  ]}
+/>
 
 <ColorPicker
   label="Colorways"
