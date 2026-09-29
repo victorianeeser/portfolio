@@ -24,6 +24,19 @@ import SectionTitle from '../../components/case/SectionTitle.astro';
 import PhotoGallery from '../../components/case/PhotoGallery.astro';
 import ProductLineup from '../../components/case/ProductLineup.astro';
 
+import woGroup from '../../assets/projects/wellness-society/workout/photo-group.jpg';
+import woPinkSet from '../../assets/projects/wellness-society/workout/photo-pink-set.jpg';
+import woWrapTop from '../../assets/projects/wellness-society/workout/photo-wrap-top.jpg';
+import woPlank from '../../assets/projects/wellness-society/workout/photo-plank.jpg';
+import woBall from '../../assets/projects/wellness-society/workout/photo-ball.jpg';
+import woTote from '../../assets/projects/wellness-society/workout/photo-tote.jpg';
+import woSweatshirt from '../../assets/projects/wellness-society/workout/photo-sweatshirt.jpg';
+import pieceWrapTop from '../../assets/projects/wellness-society/workout/wrap-top.png';
+import pieceBraTaupe from '../../assets/projects/wellness-society/workout/bra-taupe.png';
+import pieceBraPink from '../../assets/projects/wellness-society/workout/bra-pink.png';
+import pieceLeggingsTaupe from '../../assets/projects/wellness-society/workout/leggings-taupe.png';
+import pieceLeggingsPink from '../../assets/projects/wellness-society/workout/leggings-pink.png';
+
 <SectionNav
   items={[
     { label: 'Overview', href: '#overview' },
@@ -46,20 +59,23 @@ Designed for movement and mindfulness, the Wellness Society Workout Set blends s
 
 <PhotoGallery
   items={[
-    { label: 'Workout Sets: feature photo' },
-    { label: 'Workout Sets: photo 2' },
-    { label: 'Workout Sets: photo 3' },
-    { label: 'Workout Sets: photo 4' },
-    { label: 'Workout Sets: photo 5' },
-    { label: 'Workout Sets: photo 6' },
+    { label: 'Workout Sets: group', src: woGroup, alt: 'Three models in the workout sets: white and taupe bras and leggings, and a black tee and shorts' },
+    { label: 'Workout Sets: pink set', src: woPinkSet, alt: 'A model in the blush pink sculpted bra and high-rise leggings' },
+    { label: 'Workout Sets: wrap top', src: woWrapTop, alt: 'A model in the white wrap top and taupe leggings holding a pink yoga mat overhead' },
+    { label: 'Workout Sets: plank', src: woPlank, alt: 'A model in the taupe set on all fours on a yoga mat' },
+    { label: 'Workout Sets: stability ball', src: woBall, alt: 'A model in the taupe set seated beside a stability ball, showing the back of the bra' },
+    { label: 'Workout Sets: tote', src: woTote, alt: 'A model in the white set seen from behind, carrying the Wellness Society tote' },
+    { label: 'Workout Sets: sweatshirt', src: woSweatshirt, alt: 'A model in a Wellness Society sweatshirt and taupe leggings', focus: '50% 30%' },
   ]}
 />
 
 <ProductLineup
   items={[
-    { name: 'Wrap Top' },
-    { name: 'Sculpted Bra' },
-    { name: 'High-Rise Leggings' },
+    { name: 'Wrap Top', note: 'White', src: pieceWrapTop, alt: 'Flat illustration of the white long-sleeve wrap top with a side tie' },
+    { name: 'Sculpted Bra', note: 'Taupe', src: pieceBraTaupe, alt: 'Flat illustration of the taupe sculpted bra with the WS logo' },
+    { name: 'Sculpted Bra', note: 'Pink', src: pieceBraPink, alt: 'Flat illustration of the pink sculpted bra with the WS logo' },
+    { name: 'High-Rise Leggings', note: 'Taupe', src: pieceLeggingsTaupe, alt: 'Flat illustration of the taupe high-rise leggings' },
+    { name: 'High-Rise Leggings', note: 'Pink', src: pieceLeggingsPink, alt: 'Flat illustration of the pink high-rise leggings' },
   ]}
 />
 
