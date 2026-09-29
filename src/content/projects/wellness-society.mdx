@@ -48,11 +48,13 @@ import ntDunes from '../../assets/projects/wellness-society/nantucket/photo-dune
 import ntPointelle from '../../assets/projects/wellness-society/nantucket/photo-pointelle.jpg';
 import ntStretch from '../../assets/projects/wellness-society/nantucket/photo-stretch.jpg';
 import ntHoodie from '../../assets/projects/wellness-society/nantucket/photo-hoodie.jpg';
-import ntTote from '../../assets/projects/wellness-society/nantucket/graphic-tote.png';
-import ntHoodieGraphic from '../../assets/projects/wellness-society/nantucket/graphic-hoodie.png';
 import ntPointelleTop from '../../assets/projects/wellness-society/nantucket/graphic-pointelle-top.png';
 import ntPointellePant from '../../assets/projects/wellness-society/nantucket/graphic-pointelle-pant.png';
 import ntPointelleSet from '../../assets/projects/wellness-society/nantucket/graphic-pointelle-set.png';
+import ntHoodieFront from '../../assets/projects/wellness-society/nantucket/hoodie-front.png';
+import ntHoodieBack from '../../assets/projects/wellness-society/nantucket/hoodie-back.png';
+import ntToteFront from '../../assets/projects/wellness-society/nantucket/tote-front.png';
+import ntToteBack from '../../assets/projects/wellness-society/nantucket/tote-back.png';
 
 <SectionNav
   items={[
@@ -138,11 +140,13 @@ Designed for movement and mindfulness, the Wellness Society Workout Set blends s
         { label: 'Top', src: ntPointelleTop, alt: 'Flat illustration of the Pier Pointelle Top, front and back' },
         { label: 'Pant', src: ntPointellePant, alt: 'Flat illustration of the Pier Pointelle Pant, front and back' },
       ] },
-      { name: 'Navy Luxe Hoodie', fill: true, views: [
-        { label: 'Front & back', src: ntHoodieGraphic, alt: 'Flat illustration of the Navy Luxe Hoodie: WS logo on the front, circular Wellness Society logo on the back' },
+      { name: 'Navy Luxe Hoodie', note: 'Navy', views: [
+        { label: 'Front', src: ntHoodieFront, alt: 'Flat illustration of the Navy Luxe Hoodie, front, with a small WS logo on the chest' },
+        { label: 'Back', src: ntHoodieBack, alt: 'Flat illustration of the Navy Luxe Hoodie, back, with the large circular Wellness Society logo' },
       ] },
-      { name: 'Boat Tote', fill: true, views: [
-        { label: 'Front & back', src: ntTote, alt: 'Flat illustration of the cream and navy Boat Tote with the Wellness Society patch' },
+      { name: 'Boat Tote', note: 'Cream & navy', views: [
+        { label: 'Front', src: ntToteFront, alt: 'Flat illustration of the cream and navy Boat Tote, front, with the Wellness Society patch' },
+        { label: 'Back', src: ntToteBack, alt: 'Flat illustration of the cream and navy Boat Tote, back' },
       ] },
     ]}
   />
