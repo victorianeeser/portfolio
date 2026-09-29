@@ -8,10 +8,18 @@ interface Props {
 }
 
 const { project, headingLevel: Heading = 'h3' } = Astro.props;
-const { title, role, tags, cover } = project.data;
+const { title, role, tags, cover, theme } = project.data;
+
+// Each project's brand color for the title on hover
+const hoverColors: Record<string, string> = {
+  impact: '#00e786',
+  courtsync: '#015aff',
+  wellness: '#152a44',
+};
+const hover = theme ? hoverColors[theme] : undefined;
 ---
 
-<article class="card">
+<article class="card" style={hover ? `--card-hover: ${hover}` : undefined}>
   <ImageSlot {...cover} ratio="thumb" />
   <div class="card__body">
     <Heading class="card__title">
@@ -45,6 +53,7 @@ const { title, role, tags, cover } = project.data;
 
   .card__link {
     text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
   }
 
   .card__link::after {
@@ -54,7 +63,7 @@ const { title, role, tags, cover } = project.data;
   }
 
   .card:hover .card__link {
-    color: var(--color-hover);
+    color: var(--card-hover, var(--color-hover));
   }
 
   .card :global(.slot) {
