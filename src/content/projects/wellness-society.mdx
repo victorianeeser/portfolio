@@ -58,6 +58,7 @@ I streamlined inventory workflows to support smooth fulfillment and on-time prod
 Designed for movement and mindfulness, the Wellness Society Workout Set blends softness, structure and a minimalist palette. The wrap top, sculpted bra and high-rise leggings are made to flatter while staying comfortable through anything, from morning pilates to slow afternoon walks. Neutral tones and subtle branding keep the look clean, elevated and effortlessly aligned with the Wellness Society's calm, modern aesthetic.
 
 <PhotoGallery
+  layout="rows"
   items={[
     { label: 'Workout Sets: group', src: woGroup, alt: 'Three models in the workout sets: white and taupe bras and leggings, and a black tee and shorts' },
     { label: 'Workout Sets: pink set', src: woPinkSet, alt: 'A model in the blush pink sculpted bra and high-rise leggings' },
@@ -71,11 +72,11 @@ Designed for movement and mindfulness, the Wellness Society Workout Set blends s
 
 <ProductLineup
   items={[
-    { name: 'Wrap Top', note: 'White', src: pieceWrapTop, alt: 'Flat illustration of the white long-sleeve wrap top with a side tie' },
-    { name: 'Sculpted Bra', note: 'Taupe', src: pieceBraTaupe, alt: 'Flat illustration of the taupe sculpted bra with the WS logo' },
-    { name: 'Sculpted Bra', note: 'Pink', src: pieceBraPink, alt: 'Flat illustration of the pink sculpted bra with the WS logo' },
-    { name: 'High-Rise Leggings', note: 'Taupe', src: pieceLeggingsTaupe, alt: 'Flat illustration of the taupe high-rise leggings' },
-    { name: 'High-Rise Leggings', note: 'Pink', src: pieceLeggingsPink, alt: 'Flat illustration of the pink high-rise leggings' },
+    { name: 'Wrap Top', note: 'White', views: [{ label: 'Front' }, { label: 'Back', src: pieceWrapTop, alt: 'Flat illustration of the white long-sleeve wrap top with a side tie' }] },
+    { name: 'Sculpted Bra', note: 'Taupe', views: [{ label: 'Front' }, { label: 'Back', src: pieceBraTaupe, alt: 'Flat illustration of the taupe sculpted bra with the WS logo' }] },
+    { name: 'Sculpted Bra', note: 'Pink', views: [{ label: 'Front' }, { label: 'Back', src: pieceBraPink, alt: 'Flat illustration of the pink sculpted bra with the WS logo' }] },
+    { name: 'High-Rise Leggings', note: 'Taupe', views: [{ label: 'Front' }, { label: 'Back', src: pieceLeggingsTaupe, alt: 'Flat illustration of the taupe high-rise leggings' }] },
+    { name: 'High-Rise Leggings', note: 'Pink', views: [{ label: 'Front' }, { label: 'Back', src: pieceLeggingsPink, alt: 'Flat illustration of the pink high-rise leggings' }] },
   ]}
 />
 
@@ -86,6 +87,7 @@ Designed for movement and mindfulness, the Wellness Society Workout Set blends s
 Inspired by the relaxed charm of Nantucket summers, this collection blends function with quiet luxury. The Pier Pointelle Set brings breathable comfort with a soft, textured knit, while the Navy Luxe Hoodie adds a cozy, coastal contrast. The Boat Tote finishes the look with classic utility and clean, understated branding. Together, they capture wellness, warmth and that easy sense of calm by the coast.
 
 <PhotoGallery
+  layout="rows"
   items={[
     { label: 'The Nantucket Edit: feature photo' },
     { label: 'The Nantucket Edit: photo 2' },
@@ -98,8 +100,8 @@ Inspired by the relaxed charm of Nantucket summers, this collection blends funct
 
 <ProductLineup
   items={[
-    { name: 'Pier Pointelle Set' },
-    { name: 'Navy Luxe Hoodie' },
-    { name: 'Boat Tote' },
+    { name: 'Pier Pointelle Set', views: [{ label: 'Front' }, { label: 'Back' }] },
+    { name: 'Navy Luxe Hoodie', views: [{ label: 'Front' }, { label: 'Back' }] },
+    { name: 'Boat Tote', views: [{ label: 'Front' }, { label: 'Back' }] },
   ]}
 />

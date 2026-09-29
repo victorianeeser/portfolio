@@ -1,7 +1,10 @@
 ---
-// Editorial photo grid: the first photo is a large feature, the next two sit beside it,
-// and the rest run in rows below: four across when they divide into fours, otherwise
-// three. Photos are cropped to fill their cells. Items without `src` show a placeholder.
+// Photo gallery with two layouts. Photos are cropped to fill their cells, and items
+// without `src` show a labeled placeholder.
+// - "feature": the first photo is large, the next two sit beside it, and the rest run
+//   in rows below (four across when they divide into fours, otherwise three).
+// - "rows": two rows of equal height; the top row takes the extra photo when the count
+//   is odd, and each row stretches to the full width.
 import ImageSlot from '../ImageSlot.astro';
 import type { ImageMetadata } from 'astro';
 
@@ -15,30 +18,65 @@ interface Photo {
 
 interface Props {
   items: Photo[];
+  layout?: 'feature' | 'rows';
 }
 
-const { items } = Astro.props;
-// Photos after the feature and the two beside it
+const { items, layout = 'feature' } = Astro.props;
+
+// "feature": photos after the feature and the two beside it
 const rest = Math.max(0, items.length - 3);
 const restPerRow = rest > 0 && rest % 4 === 0 ? 4 : 3;
+
+// "rows": a top row and a bottom row
+const top = Math.ceil(items.length / 2);
+const rows = [items.slice(0, top), items.slice(top)].filter((row) => row.length);
 ---
 
-<div class="gallery case-wide" style={`--rest-span: ${12 / restPerRow}`}>
-  {
-    items.map(({ label, src, alt, focus }, i) => (
-      <ImageSlot
-        label={label}
-        src={src}
-        alt={alt}
-        focus={focus}
-        ratio="portrait"
-        sizes={i === 0 ? '(min-width: 48rem) 66vw, 100vw' : '(min-width: 48rem) 33vw, 50vw'}
-      />
-    ))
-  }
-</div>
+{
+  layout === 'rows' ? (
+    <div class="gallery-rows case-wide" style={`--top: ${top}`}>
+      {rows.map((row) => (
+        <div class="gallery-rows__row" style={`--count: ${row.length}`}>
+          {row.map(({ label, src, alt, focus }) => (
+            <ImageSlot label={label} src={src} alt={alt} focus={focus} ratio="portrait" sizes="(min-width: 48rem) 25vw, 50vw" />
+          ))}
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div class="gallery case-wide" style={`--rest-span: ${12 / restPerRow}`}>
+      {items.map(({ label, src, alt, focus }, i) => (
+        <ImageSlot
+          label={label}
+          src={src}
+          alt={alt}
+          focus={focus}
+          ratio="portrait"
+          sizes={i === 0 ? '(min-width: 48rem) 66vw, 100vw' : '(min-width: 48rem) 33vw, 50vw'}
+        />
+      ))}
+    </div>
+  )
+}
 
 <style>
+  /* Every photo fills its cell (including the <picture> wrapper Astro adds around it) */
+  .gallery > :global(.slot),
+  .gallery-rows__row > :global(.slot),
+  .gallery > :global(.slot) :global(picture),
+  .gallery-rows__row > :global(.slot) :global(picture) {
+    display: block;
+    height: 100%;
+  }
+
+  .gallery > :global(.slot) :global(img),
+  .gallery > :global(.slot) :global(.image-slot),
+  .gallery-rows__row > :global(.slot) :global(img),
+  .gallery-rows__row > :global(.slot) :global(.image-slot) {
+    height: 100%;
+  }
+
+  /* ---------- Feature layout ---------- */
   .gallery {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -46,26 +84,35 @@ const restPerRow = rest > 0 && rest % 4 === 0 ? 4 : 3;
     margin-block: var(--space-6);
   }
 
-  /* Phones: the feature photo runs full width, and so does a leftover last photo
+  /* Phones: the feature and a leftover last photo run full width
      (an even total leaves an odd number after the feature) */
   .gallery > :global(:first-child),
   .gallery > :global(:last-child:nth-child(even)) {
     grid-column: 1 / -1;
   }
 
-  /* Every photo fills its cell */
-  .gallery > :global(.slot) {
-    height: 100%;
+  /* ---------- Rows layout ---------- */
+  .gallery-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-block: var(--space-6);
   }
 
-  .gallery > :global(.slot) :global(img),
-  .gallery > :global(.slot) :global(.image-slot) {
-    height: 100%;
+  .gallery-rows__row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  /* Phones: a leftover last photo in a row runs full width */
+  .gallery-rows__row > :global(:last-child:nth-child(odd)) {
+    grid-column: 1 / -1;
   }
 
   @media (min-width: 48rem) {
-    /* 12-column grid: feature takes 8 columns and two rows, the next two take 4 each,
-       and the rest take 3 (four across) or 4 (three across) */
+    /* Feature: 12-column grid; the feature takes 8 columns and two rows, the next two
+       take 4 each, and the rest take 3 (four across) or 4 (three across) */
     .gallery {
       grid-template-columns: repeat(12, 1fr);
       gap: var(--space-4);
@@ -88,6 +135,31 @@ const restPerRow = rest > 0 && rest % 4 === 0 ? 4 : 3;
 
     .gallery > :global(:first-child) :global(img),
     .gallery > :global(:first-child) :global(.image-slot) {
+      aspect-ratio: auto;
+    }
+
+    /* Rows: each row fills the width. Both share the height of a 4:5 photo in the
+       fuller top row, so a shorter bottom row gets wider photos. */
+    .gallery-rows {
+      container-type: inline-size;
+      gap: var(--space-4);
+    }
+
+    .gallery-rows__row {
+      grid-template-columns: repeat(var(--count), 1fr);
+      /* The single track takes the row's fixed height, so photos fill it rather than
+         growing it to their natural size */
+      grid-template-rows: minmax(0, 1fr);
+      height: calc((100cqw - (var(--top) - 1) * var(--space-4)) / var(--top) * 1.25);
+      gap: var(--space-4);
+    }
+
+    .gallery-rows__row > :global(:last-child:nth-child(odd)) {
+      grid-column: auto;
+    }
+
+    .gallery-rows__row > :global(.slot) :global(img),
+    .gallery-rows__row > :global(.slot) :global(.image-slot) {
       aspect-ratio: auto;
     }
   }
