@@ -31,11 +31,16 @@ import woPlank from '../../assets/projects/wellness-society/workout/photo-plank.
 import woBall from '../../assets/projects/wellness-society/workout/photo-ball.jpg';
 import woTote from '../../assets/projects/wellness-society/workout/photo-tote.jpg';
 import woSweatshirt from '../../assets/projects/wellness-society/workout/photo-sweatshirt.jpg';
-import pieceWrapTop from '../../assets/projects/wellness-society/workout/wrap-top.png';
-import pieceBraTaupe from '../../assets/projects/wellness-society/workout/bra-taupe.png';
-import pieceBraPink from '../../assets/projects/wellness-society/workout/bra-pink.png';
-import pieceLeggingsTaupe from '../../assets/projects/wellness-society/workout/leggings-taupe.png';
-import pieceLeggingsPink from '../../assets/projects/wellness-society/workout/leggings-pink.png';
+import pieceWrapTopFront from '../../assets/projects/wellness-society/workout/wrap-top-front.png';
+import pieceWrapTopBack from '../../assets/projects/wellness-society/workout/wrap-top-back.png';
+import pieceBraTaupeFront from '../../assets/projects/wellness-society/workout/bra-taupe-front.png';
+import pieceBraTaupeBack from '../../assets/projects/wellness-society/workout/bra-taupe-back.png';
+import pieceBraPinkFront from '../../assets/projects/wellness-society/workout/bra-pink-front.png';
+import pieceBraPinkBack from '../../assets/projects/wellness-society/workout/bra-pink-back.png';
+import pieceLeggingsTaupeFront from '../../assets/projects/wellness-society/workout/leggings-taupe-front.png';
+import pieceLeggingsTaupeBack from '../../assets/projects/wellness-society/workout/leggings-taupe-back.png';
+import pieceLeggingsPinkFront from '../../assets/projects/wellness-society/workout/leggings-pink-front.png';
+import pieceLeggingsPinkBack from '../../assets/projects/wellness-society/workout/leggings-pink-back.png';
 
 <SectionNav
   items={[
@@ -72,11 +77,26 @@ Designed for movement and mindfulness, the Wellness Society Workout Set blends s
 
 <ProductLineup
   items={[
-    { name: 'Wrap Top', note: 'White', views: [{ label: 'Front' }, { label: 'Back', src: pieceWrapTop, alt: 'Flat illustration of the white long-sleeve wrap top with a side tie' }] },
-    { name: 'Sculpted Bra', note: 'Taupe', views: [{ label: 'Front' }, { label: 'Back', src: pieceBraTaupe, alt: 'Flat illustration of the taupe sculpted bra with the WS logo' }] },
-    { name: 'Sculpted Bra', note: 'Pink', views: [{ label: 'Front' }, { label: 'Back', src: pieceBraPink, alt: 'Flat illustration of the pink sculpted bra with the WS logo' }] },
-    { name: 'High-Rise Leggings', note: 'Taupe', views: [{ label: 'Front' }, { label: 'Back', src: pieceLeggingsTaupe, alt: 'Flat illustration of the taupe high-rise leggings' }] },
-    { name: 'High-Rise Leggings', note: 'Pink', views: [{ label: 'Front' }, { label: 'Back', src: pieceLeggingsPink, alt: 'Flat illustration of the pink high-rise leggings' }] },
+    { name: 'Wrap Top', note: 'White', views: [
+      { label: 'Front', src: pieceWrapTopFront, alt: 'Flat illustration of the white long-sleeve wrap top with a side tie, front' },
+      { label: 'Back', src: pieceWrapTopBack, alt: 'Flat illustration of the white long-sleeve wrap top with a side tie, back, with the WS logo' },
+    ] },
+    { name: 'Sculpted Bra', note: 'Taupe', views: [
+      { label: 'Front', src: pieceBraTaupeFront, alt: 'Flat illustration of the taupe sculpted bra, front' },
+      { label: 'Back', src: pieceBraTaupeBack, alt: 'Flat illustration of the taupe sculpted bra, back, with the WS logo' },
+    ] },
+    { name: 'Sculpted Bra', note: 'Pink', views: [
+      { label: 'Front', src: pieceBraPinkFront, alt: 'Flat illustration of the pink sculpted bra, front' },
+      { label: 'Back', src: pieceBraPinkBack, alt: 'Flat illustration of the pink sculpted bra, back, with the WS logo' },
+    ] },
+    { name: 'High-Rise Leggings', note: 'Taupe', views: [
+      { label: 'Front', src: pieceLeggingsTaupeFront, alt: 'Flat illustration of the taupe high-rise leggings, front' },
+      { label: 'Back', src: pieceLeggingsTaupeBack, alt: 'Flat illustration of the taupe high-rise leggings, back, with the WS logo' },
+    ] },
+    { name: 'High-Rise Leggings', note: 'Pink', views: [
+      { label: 'Front', src: pieceLeggingsPinkFront, alt: 'Flat illustration of the pink high-rise leggings, front' },
+      { label: 'Back', src: pieceLeggingsPinkBack, alt: 'Flat illustration of the pink high-rise leggings, back, with the WS logo' },
+    ] },
   ]}
 />
 
