@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 // Allowed tags. Add new ones here and the Work filter picks them up automatically.
-export const TAGS = ['UI', 'UX', 'Product Design', 'Front-end', 'Interactive', 'Motion', 'Game'] as const;
+export const TAGS = ['UI', 'UX', 'Product Design', 'Apparel', 'Front-end', 'Interactive', 'Motion', 'Game'] as const;
 
 const projects = defineCollection({
   // One Markdown (.md) or MDX (.mdx) file per project in src/content/projects/.
