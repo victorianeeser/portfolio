@@ -5,6 +5,7 @@ import ImageSlot from '../../components/ImageSlot.astro';
 import { getProjects } from '../../lib/projects';
 import '../../styles/themes/impact.css';
 import '../../styles/themes/courtsync.css';
+import '../../styles/themes/wellness.css';
 import CourtSyncHero from '../../components/projects/courtsync/CourtSyncHero.astro';
 
 // Projects whose hero is built as a custom section rather than a single image
@@ -217,6 +218,16 @@ const meta = [
     font-style: normal;
     font-weight: var(--weight-regular);
     color: var(--color-text-secondary);
+  }
+
+  /* "Collection 01" label sits tight above its section heading, with room above it */
+  .case-body > :global(.collection-label) {
+    margin-top: var(--space-9);
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  .case-body > :global(.collection-label + *) {
+    margin-top: var(--space-2);
   }
 
   .case-links {

@@ -8,6 +8,7 @@ team: "Company executives, design and production teams, overseas manufacturers"
 tags: ["Product Design", "Apparel"]
 order: 2
 featured: true
+theme: wellness
 cover:
   label: "The Wellness Society: cover"
   src: "../../assets/projects/wellness-society/cover.jpg"
@@ -18,4 +19,71 @@ hero:
   alt: "A woman on a beach carrying a cream and navy Wellness Society tote bag and a striped towel"
 ---
 
-{/* Sections are added one at a time, following the Figma file from the top. */}
+import SectionNav from '../../components/case/SectionNav.astro';
+import SectionTitle from '../../components/case/SectionTitle.astro';
+import PhotoGallery from '../../components/case/PhotoGallery.astro';
+import ProductLineup from '../../components/case/ProductLineup.astro';
+
+<SectionNav
+  items={[
+    { label: 'Overview', href: '#overview' },
+    { label: 'Workout Sets', href: '#workout-sets' },
+    { label: 'The Nantucket Edit', href: '#nantucket-edit' },
+  ]}
+/>
+
+<SectionTitle id="overview">Overview</SectionTitle>
+
+At The Wellness Society, I managed end-to-end product sourcing, working with overseas manufacturers to ensure high-quality, cost-effective production. I collaborated closely with CEOs to ideate and refine product concepts, leading creative direction for seasonal merchandise and making sure every design aligned with the brand's bigger vision.
+
+I streamlined inventory workflows to support smooth fulfillment and on-time production, and produced detailed technical design files and product specs in Adobe Illustrator and Photoshop to ensure accuracy throughout manufacturing.
+
+<p id="workout-sets" class="eyebrow collection-label">Collection 01</p>
+
+<SectionTitle>Workout Sets</SectionTitle>
+
+Designed for movement and mindfulness, the Wellness Society Workout Set blends softness, structure and a minimalist palette. The wrap top, sculpted bra and high-rise leggings are made to flatter while staying comfortable through anything, from morning pilates to slow afternoon walks. Neutral tones and subtle branding keep the look clean, elevated and effortlessly aligned with the Wellness Society's calm, modern aesthetic.
+
+<PhotoGallery
+  items={[
+    { label: 'Workout Sets: feature photo' },
+    { label: 'Workout Sets: photo 2' },
+    { label: 'Workout Sets: photo 3' },
+    { label: 'Workout Sets: photo 4' },
+    { label: 'Workout Sets: photo 5' },
+    { label: 'Workout Sets: photo 6' },
+  ]}
+/>
+
+<ProductLineup
+  items={[
+    { name: 'Wrap Top' },
+    { name: 'Sculpted Bra' },
+    { name: 'High-Rise Leggings' },
+  ]}
+/>
+
+<p id="nantucket-edit" class="eyebrow collection-label">Collection 02</p>
+
+<SectionTitle>The Nantucket Edit</SectionTitle>
+
+Inspired by the relaxed charm of Nantucket summers, this collection blends function with quiet luxury. The Pier Pointelle Set brings breathable comfort with a soft, textured knit, while the Navy Luxe Hoodie adds a cozy, coastal contrast. The Boat Tote finishes the look with classic utility and clean, understated branding. Together, they capture wellness, warmth and that easy sense of calm by the coast.
+
+<PhotoGallery
+  items={[
+    { label: 'The Nantucket Edit: feature photo' },
+    { label: 'The Nantucket Edit: photo 2' },
+    { label: 'The Nantucket Edit: photo 3' },
+    { label: 'The Nantucket Edit: photo 4' },
+    { label: 'The Nantucket Edit: photo 5' },
+    { label: 'The Nantucket Edit: photo 6' },
+  ]}
+/>
+
+<ProductLineup
+  items={[
+    { name: 'Pier Pointelle Set' },
+    { name: 'Navy Luxe Hoodie' },
+    { name: 'Boat Tote' },
+  ]}
+/>

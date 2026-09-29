@@ -96,6 +96,7 @@
   --fact-label-width: 7rem;         /* label column in persona facts */
   --picker-image-max: 32rem;        /* product render in the color picker */
   --browser-url-max: 24rem;         /* address bar in the browser frame */
+  --lineup-item-min: 12rem;         /* narrowest product card in a lineup */
 
   /* ---------- Motion ---------- */
   --duration-fast: 150ms;

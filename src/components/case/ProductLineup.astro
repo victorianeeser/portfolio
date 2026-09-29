@@ -1,0 +1,101 @@
+---
+// A lineup of product cut-outs (transparent PNGs) on a soft background, each with its name.
+// Items without `src` show a labeled placeholder.
+import ImageSlot from '../ImageSlot.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Product {
+  name: string;
+  src?: ImageMetadata;
+  alt?: string;
+  note?: string; // optional short detail, e.g. fabric or color
+}
+
+interface Props {
+  label?: string;
+  items: Product[];
+}
+
+const { label = 'The pieces', items } = Astro.props;
+---
+
+<section class="lineup case-wide" aria-label={label}>
+  <p class="lineup__label">{label}</p>
+  <ul class="lineup__grid" role="list">
+    {
+      items.map(({ name, src, alt, note }) => (
+        <li class="lineup__item">
+          <div class="lineup__frame">
+            <ImageSlot label={`${name} (PNG)`} src={src} alt={alt ?? name} ratio="square" sizes="(min-width: 48rem) 25vw, 45vw" />
+          </div>
+          <p class="lineup__name">{name}</p>
+          {note && <p class="lineup__note">{note}</p>}
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .lineup {
+    margin-block: var(--space-7);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .lineup__label {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  /* Phones: three small cards across */
+  .lineup__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5) var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Cut-outs sit on the project's soft background, fully visible (not cropped) */
+  .lineup__frame {
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    background: var(--case-cream, var(--color-surface));
+  }
+
+  .lineup__frame :global(img) {
+    object-fit: contain;
+    background: transparent;
+  }
+
+  .lineup__name {
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+  }
+
+  .lineup__note {
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .lineup__grid {
+      grid-template-columns: repeat(auto-fit, minmax(var(--lineup-item-min), 1fr));
+      gap: var(--space-5) var(--space-4);
+    }
+
+    .lineup__frame {
+      padding: var(--space-5);
+    }
+
+    .lineup__name {
+      font-size: var(--text-body);
+    }
+  }
+</style>
