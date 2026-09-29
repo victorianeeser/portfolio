@@ -66,6 +66,7 @@
   --container-max: 75rem;           /* 1200px */
   --container-narrow: 45rem;        /* 720px: long-form reading width */
   --container-slide: 58rem;         /* 928px: large slide text width */
+  --container-prose: 52rem;         /* 832px: case study text column, left-aligned */
   --container-statement: 56.25rem;  /* 900px: home positioning statement (2 lines on desktop) */
   --gutter: var(--space-4);         /* page side padding */
   --header-height: 4rem;

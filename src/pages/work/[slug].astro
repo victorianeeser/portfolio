@@ -136,18 +136,28 @@ const meta = [
     font-size: var(--text-small);
   }
 
-  /* Text sits in a narrow reading column; images break out to the full container width */
+  /* Text sits in a reading column aligned to the page's left edge (with the title,
+     photos and panels), leaving open space on the right; images break out to the full
+     container width. On phones the text column simply takes the full width. */
   .case-body {
-    --wide-extra: calc((var(--container-max) - var(--container-narrow)) / 2);
     display: grid;
     grid-template-columns:
       [full-start] minmax(var(--gutter), 1fr)
-      [wide-start] minmax(0, var(--wide-extra))
-      [content-start] min(var(--container-narrow), 100% - var(--gutter) * 2)
-      [content-end] minmax(0, var(--wide-extra))
+      [wide-start content-start] min(var(--container-prose), 100% - var(--gutter) * 2)
+      [content-end] minmax(0, calc(var(--container-max) - var(--container-prose)))
       [wide-end] minmax(var(--gutter), 1fr)
       [full-end];
     padding-block: var(--space-6) var(--space-8);
+  }
+
+  /* Larger body text on desktop keeps the wider lines comfortable to read */
+  @media (min-width: 48rem) {
+    /* Plain paragraphs and lists only; labels like "Collection 01" keep their size */
+    .case-body > :global(p:not([class])),
+    .case-body > :global(ul:not([class])),
+    .case-body > :global(ol:not([class])) {
+      font-size: var(--text-h3);
+    }
   }
 
   .case-body > :global(*) {
