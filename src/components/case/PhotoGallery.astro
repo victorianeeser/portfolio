@@ -34,7 +34,7 @@ const rows = [items.slice(0, top), items.slice(top)].filter((row) => row.length)
 
 {
   layout === 'rows' ? (
-    <div class="gallery-rows case-wide" style={`--top: ${top}`}>
+    <div class="gallery-rows case-wide" style={`--top: ${top}; --leftover-span: ${items.length % 2 ? '1 / -1' : 'auto'}`}>
       {rows.map((row) => (
         <div class="gallery-rows__row" style={`--count: ${row.length}`}>
           {row.map(({ label, src, alt, focus }) => (
@@ -92,22 +92,21 @@ const rows = [items.slice(0, top), items.slice(top)].filter((row) => row.length)
   }
 
   /* ---------- Rows layout ---------- */
+  /* Phones: the rows dissolve into one two-column grid, so photos pair up across
+     rows; only a leftover last photo runs full width */
   .gallery-rows {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-3);
     margin-block: var(--space-6);
   }
 
   .gallery-rows__row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-3);
+    display: contents;
   }
 
-  /* Phones: a leftover last photo in a row runs full width */
-  .gallery-rows__row > :global(:last-child:nth-child(odd)) {
-    grid-column: 1 / -1;
+  .gallery-rows__row:last-child > :global(:last-child) {
+    grid-column: var(--leftover-span, auto);
   }
 
   @media (min-width: 48rem) {
@@ -141,11 +140,14 @@ const rows = [items.slice(0, top), items.slice(top)].filter((row) => row.length)
     /* Rows: each row fills the width. Both share the height of a 4:5 photo in the
        fuller top row, so a shorter bottom row gets wider photos. */
     .gallery-rows {
+      display: flex;
+      flex-direction: column;
       container-type: inline-size;
       gap: var(--space-4);
     }
 
     .gallery-rows__row {
+      display: grid;
       grid-template-columns: repeat(var(--count), 1fr);
       /* The single track takes the row's fixed height, so photos fill it rather than
          growing it to their natural size */
@@ -154,7 +156,7 @@ const rows = [items.slice(0, top), items.slice(top)].filter((row) => row.length)
       gap: var(--space-4);
     }
 
-    .gallery-rows__row > :global(:last-child:nth-child(odd)) {
+    .gallery-rows__row:last-child > :global(:last-child) {
       grid-column: auto;
     }
 

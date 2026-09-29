@@ -15,6 +15,8 @@ interface Product {
   name: string;
   note?: string; // optional short detail, e.g. color
   views: View[];
+  /** Image already has its own background (e.g. a presentation graphic): fill the card */
+  fill?: boolean;
 }
 
 interface Props {
@@ -29,8 +31,8 @@ const { label = 'The pieces', items } = Astro.props;
   <p class="lineup__label">{label}</p>
   <ul class="lineup__grid" role="list">
     {
-      items.map(({ name, note, views }) => (
-        <li class="lineup__item">
+      items.map(({ name, note, views, fill }) => (
+        <li class="lineup__item" data-fill={fill ? '' : undefined}>
           <ul class="lineup__views" role="list" tabindex="0" aria-label={`${name}${note ? ` (${note})` : ''} views`}>
             {views.map((view) => (
               <li class="lineup__view" aria-label={view.label}>
@@ -141,6 +143,37 @@ const { label = 'The pieces', items } = Astro.props;
     background: transparent;
   }
 
+  /* Graphics with their own background fill the card edge to edge */
+  .lineup__item[data-fill] .lineup__view {
+    padding: 0;
+  }
+
+  .lineup__item[data-fill] .lineup__view :global(img) {
+    object-fit: cover;
+  }
+
+  /* Inside a dark panel: light text and dots so they stay readable */
+  :global(.panel[data-tone='dark']) .lineup__label {
+    color: var(--case-accent-1-text);
+  }
+
+  :global(.panel[data-tone='dark']) .lineup__name {
+    color: var(--case-text);
+  }
+
+  :global(.panel[data-tone='dark']) .lineup__note,
+  :global(.panel[data-tone='dark']) .lineup__view-label {
+    color: var(--case-muted);
+  }
+
+  :global(.panel[data-tone='dark']) .lineup__dot::before {
+    background: var(--case-border);
+  }
+
+  :global(.panel[data-tone='dark']) .lineup__dot[aria-pressed='true']::before {
+    background: var(--case-text);
+  }
+
   /* Dots sit in full-size tap targets; the current view's name sits beside them */
   .lineup__dots {
     display: flex;
@@ -198,6 +231,10 @@ const { label = 'The pieces', items } = Astro.props;
 
     .lineup__view {
       padding: var(--space-5);
+    }
+
+    .lineup__item[data-fill] .lineup__view {
+      padding: 0;
     }
 
     .lineup__name {

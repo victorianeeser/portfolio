@@ -23,6 +23,7 @@ import SectionNav from '../../components/case/SectionNav.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
 import PhotoGallery from '../../components/case/PhotoGallery.astro';
 import ProductLineup from '../../components/case/ProductLineup.astro';
+import Panel from '../../components/case/Panel.astro';
 
 import woGroup from '../../assets/projects/wellness-society/workout/photo-group.jpg';
 import woPinkSet from '../../assets/projects/wellness-society/workout/photo-pink-set.jpg';
@@ -41,6 +42,17 @@ import pieceLeggingsTaupeFront from '../../assets/projects/wellness-society/work
 import pieceLeggingsTaupeBack from '../../assets/projects/wellness-society/workout/leggings-taupe-back.png';
 import pieceLeggingsPinkFront from '../../assets/projects/wellness-society/workout/leggings-pink-front.png';
 import pieceLeggingsPinkBack from '../../assets/projects/wellness-society/workout/leggings-pink-back.png';
+import ntBike from '../../assets/projects/wellness-society/nantucket/photo-bike.jpg';
+import ntBeach from '../../assets/projects/wellness-society/nantucket/photo-beach.jpg';
+import ntDunes from '../../assets/projects/wellness-society/nantucket/photo-dunes.jpg';
+import ntPointelle from '../../assets/projects/wellness-society/nantucket/photo-pointelle.jpg';
+import ntStretch from '../../assets/projects/wellness-society/nantucket/photo-stretch.jpg';
+import ntHoodie from '../../assets/projects/wellness-society/nantucket/photo-hoodie.jpg';
+import ntTote from '../../assets/projects/wellness-society/nantucket/graphic-tote.png';
+import ntHoodieGraphic from '../../assets/projects/wellness-society/nantucket/graphic-hoodie.png';
+import ntPointelleTop from '../../assets/projects/wellness-society/nantucket/graphic-pointelle-top.png';
+import ntPointellePant from '../../assets/projects/wellness-society/nantucket/graphic-pointelle-pant.png';
+import ntPointelleSet from '../../assets/projects/wellness-society/nantucket/graphic-pointelle-set.png';
 
 <SectionNav
   items={[
@@ -89,39 +101,49 @@ Designed for movement and mindfulness, the Wellness Society Workout Set blends s
       { label: 'Front', src: pieceBraPinkFront, alt: 'Flat illustration of the pink sculpted bra, front' },
       { label: 'Back', src: pieceBraPinkBack, alt: 'Flat illustration of the pink sculpted bra, back, with the WS logo' },
     ] },
-    { name: 'High-Rise Leggings', note: 'Taupe', views: [
-      { label: 'Front', src: pieceLeggingsTaupeFront, alt: 'Flat illustration of the taupe high-rise leggings, front' },
-      { label: 'Back', src: pieceLeggingsTaupeBack, alt: 'Flat illustration of the taupe high-rise leggings, back, with the WS logo' },
+    { name: 'Sculpt Leggings', note: 'Taupe', views: [
+      { label: 'Front', src: pieceLeggingsTaupeFront, alt: 'Flat illustration of the taupe sculpt leggings, front' },
+      { label: 'Back', src: pieceLeggingsTaupeBack, alt: 'Flat illustration of the taupe sculpt leggings, back, with the WS logo' },
     ] },
-    { name: 'High-Rise Leggings', note: 'Pink', views: [
-      { label: 'Front', src: pieceLeggingsPinkFront, alt: 'Flat illustration of the pink high-rise leggings, front' },
-      { label: 'Back', src: pieceLeggingsPinkBack, alt: 'Flat illustration of the pink high-rise leggings, back, with the WS logo' },
+    { name: 'Sculpt Leggings', note: 'Pink', views: [
+      { label: 'Front', src: pieceLeggingsPinkFront, alt: 'Flat illustration of the pink sculpt leggings, front' },
+      { label: 'Back', src: pieceLeggingsPinkBack, alt: 'Flat illustration of the pink sculpt leggings, back, with the WS logo' },
     ] },
   ]}
 />
 
-<p id="nantucket-edit" class="eyebrow collection-label">Collection 02</p>
+<Panel
+  id="nantucket-edit"
+  level={2}
+  eyebrow="Collection 02"
+  title="The Nantucket Edit"
+  intro="Inspired by the relaxed charm of Nantucket summers, this collection blends function with quiet luxury. The Pier Pointelle Set brings breathable comfort with a soft, textured knit, while the Navy Luxe Hoodie adds a cozy, coastal contrast. The Boat Tote finishes the look with classic utility and clean, understated branding. Together, they capture wellness, warmth and that easy sense of calm by the coast."
+>
+  <PhotoGallery
+    layout="rows"
+    items={[
+      { label: 'The Nantucket Edit: bike', src: ntBike, alt: 'A model in the white Pier Pointelle Set beside a bicycle, carrying the Boat Tote and a striped towel' },
+      { label: 'The Nantucket Edit: beach', src: ntBeach, alt: 'A model on the beach in the white pointelle set, holding the Boat Tote and a striped towel' },
+      { label: 'The Nantucket Edit: dunes', src: ntDunes, alt: 'The Boat Tote and a striped towel resting in the beach grass on a dune' },
+      { label: 'The Nantucket Edit: pointelle', src: ntPointelle, alt: 'Close-up of the Pier Pointelle top and pants, showing the soft textured knit and the WS label' },
+      { label: 'The Nantucket Edit: stretch', src: ntStretch, alt: 'A model pulling on the pointelle top against a blue sky' },
+      { label: 'The Nantucket Edit: hoodie', src: ntHoodie, alt: 'A model on the beach pulling off the Navy Luxe Hoodie' },
+    ]}
+  />
 
-<SectionTitle>The Nantucket Edit</SectionTitle>
-
-Inspired by the relaxed charm of Nantucket summers, this collection blends function with quiet luxury. The Pier Pointelle Set brings breathable comfort with a soft, textured knit, while the Navy Luxe Hoodie adds a cozy, coastal contrast. The Boat Tote finishes the look with classic utility and clean, understated branding. Together, they capture wellness, warmth and that easy sense of calm by the coast.
-
-<PhotoGallery
-  layout="rows"
-  items={[
-    { label: 'The Nantucket Edit: feature photo' },
-    { label: 'The Nantucket Edit: photo 2' },
-    { label: 'The Nantucket Edit: photo 3' },
-    { label: 'The Nantucket Edit: photo 4' },
-    { label: 'The Nantucket Edit: photo 5' },
-    { label: 'The Nantucket Edit: photo 6' },
-  ]}
-/>
-
-<ProductLineup
-  items={[
-    { name: 'Pier Pointelle Set', views: [{ label: 'Front' }, { label: 'Back' }] },
-    { name: 'Navy Luxe Hoodie', views: [{ label: 'Front' }, { label: 'Back' }] },
-    { name: 'Boat Tote', views: [{ label: 'Front' }, { label: 'Back' }] },
-  ]}
-/>
+  <ProductLineup
+    items={[
+      { name: 'Pier Pointelle Set', fill: true, views: [
+        { label: 'Set', src: ntPointelleSet, alt: 'Flat illustration of the white Pier Pointelle Set: cropped top and wide-leg pants' },
+        { label: 'Top', src: ntPointelleTop, alt: 'Flat illustration of the Pier Pointelle Top, front and back' },
+        { label: 'Pant', src: ntPointellePant, alt: 'Flat illustration of the Pier Pointelle Pant, front and back' },
+      ] },
+      { name: 'Navy Luxe Hoodie', fill: true, views: [
+        { label: 'Front & back', src: ntHoodieGraphic, alt: 'Flat illustration of the Navy Luxe Hoodie: WS logo on the front, circular Wellness Society logo on the back' },
+      ] },
+      { name: 'Boat Tote', fill: true, views: [
+        { label: 'Front & back', src: ntTote, alt: 'Flat illustration of the cream and navy Boat Tote with the Wellness Society patch' },
+      ] },
+    ]}
+  />
+</Panel>
