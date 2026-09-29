@@ -1,30 +1,30 @@
 /*
  * The Wellness Society project theme, applied via `theme: wellness`.
- * Navy is sampled from the tote in the cover photo (swap in the exact brand hex
- * when available); cream is the canvas of the tote. Body copy stays DM Sans.
+ * Navy is the brand navy (#152A44); cream is the canvas of the tote.
+ * Body copy stays DM Sans.
  */
 .theme-wellness,
 .theme-wellness [data-tone='dark'] {
   --case-font: var(--font-sans);
-  --case-bg: #1c2b5a;
-  --case-surface: #24356b;
-  --case-border: #34467d;
+  --case-bg: #152a44;
+  --case-surface: #1d3656;
+  --case-border: #2f4a6b;
   --case-text: #ffffff;
   --case-muted: #c9cfe0;
 
-  --case-accent-1: #1c2b5a;
-  --case-accent-2: #1c2b5a;
-  --case-accent-3: #1c2b5a;
+  --case-accent-1: #152a44;
+  --case-accent-2: #152a44;
+  --case-accent-3: #152a44;
   /* On navy backgrounds, highlights use cream */
   --case-accent-1-text: #f3eee3;
   --case-accent-2-text: #f3eee3;
   --case-accent-3-text: #f3eee3;
   --case-glow: none;
 
-  /* Headings on white (navy is 13:1 on white) */
-  --case-heading-1: #1c2b5a;
-  --case-heading-2: #1c2b5a;
-  --case-heading-3: #1c2b5a;
+  /* Headings on white (navy is 14:1 on white) */
+  --case-heading-1: #152a44;
+  --case-heading-2: #152a44;
+  --case-heading-3: #152a44;
 
   /* Warm cream behind product shots */
   --case-cream: #f3eee3;
