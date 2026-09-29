@@ -13,8 +13,10 @@
   // Pin those by their bottom edge instead, so all their content scrolls into view first.
   const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
   const place = () => {
-    const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 0;
-    const headerPx = header * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    // Everything pinned above the slides: the site header, plus a section nav if there is one
+    const headerPx =
+      (document.querySelector<HTMLElement>('.header')?.offsetHeight ?? 0) +
+      (document.querySelector<HTMLElement>('.section-nav')?.offsetHeight ?? 0);
     slides.forEach((slide) => {
       slide.style.top = `${Math.min(headerPx, innerHeight - slide.offsetHeight)}px`;
     });

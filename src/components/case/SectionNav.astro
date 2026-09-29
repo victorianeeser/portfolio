@@ -1,0 +1,126 @@
+---
+// A sticky "jump to" bar for a long case study. It sits under the site header, links to
+// sections by id and highlights the section currently in view.
+interface Props {
+  items: { label: string; href: string }[]; // href like "#branding"
+  label?: string;
+}
+
+const { items, label = 'Jump to section' } = Astro.props;
+---
+
+<nav class="section-nav" aria-label={label}>
+  <ul class="section-nav__list" role="list">
+    {
+      items.map(({ label, href }) => (
+        <li>
+          <a href={href} class="section-nav__link">
+            {label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('.section-nav');
+  if (nav) {
+    const list = nav.querySelector<HTMLElement>('.section-nav__list')!;
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('.section-nav__link')];
+    const targets = links.map((a) => document.querySelector<HTMLElement>(a.hash));
+    const header = document.querySelector<HTMLElement>('.header');
+
+    const update = () => {
+      // A section is "current" once its top passes just below the header and this bar
+      const line = (header?.offsetHeight ?? 0) + nav.offsetHeight + 24;
+      let active = -1;
+      targets.forEach((t, i) => {
+        if (t && t.getBoundingClientRect().top <= line) active = i;
+      });
+      links.forEach((a, i) => {
+        const on = i === active;
+        if (on && a.getAttribute('aria-current') !== 'location') {
+          a.setAttribute('aria-current', 'location');
+          // Keep the active link visible when the bar scrolls sideways on phones.
+          // (Scroll only the bar; scrollIntoView could also move the page.)
+          const li = a.parentElement!;
+          if (li.offsetLeft < list.scrollLeft || li.offsetLeft + li.offsetWidth > list.scrollLeft + list.clientWidth) {
+            list.scrollTo({ left: li.offsetLeft - list.clientWidth / 2 + li.offsetWidth / 2 });
+          }
+        } else if (!on) {
+          a.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    update();
+  }
+</script>
+
+<style>
+  .section-nav {
+    position: sticky;
+    top: var(--header-height);
+    z-index: calc(var(--z-header) - 1);
+    grid-column: full;
+    border-bottom: var(--border);
+    background: var(--color-bg);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  /* Anchor jumps and stacked slides leave room for the header plus this bar */
+  :global(html:has(.section-nav)) {
+    --sticky-offset: calc(var(--header-height) + var(--subnav-height));
+    scroll-padding-top: calc(var(--sticky-offset) + var(--space-5));
+  }
+
+  /* position: relative so link offsets are measured from the list when centering the active one */
+  .section-nav__list {
+    position: relative;
+    display: flex;
+    gap: var(--space-5);
+    width: 100%;
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    min-height: var(--subnav-height);
+    margin-inline: auto;
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+    list-style: none;
+  }
+
+  .section-nav__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .section-nav__list li {
+    display: flex;
+    flex: none;
+  }
+
+  .section-nav__link {
+    display: flex;
+    align-items: center;
+    min-height: var(--tap-target);
+    border-bottom: calc(var(--border-width) * 2) solid transparent;
+    font-size: var(--text-small);
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .section-nav__link:hover {
+    color: var(--color-text);
+  }
+
+  .section-nav__link[aria-current='location'] {
+    border-bottom-color: var(--case-accent-1, var(--color-text));
+    color: var(--case-heading-1, var(--color-text));
+  }
+</style>

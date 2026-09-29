@@ -17,6 +17,7 @@ cover:
 ---
 
 import SectionTitle from '../../components/case/SectionTitle.astro';
+import SectionNav from '../../components/case/SectionNav.astro';
 import SwipeCards from '../../components/case/SwipeCards.astro';
 import Panel from '../../components/case/Panel.astro';
 import ColorStory from '../../components/case/ColorStory.astro';
@@ -43,7 +44,17 @@ import appFocus from '../../assets/projects/courtsync/app-focus.jpg';
 import appPerform from '../../assets/projects/courtsync/app-perform.jpg';
 import appRecover from '../../assets/projects/courtsync/app-recover.jpg';
 
-<SectionTitle accent={2}>Overview</SectionTitle>
+<SectionNav
+  items={[
+    { label: 'Deliverables', href: '#overview' },
+    { label: 'Branding & Strategy', href: '#branding' },
+    { label: 'Product Design', href: '#product-design' },
+    { label: 'Software Design', href: '#software-design' },
+    { label: 'Launch Website', href: '#launch-website' },
+  ]}
+/>
+
+<SectionTitle id="overview" accent={2}>Overview</SectionTitle>
 
 The brief: conceptualize, design and launch a new headphone product. Beyond the user experience, that meant crafting a brand narrative, designing the physical product with AI tools, and building a launch website that tells a story and builds anticipation, simulating a real-world launch where visual design, branding and storytelling capture the market's attention.
 
@@ -59,7 +70,7 @@ The brief: conceptualize, design and launch a new headphone product. Beyond the 
   ]}
 />
 
-<SectionTitle accent={1}>Branding & Strategy</SectionTitle>
+<SectionTitle id="branding" accent={1}>Branding & Strategy</SectionTitle>
 
 ### Brand concept
 
@@ -158,7 +169,7 @@ Unlike standard sport headphones that only play music, CourtSync combines intell
   />
 </Panel>
 
-<SectionTitle accent={1}>Product Design</SectionTitle>
+<SectionTitle id="product-design" accent={1}>Product Design</SectionTitle>
 
 SyncPros earbuds were designed with AI tools, with secure ear hooks for athletes whose earbuds fall out mid-workout, and come in five colorways.
 
@@ -190,7 +201,7 @@ SyncPros earbuds were designed with AI tools, with secure ear hooks for athletes
   ]}
 />
 
-<SectionTitle accent={1}>Software Design</SectionTitle>
+<SectionTitle id="software-design" accent={1}>Software Design</SectionTitle>
 
 ### Wireframes
 
@@ -211,7 +222,7 @@ I started on paper, sketching the home screen, earbud settings and the three tra
 
 <AeroIntro />
 
-<SectionTitle accent={1}>Launch Website</SectionTitle>
+<SectionTitle id="launch-website" accent={1}>Launch Website</SectionTitle>
 
 A responsive landing page that introduces SyncPros, tells the story behind the product, highlights its key features and lets athletes pre-order.
 

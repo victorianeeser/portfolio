@@ -5,13 +5,15 @@
 interface Props {
   level?: 2 | 3;
   accent?: 1 | 2 | 3;
+  /** Anchor id, e.g. for a section nav link */
+  id?: string;
 }
 
-const { level = 2, accent = 1 } = Astro.props;
+const { level = 2, accent = 1, id } = Astro.props;
 const Tag = `h${level}` as const;
 ---
 
-<Tag class="section-title" data-accent={accent}><slot /></Tag>
+<Tag class="section-title" id={id} data-accent={accent}><slot /></Tag>
 
 <style>
   .section-title {

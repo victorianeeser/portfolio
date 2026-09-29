@@ -70,6 +70,7 @@
   --gutter: var(--space-4);         /* page side padding */
   --header-height: 4rem;
   --tap-target: 2.75rem;            /* 44px minimum touch target */
+  --subnav-height: 3rem;            /* sticky section bar in long case studies */
 
   /* ---------- Shape ---------- */
   --radius-sm: 4px;

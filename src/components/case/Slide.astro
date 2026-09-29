@@ -24,11 +24,11 @@ const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 <style>
   .slide {
     position: sticky;
-    top: var(--header-height);
+    top: var(--sticky-offset, var(--header-height));
     display: flex;
     /* Content starts at the same height on every slide, so titles line up as they stack */
     align-items: flex-start;
-    min-height: calc(100svh - var(--header-height));
+    min-height: calc(100svh - var(--sticky-offset, var(--header-height)));
     padding-block: var(--space-8);
     background: var(--slide-bg);
     color: var(--slide-ink);
