@@ -32,8 +32,9 @@ const { items, label = 'Jump to section' } = Astro.props;
     const header = document.querySelector<HTMLElement>('.header');
 
     const update = () => {
-      // A section is "current" once its top passes just below the header and this bar
-      const line = (header?.offsetHeight ?? 0) + nav.offsetHeight + 24;
+      // A section is "current" once its top is within reach of the header and this bar.
+      // Link jumps land headings a small gap below the bar, so leave room past that gap.
+      const line = (header?.offsetHeight ?? 0) + nav.offsetHeight + 64;
       let active = -1;
       targets.forEach((t, i) => {
         if (t && t.getBoundingClientRect().top <= line) active = i;

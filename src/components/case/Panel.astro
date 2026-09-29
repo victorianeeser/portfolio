@@ -12,15 +12,17 @@ interface Props {
   tone?: 'dark' | 'light';
   /** Heading level: 2 when the panel starts a new case study section, else 3 */
   level?: 2 | 3;
+  /** Anchor id, e.g. for a section nav link */
+  id?: string;
 }
 
-const { eyebrow, title, highlight, accent = 1, intro, tone = 'dark', level = 3 } = Astro.props;
+const { eyebrow, title, highlight, accent = 1, intro, tone = 'dark', level = 3, id } = Astro.props;
 const Heading = `h${level}` as const;
 
 const [before, after] = highlight && title.includes(highlight) ? title.split(highlight) : [title, undefined];
 ---
 
-<section class="panel" data-accent={accent} data-tone={tone}>
+<section class="panel" id={id} data-accent={accent} data-tone={tone}>
   <div class="panel__inner">
     <header class="panel__head">
       {eyebrow && <p class="panel__eyebrow">{eyebrow}</p>}
