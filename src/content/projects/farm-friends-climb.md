@@ -1,25 +1,22 @@
 ---
-title: "[Project 4 title]"
-summary: "[Placeholder: one-line summary of project 4.]"
-role: "[Your role]"
+title: "Farm Friends Climb"
+summary: "A cozy climbing game with farm animal characters in patterned tiles, designed in Figma and built with Claude Code."
+role: "Solo: game design, UI and development"
 timeline: "[Month Year – Month Year]"
-tools: ["Figma", "[Tool]"]
-team: "[Solo / team of N: roles]"
-tags: ["UX"]
+tools: ["Figma", "Claude Code"]
+team: "Solo"
+tags: ["Game", "UI", "Front-end"]
 order: 4
 featured: true
-# figma: "https://www.figma.com/design/..."  # link to the source Figma file
+theme: farm-friends
 cover:
-  label: "Project 4: cover"
-  alt: ""
+  label: "Farm Friends Climb: cover"
+  src: "../../assets/projects/farm-friends-climb/cover.jpg"
+  alt: "Farm Friends Climb character select: six farm animals on patterned tiles and a Play button, beside a woman resting on a black and white calf in the grass"
 hero:
-  label: "Project 4: hero image"
-  alt: ""
-gallery:
-  - label: "Project 4: gallery image 1"
-    alt: ""
-  - label: "Project 4: gallery image 2"
-    alt: ""
+  label: "Farm Friends Climb: hero"
+  src: "../../assets/projects/farm-friends-climb/cover.jpg"
+  alt: "Farm Friends Climb character select: six farm animals on patterned tiles and a Play button, beside a woman resting on a black and white calf in the grass"
 ---
 
 ## Overview
