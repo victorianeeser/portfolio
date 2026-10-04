@@ -63,17 +63,28 @@ const hover = theme ? hoverColors[theme] : undefined;
     inset: 0;
   }
 
-  .card:hover .card__link {
+  /* Hovering the photo or title (the stretched link) colors the title */
+  .card__link:hover {
     color: var(--card-hover, var(--color-hover));
   }
 
+  /* Tags sit above the stretched link so each one reacts to its own hover;
+     the gaps between them still pass through to the link */
+  .tag-list {
+    position: relative;
+    margin-top: var(--space-2);
+    z-index: 1;
+    pointer-events: none;
+  }
+
   .card .tag {
+    pointer-events: auto;
     transition:
       color var(--duration-fast) var(--ease-out),
       border-color var(--duration-fast) var(--ease-out);
   }
 
-  .card:hover .tag {
+  .card .tag:hover {
     border-color: var(--card-hover, var(--color-hover));
     color: var(--card-hover, var(--color-hover));
   }
@@ -82,7 +93,7 @@ const hover = theme ? hoverColors[theme] : undefined;
     transition: opacity var(--duration-base) var(--ease-out);
   }
 
-  .card:hover :global(.slot) {
+  .card:has(.card__link:hover) :global(.slot) {
     opacity: var(--hover-opacity);
   }
 
@@ -94,9 +105,5 @@ const hover = theme ? hoverColors[theme] : undefined;
     outline: var(--focus-ring-width) solid var(--color-focus);
     outline-offset: var(--focus-ring-offset);
     border-radius: var(--radius-md);
-  }
-
-  .tag-list {
-    margin-top: var(--space-2);
   }
 </style>
