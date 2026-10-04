@@ -10,12 +10,12 @@ interface Props {
 const { project, headingLevel: Heading = 'h3' } = Astro.props;
 const { title, role, tags, cover, theme } = project.data;
 
-// Each project's brand color for the title on hover
+// Each project's brand color for the title and tags on hover
 const hoverColors: Record<string, string> = {
   impact: '#00e786',
   courtsync: '#015aff',
-  wellness: '#152a44',
-  'farm-friends': '#621a28',
+  wellness: '#1f5fae',
+  'farm-friends': '#c0283f',
 };
 const hover = theme ? hoverColors[theme] : undefined;
 ---
@@ -64,6 +64,17 @@ const hover = theme ? hoverColors[theme] : undefined;
   }
 
   .card:hover .card__link {
+    color: var(--card-hover, var(--color-hover));
+  }
+
+  .card .tag {
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .card:hover .tag {
+    border-color: var(--card-hover, var(--color-hover));
     color: var(--card-hover, var(--color-hover));
   }
 
