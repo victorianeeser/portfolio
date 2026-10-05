@@ -1,0 +1,78 @@
+---
+// The four cloud platforms, using the game's own exported art (tools/export.html, 32×).
+// Descriptions follow the game's tuning in js/config.js and js/level.js.
+import { Image } from 'astro:assets';
+import staticCloud from '../../../assets/projects/farm-friends-climb/clouds/static.png';
+import moving from '../../../assets/projects/farm-friends-climb/clouds/moving.png';
+import breakable from '../../../assets/projects/farm-friends-climb/clouds/breakable.png';
+import spring from '../../../assets/projects/farm-friends-climb/clouds/spring.png';
+
+const clouds = [
+  { name: 'Static', text: 'Holds still: the steady footing every climb starts on.', src: staticCloud },
+  { name: 'Moving', text: 'Drifts sideways, so the landing has to be timed.', src: moving },
+  { name: 'Breakable', text: 'Takes one bounce, then fades away.', src: breakable },
+  { name: 'Spring', text: 'Launches about three times higher, with a particle burst.', src: spring },
+];
+---
+
+<ul class="clouds case-wide" role="list" aria-label="Cloud platforms">
+  {
+    clouds.map(({ name, text, src }) => (
+      <li class="clouds__item">
+        <div class="clouds__art">
+          <Image src={src} alt={`${name} cloud platform`} width={480} />
+        </div>
+        <h3 class="clouds__name">{name}</h3>
+        <p class="clouds__text">{text}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .clouds {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5) var(--space-4);
+    margin-block: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The clouds sit on the game's mid-sky periwinkle, where their outlines read best */
+  .clouds__art {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: #7683dc;
+  }
+
+  .clouds__art :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    image-rendering: pixelated;
+  }
+
+  .clouds__name {
+    margin-top: var(--space-3);
+    font-family: var(--case-display);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--case-heading-1);
+  }
+
+  .clouds__text {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .clouds {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

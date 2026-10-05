@@ -11,9 +11,11 @@ interface Props {
 }
 
 const { items, accent = 1 } = Astro.props;
+// Four points run four across; anything else uses three columns
+const columns = items.length === 4 ? 4 : 3;
 ---
 
-<ul class="points case-wide" data-accent={accent} role="list">
+<ul class="points case-wide" data-accent={accent} role="list" style={`--points-cols: ${columns}`}>
   {
     items.map(({ title, text }) => (
       <li class="point">
@@ -52,7 +54,7 @@ const { items, accent = 1 } = Astro.props;
 
   @media (min-width: 48rem) {
     .points {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(var(--points-cols), 1fr);
     }
   }
 </style>

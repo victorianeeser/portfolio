@@ -1,0 +1,71 @@
+---
+// Leaderboard prize tiers, top prize first. The first tier is highlighted.
+interface Tier {
+  place: string; // e.g. "1st"
+  prize: string;
+}
+
+interface Props {
+  items: Tier[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="tiers" role="list" aria-label="Prize tiers">
+  {
+    items.map(({ place, prize }, i) => (
+      <li class="tiers__item" data-top={i === 0 ? '' : undefined}>
+        <span class="tiers__place">{place}</span>
+        <span class="tiers__prize">{prize}</span>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .tiers {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .tiers__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--case-surface);
+  }
+
+  /* The one-of-one token takes the sunset gold */
+  .tiers__item[data-top] {
+    background: #fde9aa;
+  }
+
+  .tiers__place {
+    font-family: var(--case-display);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--case-accent-1-text);
+  }
+
+  .tiers__prize {
+    color: var(--case-text);
+  }
+
+  .tiers__item[data-top] .tiers__place,
+  .tiers__item[data-top] .tiers__prize {
+    color: #621a28;
+  }
+
+  @media (min-width: 48rem) {
+    .tiers {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+  }
+</style>

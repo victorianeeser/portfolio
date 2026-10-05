@@ -30,6 +30,7 @@ const projects = defineCollection({
       timeline: z.string(),
       tools: z.array(z.string()),
       team: z.string(),
+      type: z.string().optional(), // optional extra detail row, e.g. what kind of project it is
       tags: z.array(z.enum(TAGS)),
       order: z.number(), // lower = earlier in lists
       featured: z.boolean().default(false), // show on the home page

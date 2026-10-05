@@ -1,0 +1,171 @@
+---
+// The climb's sky: the game's eight color stops as one band, from sunset gold at the start to
+// night navy, with the day and night obstacles in their part of the sky and stars fading in.
+// Below it, each stop with the score where it's reached and the bounce tempo ramp.
+// Values come from the game's js/config.js (SKY_COLORS, SKY_STEP, TEMPO, STARS).
+import { Image } from 'astro:assets';
+import PixelSprite from './PixelSprite.astro';
+import { crow, owl, bee } from './flyers';
+import gust from '../../../assets/projects/farm-friends-climb/clouds/gust.png';
+
+const stops = ['#FDE9AA', '#FFC98A', '#F3AFA0', '#CAA6B7', '#7683DC', '#3D4787', '#1D2559', '#091040'];
+const step = 80; // points of climb between stops
+const gradient = `linear-gradient(to right, ${stops.map((c, i) => `${c} ${((i / (stops.length - 1)) * 100).toFixed(1)}%`).join(', ')})`;
+
+// A fixed scatter of stars over the night half (x, y in %)
+const stars = [
+  [58, 20], [63, 62], [67, 34], [71, 78], [74, 14], [77, 50], [80, 28], [83, 70], [86, 42],
+  [88, 16], [90, 60], [92, 84], [94, 30], [96, 52], [98, 22], [69, 88], [79, 8], [85, 92],
+];
+---
+
+<figure class="sky case-wide">
+  <div class="sky__band" style={`background: ${gradient}`}>
+    {stars.map(([x, y], i) => <span class="sky__star" data-big={i % 5 === 0 ? '' : undefined} style={`left: ${x}%; top: ${y}%; opacity: ${0.35 + ((x - 55) / 45) * 0.65}`} aria-hidden="true" />)}
+    <span class="sky__flyer sky__flyer--crow"><PixelSprite {...crow} label="Crow obstacle" /></span>
+    <span class="sky__flyer sky__flyer--gust"><Image src={gust} alt="Wind gust obstacle" width={gust.width} /></span>
+    <span class="sky__flyer sky__flyer--owl"><PixelSprite {...owl} label="Owl obstacle" /></span>
+    <span class="sky__flyer sky__flyer--bee"><PixelSprite {...bee} label="Bee obstacle" /></span>
+    <span class="sky__tag sky__tag--start">Sunset</span>
+    <span class="sky__tag sky__tag--end">Night</span>
+  </div>
+
+  <ol class="sky__stops" role="list" aria-label="Sky color stops">
+    {
+      stops.map((color, i) => (
+        <li class="sky__stop">
+          <span class="sky__chip" style={`background: ${color}`} aria-hidden="true" />
+          <span class="sky__hex">{color}</span>
+          <span class="sky__pts">{i * step} pts</span>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="sky__tempo">
+    <span class="sky__tempo-label">Bounce tempo</span>
+    <span class="sky__tempo-bar" aria-hidden="true" />
+    <span class="sky__tempo-range">0.75× at the start → 1× at full night ({(stops.length - 1) * step} pts)</span>
+  </div>
+</figure>
+
+<style>
+  .sky {
+    margin-block: var(--space-7);
+  }
+
+  .sky__band {
+    position: relative;
+    height: 11rem;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+  }
+
+  .sky__star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #ffffff;
+  }
+
+  /* The game's occasional "plus" star */
+  .sky__star[data-big] {
+    width: 3px;
+    height: 3px;
+    box-shadow: -3px 0 #fff, 3px 0 #fff, 0 -3px #fff, 0 3px #fff;
+  }
+
+  .sky__flyer {
+    position: absolute;
+    display: block;
+  }
+
+  .sky__flyer :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    image-rendering: pixelated;
+  }
+
+  .sky__flyer--crow { left: 7%; top: 22%; width: clamp(3.5rem, 9%, 6rem); }
+  .sky__flyer--gust { left: 25%; top: 46%; width: clamp(3.5rem, 9%, 6rem); }
+  .sky__flyer--owl { left: 66%; top: 44%; width: clamp(3.25rem, 8%, 5.5rem); }
+  .sky__flyer--bee { left: 84%; top: 18%; width: clamp(2rem, 5%, 3.5rem); }
+
+  .sky__tag {
+    position: absolute;
+    bottom: var(--space-3);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+  }
+
+  .sky__tag--start { left: var(--space-4); color: #3a2a20; }
+  .sky__tag--end { right: var(--space-4); color: #ffffff; }
+
+  .sky__stops {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4) var(--space-3);
+    margin-top: var(--space-4);
+    padding: 0;
+    list-style: none;
+  }
+
+  .sky__stop {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .sky__chip {
+    height: var(--space-5);
+    border-radius: var(--radius-sm);
+  }
+
+  .sky__hex {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+  }
+
+  .sky__pts {
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  .sky__tempo {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+  }
+
+  .sky__tempo-label {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-heading-1);
+  }
+
+  /* A wedge that thickens left to right: slow early bounces, full speed at night */
+  .sky__tempo-bar {
+    height: var(--space-3);
+    background: var(--case-heading-1);
+    clip-path: polygon(0 62%, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .sky__tempo-range {
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .sky__band {
+      height: 15rem;
+    }
+
+    .sky__stops {
+      grid-template-columns: repeat(8, 1fr);
+    }
+  }
+</style>

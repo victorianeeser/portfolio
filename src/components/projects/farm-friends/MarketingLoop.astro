@@ -1,0 +1,100 @@
+---
+// The campaign loop as numbered steps joined by arrows, with a return arrow showing it repeats.
+// Made for a dark (Merlot) panel: text and arrows use the panel's palette.
+interface Props {
+  steps: string[];
+  label?: string;
+}
+
+const { steps, label = 'The marketing loop' } = Astro.props;
+---
+
+<div class="loop">
+  <ol class="loop__steps" aria-label={label}>
+    {
+      steps.map((step, i) => (
+        <li class="loop__step">
+          <span class="loop__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <span class="loop__text">{step}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="loop__repeat"><span aria-hidden="true">↺</span> Play again with another friend</p>
+</div>
+
+<style>
+  .loop__steps {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  .loop__step {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) solid var(--case-border);
+    border-radius: var(--radius-md);
+    background: var(--case-surface);
+  }
+
+  /* Down arrows between steps on phones */
+  .loop__step + .loop__step::before {
+    content: '↓';
+    position: absolute;
+    top: calc(var(--space-3) * -1);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: var(--text-small);
+    line-height: 1;
+    color: var(--case-accent-1-text);
+  }
+
+  .loop__num {
+    font-family: var(--case-display);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--case-accent-1-text);
+  }
+
+  .loop__text {
+    font-size: var(--text-body);
+    color: var(--case-text);
+  }
+
+  .loop__repeat {
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+    color: var(--case-muted);
+  }
+
+  .loop__repeat span {
+    color: var(--case-accent-1-text);
+  }
+
+  @media (min-width: 64rem) {
+    .loop__steps {
+      grid-template-columns: repeat(var(--loop-count, 5), 1fr);
+      gap: var(--space-5);
+    }
+
+    .loop__step {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+      min-height: 9rem;
+    }
+
+    /* Right arrows between steps on wide screens */
+    .loop__step + .loop__step::before {
+      content: '→';
+      top: 50%;
+      left: calc(var(--space-5) / -2);
+    }
+  }
+</style>

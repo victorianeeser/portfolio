@@ -6,6 +6,7 @@ import { getProjects } from '../../lib/projects';
 import '../../styles/themes/impact.css';
 import '../../styles/themes/courtsync.css';
 import '../../styles/themes/wellness.css';
+import '../../styles/themes/farm-friends.css';
 import CourtSyncHero from '../../components/projects/courtsync/CourtSyncHero.astro';
 
 // Projects whose hero is built as a custom section rather than a single image
@@ -21,7 +22,7 @@ export async function getStaticPaths() {
 }
 
 const { project, next } = Astro.props;
-const { title, summary, role, timeline, tools, team, tags, hero, heroComponent, gallery, links, theme } = project.data;
+const { title, summary, role, timeline, tools, team, type, tags, hero, heroComponent, gallery, links, theme } = project.data;
 const HeroComponent = heroComponent ? heroComponents[heroComponent] : undefined;
 const { Content } = await render(project);
 
@@ -30,6 +31,7 @@ const meta = [
   { label: 'Timeline', value: timeline },
   { label: 'Tools', value: tools.join(', ') },
   { label: 'Team', value: team },
+  ...(type ? [{ label: 'Type', value: type }] : []),
 ];
 ---
 
@@ -273,9 +275,10 @@ const meta = [
     color: var(--color-text);
   }
 
+  /* One row of details: four columns, or five when a project adds a Type */
   @media (min-width: 48rem) {
     .meta-row {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
     }
   }
 </style>

@@ -1,0 +1,36 @@
+---
+// Draws pixel art from a text pixel map as crisp SVG squares: one character per pixel,
+// looked up in `palette`; '.' (or any key missing from the palette) is transparent.
+// The maps come straight from the game's js/flyers.js, so the art matches the game.
+interface Props {
+  rows: readonly string[];
+  palette: Record<string, string>;
+  label: string;
+  /** Width in CSS units; height follows the map's shape */
+  width?: string;
+  class?: string;
+}
+
+const { rows, palette, label, width = '100%', class: className } = Astro.props;
+const w = rows[0].length;
+const pixels = rows.flatMap((row, y) => [...row].flatMap((ch, x) => (palette[ch] ? [{ x, y, fill: palette[ch] }] : [])));
+---
+
+<svg
+  class:list={['pixel-sprite', className]}
+  viewBox={`0 0 ${w} ${rows.length}`}
+  style={`width: ${width}`}
+  shape-rendering="crispEdges"
+  role="img"
+  aria-label={label}
+>
+  {pixels.map(({ x, y, fill }) => <rect x={x} y={y} width="1" height="1" fill={fill} />)}
+</svg>
+
+<style>
+  .pixel-sprite {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+</style>

@@ -1,0 +1,82 @@
+/*
+ * Farm Friends Climb project theme, applied via `theme: farm-friends`.
+ * Colors come from the game itself (css/home.css and js/config.js in the game folder):
+ * Merlot is the Mallard Duck print and the Play button, cream is the home screen,
+ * and the sky stops run sunset gold to night navy. Headings use Playfair Display
+ * like the game's character cards; body copy stays DM Sans.
+ */
+@import '@fontsource/playfair-display/600.css';
+@import '@fontsource/playfair-display/600-italic.css';
+
+/* Dark palette: Merlot bands */
+.theme-farm-friends,
+.theme-farm-friends [data-tone='dark'] {
+  --case-font: var(--font-sans);
+  --case-display: 'Playfair Display', Georgia, serif;
+  --case-bg: #621a28;
+  --case-surface: #752535;
+  --case-border: #8b3b4a;
+  --case-text: #ffffff;
+  --case-muted: #f0d9dc;
+
+  --case-accent-1: #8b2a3a;
+  --case-accent-2: #458b90;
+  --case-accent-3: #9a9a7b;
+  /* On Merlot, highlights use the sunset gold from the sky */
+  --case-accent-1-text: #fde9aa;
+  --case-accent-2-text: #fde9aa;
+  --case-accent-3-text: #fde9aa;
+  --case-glow: none;
+
+  /* Headings on white: game red (8.8:1) */
+  --case-heading-1: #8b2a3a;
+  --case-heading-2: #8b2a3a;
+  --case-heading-3: #8b2a3a;
+
+  --ffc-cream: #faf7f2;
+  --ffc-brown: #3a2a20;
+  --ffc-brown-muted: #6b4a3a;
+}
+
+/* Light palette: the home screen's cream */
+.theme-farm-friends [data-tone='light'] {
+  --case-bg: var(--ffc-cream);
+  --case-surface: var(--color-bg);
+  --case-border: #ede9e4;
+  --case-text: var(--ffc-brown);
+  --case-muted: var(--ffc-brown-muted);
+  --case-accent-1-text: var(--case-accent-1);
+  --case-accent-2-text: #2f6b70;
+  --case-accent-3-text: #6b6b4f;
+}
+
+/* Section headings in the game's serif */
+.theme-farm-friends .case-body :is(.section-title, .panel__title) {
+  font-family: var(--case-display);
+  font-weight: 600;
+}
+
+/* Pull quotes in the game's red and serif */
+.theme-farm-friends .case-body.prose > blockquote {
+  --quote-color: #8b2a3a;
+  font-family: var(--case-display);
+  font-weight: 600;
+}
+
+/* Design process: wireframes, hi-fi screens and prototype side by side (phone-shaped slots) */
+.ffc-process {
+  display: grid;
+  gap: var(--space-6) var(--space-4);
+  margin-block: var(--space-6);
+}
+
+.ffc-process h3 {
+  margin-bottom: var(--space-3);
+  color: var(--case-heading-1);
+}
+
+@media (min-width: 48rem) {
+  .ffc-process {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
