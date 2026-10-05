@@ -1,0 +1,158 @@
+---
+// One Farm Friend as its character-select tile, by name. Each print is drawn as SVG from the Figma tile layers (Game Design file, frame 203:369),
+// in the tile's own 203.6 × 203.6 units. The white card, sprite and names are HTML.
+// Name colors are each print's color, darkened where needed to read on white (4.5:1).
+import { Image } from 'astro:assets';
+import cow from '../../../assets/projects/farm-friends-climb/characters/cow.png';
+import duck from '../../../assets/projects/farm-friends-climb/characters/duck.png';
+import rooster from '../../../assets/projects/farm-friends-climb/characters/rooster.png';
+import mouse from '../../../assets/projects/farm-friends-climb/characters/mouse.png';
+import sheep from '../../../assets/projects/farm-friends-climb/characters/sheep.png';
+import piglet from '../../../assets/projects/farm-friends-climb/characters/piglet.png';
+
+type Rect = [x: number, y: number, w: number, h: number, fill: string, opacity?: number];
+
+const S = 203.6;
+const v = (x: number, w: number, fill: string, o?: number): Rect => [x, 0, w, S, fill, o];
+const h = (y: number, hgt: number, fill: string, o?: number): Rect => [0, y, S, hgt, fill, o];
+
+const gingham = [0, 16.26, 32.55, 48.84, 65.13, 81.43, 97.72, 114.01, 130.3, 146.59, 162.88, 179.18, 195.25];
+
+const prints: Record<string, { bg: string; rects: Rect[] }> = {
+  'Ribbon Stripe': {
+    bg: '#e8e5ec',
+    rects: (
+      [
+        [0, 1.416, '#546169'], [25.55, 1.001, '#546169'], [74.24, 1.126, '#546169'], [174.56, 1.126, '#546169'],
+        [194.05, 1.126, '#546169'], [99.04, 1.126, '#d4b0ba'], [128.89, 1.126, '#546169'], [145.96, 1.126, '#546169'],
+        [54.24, 1.707, '#c58f7c'], [122.47, 1.707, '#ebe8f0'], [124.11, 1.707, '#c58f7c'], [125.81, 3.153, '#ede6d4'],
+        [59.9, 2.531, '#c0c1b3'], [26.52, 8.449, '#f9effa'], [34.25, 4.157, '#d4b0ba'], [50.32, 4.157, '#e2e5ee'],
+        [55.88, 4.157, '#e2e5ee'], [95.02, 4.157, '#f9effa'], [165.69, 4.157, '#c0c1b3'], [130.06, 4.157, '#d4b0ba'],
+        [199.48, 4.157, '#d4b0ba'], [75.28, 2.829, '#e9f3fd'], [38.25, 4.157, '#e1e1eb'], [1.31, 9.619, '#dbe8f0'],
+        [10.78, 12.169, '#b8c9d9'], [38.23, 12.169, '#b8c9d9'], [77.79, 5.243, '#b8c9d9'], [146.82, 5.243, '#b8c9d9'],
+        [169.58, 5.243, '#d9eefb'], [175.72, 5.243, '#e9f3fd'], [195.15, 5.243, '#f9effa'], [62.13, 12.169, '#ebe8f0'],
+        [83.29, 12.169, '#ede6d4'], [100.1, 12.169, '#e2e5ee'], [112.08, 10.329, '#e9f3fd'], [134.22, 11.773, '#f9effa'],
+        [152.01, 13.737, '#ede6d4'], [180.47, 13.737, '#b8c9d9'],
+      ] as const
+    ).map(([x, w, f]) => v(x, w, f)),
+  },
+  Merlot: { bg: '#621a28', rects: [] },
+  'Pink Gingham': {
+    bg: '#f3d1d0',
+    rects: [...gingham.map((p) => h(p, 8.339, '#cd7e81', 0.4)), ...gingham.map((p) => v(p, 8.339, '#cd7e81', 0.4))],
+  },
+  'Green Pinstripe': {
+    bg: '#e2e7e3',
+    rects: [
+      ...[14.73, 19.31, 98.13, 102.71, 181.53, 186.11].map((x) => v(x, 2.706, '#d7d9ce')),
+      ...[42.25, 72.18, 125.65, 155.58].map((x) => v(x, 5.716, '#d7d9ce')),
+      ...[47.91, 131.31].map((x) => v(x, 24.514, '#b8b896')),
+    ],
+  },
+  'Scottish Plaid': {
+    bg: '#e2e7e3',
+    rects: [
+      [0, 0, 63.16, 62.9, '#9a9a7b'], [133.39, 0, 70.39, 70.17, '#9a9a7b'],
+      [0, 62.45, 70.17, 71.27, '#a4b6ba'], [133.6, 62.45, 70.17, 71.27, '#a4b6ba'],
+      [63.24, 0, 70.17, 70.17, '#82979c'], [0, 133.71, 70.17, 70.17, '#9a9a7b'],
+      [133.39, 133.71, 70.39, 70.17, '#9a9a7b'], [63.24, 133.71, 70.17, 70.17, '#82979c'],
+      [63.22, 62.54, 70.38, 71.24, '#8bb9dd'],
+      v(59.77, 7.292, '#0e1116', 0.46), v(129.77, 7.292, '#0e1116', 0.46),
+      h(58.89, 7.292, '#0e1116', 0.46), h(130.4, 7.292, '#0e1116', 0.46),
+      v(93.94, 2.706, '#93362f', 0.77), v(100, 2.706, '#93362f', 0.77),
+      h(26.55, 2.706, '#93362f', 0.58), h(32.61, 2.706, '#93362f', 0.58), h(97.87, 2.706, '#93362f', 0.58),
+      h(166.2, 2.706, '#93362f', 0.77), h(172.26, 2.706, '#93362f', 0.77),
+    ],
+  },
+  'Blueberry Lane': {
+    bg: '#8aacc5',
+    rects: [0, 21.39, 42.81, 64.23, 85.65, 107.08, 128.5, 149.92, 171.34, 192.76].map((x) => v(x, 10.82, '#458b90')),
+  },
+};
+
+// Same order as the cover's character select
+const characters = [
+  { name: 'Cow', print: 'Ribbon Stripe', color: '#5d778e', sprite: cow },
+  { name: 'Mallard Duck', print: 'Merlot', color: '#621a28', sprite: duck },
+  { name: 'Rooster', print: 'Pink Gingham', color: '#956a6b', sprite: rooster },
+  { name: 'Barn Mouse', print: 'Green Pinstripe', color: '#777751', sprite: mouse },
+  { name: 'Sheep', print: 'Scottish Plaid', color: '#75755d', sprite: sheep },
+  { name: 'Piglet', print: 'Blueberry Lane', color: '#3f7e83', sprite: piglet },
+];
+interface Props {
+  name: string;
+  /** Element to render: 'li' inside a list of tiles, 'div' on its own */
+  as?: 'li' | 'div';
+}
+
+const { name, as: Tag = 'div' } = Astro.props;
+const { print, color, sprite } = characters.find((c) => c.name === name)!;
+const { bg, rects } = prints[print];
+---
+
+<Tag class="ffc-tile" style={`--name-color: ${color}`}>
+  <svg class="ffc-tile__print" viewBox={`0 0 ${S} ${S}`} preserveAspectRatio="none" aria-hidden="true">
+    <rect width={S} height={S} fill={bg} />
+    {rects.map(([x, y, w, hh, fill, o]) => <rect x={x} y={y} width={w} height={hh} fill={fill} opacity={o} />)}
+  </svg>
+  <div class="ffc-tile__card">
+    <Image src={sprite} alt={`${name} pixel-art sprite`} class="ffc-tile__sprite" width={sprite.width} />
+    <p class="ffc-tile__name">{name}</p>
+    <p class="ffc-tile__print-name">{print}</p>
+  </div>
+</Tag>
+
+<style>
+  /* Proportions from the 203.6px Figma tile, in container units so the tile scales as one piece */
+  .ffc-tile {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    overflow: hidden;
+    container-type: inline-size;
+    border-radius: 9.5%;
+  }
+
+  .ffc-tile__print {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ffc-tile__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70.7cqi;
+    height: 69.5cqi;
+    border-radius: 9.5cqi;
+    background: #ffffff;
+    text-align: center;
+  }
+
+  .ffc-tile__card :global(.ffc-tile__sprite) {
+    width: auto;
+    height: 26cqi;
+    max-width: 60cqi;
+    margin-bottom: 4cqi;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+
+  .ffc-tile__name {
+    font-size: max(9.5cqi, var(--text-small));
+    font-weight: var(--weight-medium);
+    line-height: 1.3;
+    color: var(--name-color);
+  }
+
+  .ffc-tile__print-name {
+    font-size: max(6.3cqi, 0.75rem);
+    letter-spacing: 0.02em;
+    color: var(--name-color);
+  }
+</style>

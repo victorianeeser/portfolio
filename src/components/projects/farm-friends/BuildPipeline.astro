@@ -1,0 +1,85 @@
+---
+// How the game was built, as a left-to-right pipeline: design in Figma, pulled into code with
+// Claude Code through the Dev Mode MCP server, previewed, then tested on a real iPhone.
+const steps = [
+  { tool: 'Figma', detail: 'Real screen designs, read through the Dev Mode MCP server' },
+  { tool: 'Claude Code', detail: 'Small, single-purpose prompts: one feature or fix at a time' },
+  { tool: 'Preview', detail: 'Visual changes checked before going live' },
+  { tool: 'iPhone 16 Pro', detail: 'Real-device testing for what a desktop preview misses' },
+];
+---
+
+<ol class="ffc-pipe case-wide" aria-label="Build process">
+  {
+    steps.map(({ tool, detail }, i) => (
+      <li class="ffc-pipe__step">
+        <span class="ffc-pipe__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+        <span class="ffc-pipe__tool">{tool}</span>
+        <span class="ffc-pipe__detail">{detail}</span>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .ffc-pipe {
+    display: grid;
+    gap: var(--space-4);
+    margin-block: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ffc-pipe__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background: #faf7f2;
+  }
+
+  /* Arrows between steps: down on phones, across on wide screens */
+  .ffc-pipe__step + .ffc-pipe__step::before {
+    content: '↓';
+    position: absolute;
+    top: calc(var(--space-4) / -2);
+    left: var(--space-5);
+    transform: translateY(-50%);
+    font-size: var(--text-small);
+    line-height: 1;
+    color: #8b2a3a;
+  }
+
+  .ffc-pipe__num {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: #8b2a3a;
+  }
+
+  .ffc-pipe__tool {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    color: #3a2a20;
+  }
+
+  .ffc-pipe__detail {
+    font-size: var(--text-small);
+    color: #6b4a3a;
+  }
+
+  @media (min-width: 48rem) {
+    .ffc-pipe {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-5);
+    }
+
+    .ffc-pipe__step + .ffc-pipe__step::before {
+      content: '→';
+      top: 50%;
+      left: calc(var(--space-5) / -2);
+      transform: translate(-50%, -50%);
+    }
+  }
+</style>

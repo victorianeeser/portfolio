@@ -1,0 +1,96 @@
+---
+// The bug real-device testing caught: on the iPhone 16 Pro the game canvas stopped short of the
+// screen, which a desktop preview never showed. Two phones compare before and after, each with a
+// small scene from the game (sunset sky, farm, a cloud and the sheep).
+import { Image } from 'astro:assets';
+import farm from '../../../assets/projects/farm-friends-climb/farm.png';
+import sheep from '../../../assets/projects/farm-friends-climb/characters/sheep.png';
+import cloud from '../../../assets/projects/farm-friends-climb/clouds/static.png';
+
+const phones = [
+  {
+    state: 'before',
+    label: 'Before',
+    caption: 'The canvas stopped short of the screen, leaving an empty strip.',
+    alt: 'Before: on the iPhone, the game ends above the bottom of the screen, leaving an empty strip',
+  },
+  {
+    state: 'after',
+    label: 'After',
+    caption: 'The canvas fills the whole device viewport.',
+    alt: 'After: the game fills the whole iPhone screen',
+  },
+];
+---
+
+<div class="ffc-fix case-wide">
+  {
+    phones.map(({ state, label, caption, alt }) => (
+      <figure class="ffc-fix__item" data-state={state}>
+        <div class="ffc-fix__phone" role="img" aria-label={alt}>
+          <div class="ffc-fix__game" aria-hidden="true">
+            <Image src={cloud} alt="" class="ffc-fix__cloud" width={480} />
+            <Image src={sheep} alt="" class="ffc-fix__sheep" width={sheep.width} />
+            <Image src={farm} alt="" class="ffc-fix__farm" width={600} />
+          </div>
+        </div>
+        <figcaption>
+          <span class="ffc-fix__label">{label}</span>
+          {caption}
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .ffc-fix {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 13rem));
+    justify-content: center;
+    gap: var(--space-5);
+    margin-block: var(--space-6);
+  }
+
+  .ffc-fix__phone {
+    aspect-ratio: 9 / 19.5;
+    overflow: hidden;
+    border: 0.4rem solid #1b1b22;
+    border-radius: 2rem;
+    /* What shows where the game doesn't reach */
+    background: repeating-linear-gradient(-45deg, #ececec 0 0.4rem, #f7f7f7 0.4rem 0.8rem);
+  }
+
+  .ffc-fix__game {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(#f3afa0, #ffc98a 55%, #fde9aa);
+  }
+
+  .ffc-fix__item[data-state='before'] .ffc-fix__game {
+    height: 82%;
+  }
+
+  .ffc-fix__game :global(img) {
+    position: absolute;
+    height: auto;
+    image-rendering: pixelated;
+  }
+
+  .ffc-fix__game :global(.ffc-fix__farm) { bottom: 0; left: 50%; width: 180%; transform: translateX(-50%); }
+  .ffc-fix__game :global(.ffc-fix__cloud) { top: 30%; left: 24%; width: 52%; }
+  .ffc-fix__game :global(.ffc-fix__sheep) { top: calc(30% - 2.2rem); left: 38%; width: 26%; }
+
+  .ffc-fix__item figcaption {
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  .ffc-fix__label {
+    display: block;
+    font-weight: var(--weight-medium);
+    color: var(--case-heading-1);
+  }
+</style>

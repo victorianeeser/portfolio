@@ -5,6 +5,7 @@
 interface Props {
   rows: readonly string[];
   palette: Record<string, string>;
+  /** What the art shows; leave empty for decoration */
   label: string;
   /** Width in CSS units; height follows the map's shape */
   width?: string;
@@ -21,8 +22,9 @@ const pixels = rows.flatMap((row, y) => [...row].flatMap((ch, x) => (palette[ch]
   viewBox={`0 0 ${w} ${rows.length}`}
   style={`width: ${width}`}
   shape-rendering="crispEdges"
-  role="img"
-  aria-label={label}
+  role={label ? 'img' : undefined}
+  aria-label={label || undefined}
+  aria-hidden={label ? undefined : 'true'}
 >
   {pixels.map(({ x, y, fill }) => <rect x={x} y={y} width="1" height="1" fill={fill} />)}
 </svg>

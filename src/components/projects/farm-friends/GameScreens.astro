@@ -1,0 +1,394 @@
+---
+// "Screens & Marketing Function": three game screens rebuilt as HTML in phone frames, each
+// labeled with the job it does for the campaign. Styling follows the game's css/home.css
+// (grey canvas, white cards, the prize-tier colors); the leaderboard uses the game's sample
+// players from js/home.js. Sizes inside a screen use one unit tied to the phone's width,
+// so the screens stay in proportion at any width.
+import { Image } from 'astro:assets';
+import CharacterTile from './CharacterTile.astro';
+import wordmark from '../../../assets/projects/farm-friends-climb/wordmark.png';
+import piglet from '../../../assets/projects/farm-friends-climb/characters/piglet.png';
+
+// Ranks 1–3 and 4–10 get their own tier colors; "You" lands at 7 between the sample players
+const board = [
+  { name: 'MeadowRose', score: '2,847', prize: 'PR Box & Exclusive Needlepoint Kit', tier: 'first' },
+  { name: 'FarmhandKate', score: '2,614', prize: 'PR Box', tier: 'podium' },
+  { name: 'CloverfieldJ', score: '2,389', prize: 'PR Box', tier: 'podium' },
+  { name: 'HayloftHannah', score: '2,211', prize: 'Single item', tier: 'rest' },
+  { name: 'PiggyBankPete', score: '2,058', prize: 'Single item', tier: 'rest' },
+  { name: 'BarnOwlBea', score: '1,902', prize: 'Single item', tier: 'rest' },
+  { name: 'You', score: '1,820', prize: 'Single item', tier: 'rest', me: true },
+  { name: 'DuckPondDev', score: '1,774', prize: 'Single item', tier: 'rest' },
+];
+---
+
+<ul class="ffc-screens case-wide" role="list">
+  <li class="ffc-screens__item">
+    <div class="ffc-screen" role="img" aria-label="Email capture screen: after a 1,820 ft climb as Piglet, the player enters an email to post the score to the leaderboard">
+      <div class="ffc-screen__body ffc-email" aria-hidden="true">
+        <div class="ffc-card ffc-email__score">
+          <span class="ffc-caps">Climbed</span>
+          <span class="ffc-email__value">1,820 <small>ft</small></span>
+          <Image src={piglet} alt="" class="ffc-email__sprite" width={piglet.width} />
+        </div>
+        <p class="ffc-email__title">Post your score</p>
+        <p class="ffc-email__note">Enter your email to join the leaderboard. The top 10 win a prize.</p>
+        <span class="ffc-email__field">you@email.com</span>
+        <span class="ffc-pill ffc-pill--brand">Post my score</span>
+        <span class="ffc-pill ffc-pill--quiet">Play again</span>
+      </div>
+    </div>
+    <h3 class="ffc-screens__name">Email capture</h3>
+    <p class="ffc-screens__job">CRM and remarketing list growth</p>
+  </li>
+
+  <li class="ffc-screens__item">
+    <div class="ffc-screen" role="img" aria-label="Leaderboard screen: MeadowRose leads with 2,847 ft and a PR Box and Exclusive Needlepoint Kit; ranks 2 and 3 win a PR Box, 4 to 10 a single item; the player's own row sits at rank 7">
+      <div class="ffc-screen__body ffc-board" aria-hidden="true">
+        <span class="ffc-back">← Back</span>
+        <p class="ffc-screen__title">Leaderboard</p>
+        <ol class="ffc-board__rows">
+          {
+            board.map(({ name, score, prize, tier, me }, i) => (
+              <li class="ffc-row" data-tier={tier} data-me={me ? '' : undefined}>
+                <span class="ffc-row__rank">{i + 1}</span>
+                <span class="ffc-row__who">
+                  <span class="ffc-row__name">{name}</span>
+                  <span class="ffc-row__prize">{prize}</span>
+                </span>
+                <span class="ffc-row__score">{score}<small>ft</small></span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+    <h3 class="ffc-screens__name">Leaderboard & prizes</h3>
+    <p class="ffc-screens__job">Urgency and a reason to share</p>
+  </li>
+
+  <li class="ffc-screens__item">
+    <div class="ffc-screen" role="img" aria-label="Character select screen: the Farm Friends Climb wordmark, the Piglet tile in its Blueberry Lane print between carousel arrows, and a Tap to Play button in the print's teal">
+      <div class="ffc-screen__body ffc-select" aria-hidden="true">
+        <Image src={wordmark} alt="" class="ffc-select__wordmark" width={600} />
+        <span class="ffc-caps ffc-select__climb">Climb</span>
+        <div class="ffc-select__carousel">
+          <span class="ffc-select__arrow">‹</span>
+          <div class="ffc-select__tile"><CharacterTile name="Piglet" /></div>
+          <span class="ffc-select__arrow">›</span>
+        </div>
+        <span class="ffc-select__dots">{Array.from({ length: 6 }, (_, i) => <i data-on={i === 5 ? '' : undefined} />)}</span>
+        <span class="ffc-pill ffc-pill--teal">Tap to Play</span>
+        <span class="ffc-pill ffc-pill--quiet">Leaderboard</span>
+        <span class="ffc-pill ffc-pill--quiet">My Stats</span>
+      </div>
+    </div>
+    <h3 class="ffc-screens__name">Character select</h3>
+    <p class="ffc-screens__job">Awareness across the full collection</p>
+  </li>
+</ul>
+
+<style>
+  .ffc-screens {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+    margin-block: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ffc-screens__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .ffc-screens__name {
+    margin-top: var(--space-4);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    color: var(--case-text);
+  }
+
+  .ffc-screens__job {
+    margin-top: var(--space-1);
+    color: var(--case-muted);
+  }
+
+  /* ---------- Phone ---------- */
+  .ffc-screen {
+    width: min(100%, 16rem);
+    aspect-ratio: 9 / 19;
+    overflow: hidden;
+    container-type: inline-size;
+    border: 0.5rem solid #1b1b22;
+    border-radius: 2.25rem;
+    background: #f2f2f2;
+    text-align: left;
+  }
+
+  /* One screen unit: 1/240 of the phone screen (about 1px at full size), so everything inside scales together */
+  .ffc-screen__body {
+    --u: calc(100cqw / 240);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: calc(9 * var(--u)) calc(6 * var(--u)) calc(6 * var(--u));
+    color: #3a2a20;
+  }
+
+  .ffc-screen__title {
+    margin-block: calc(1 * var(--u)) calc(4 * var(--u));
+    font-size: calc(18 * var(--u));
+    font-weight: var(--weight-medium);
+    line-height: 1.1;
+  }
+
+  .ffc-back {
+    font-size: calc(9 * var(--u));
+    color: #a8a8a8;
+  }
+
+  .ffc-caps {
+    font-size: calc(8 * var(--u));
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6b4a3a;
+  }
+
+  .ffc-card {
+    border-radius: calc(12 * var(--u));
+    background: #ffffff;
+    box-shadow: 0 0.1rem 0.2rem rgb(0 0 0 / 0.1);
+  }
+
+  .ffc-pill {
+    display: block;
+    margin-top: calc(5 * var(--u));
+    padding: calc(8 * var(--u));
+    border-radius: calc(99 * var(--u));
+    font-size: calc(10.5 * var(--u));
+    font-weight: var(--weight-medium);
+    text-align: center;
+  }
+
+  .ffc-pill--brand { background: #621a28; color: #ffffff; }
+  .ffc-pill--teal { background: #458b90; color: #ffffff; }
+  .ffc-pill--quiet { border: 0.1em solid #c9c9c9; color: #8a8a8a; font-size: calc(9.5 * var(--u)); padding: calc(6 * var(--u)); }
+
+  /* ---------- Email capture ---------- */
+  .ffc-email {
+    justify-content: center;
+  }
+
+  .ffc-email__score {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: calc(3 * var(--u));
+    padding: calc(14 * var(--u));
+  }
+
+  .ffc-email__value {
+    font-size: calc(30 * var(--u));
+    font-weight: var(--weight-medium);
+    line-height: 1;
+  }
+
+  .ffc-email__value small {
+    font-size: 0.45em;
+    font-weight: var(--weight-regular);
+    color: #8b6a5a;
+  }
+
+  .ffc-email :global(.ffc-email__sprite) {
+    position: absolute;
+    right: calc(14 * var(--u));
+    bottom: calc(14 * var(--u));
+    width: calc(46 * var(--u));
+    height: auto;
+    image-rendering: pixelated;
+  }
+
+  .ffc-email__title {
+    margin-top: calc(18 * var(--u));
+    font-size: calc(17 * var(--u));
+    font-weight: var(--weight-medium);
+  }
+
+  .ffc-email__note {
+    margin-top: 0.4em;
+    font-size: calc(10 * var(--u));
+    line-height: 1.4;
+    color: #6b4a3a;
+  }
+
+  .ffc-email__field {
+    display: block;
+    margin-top: calc(12 * var(--u));
+    padding: calc(10 * var(--u)) calc(12 * var(--u));
+    border: 0.15em solid #d9d4cf;
+    border-radius: calc(10 * var(--u));
+    background: #ffffff;
+    font-size: calc(10.5 * var(--u));
+    color: #a8a8a8;
+  }
+
+  /* ---------- Leaderboard ---------- */
+  .ffc-board__rows {
+    display: grid;
+    gap: calc(5 * var(--u));
+    padding: 0;
+    list-style: none;
+  }
+
+  .ffc-row {
+    --rank-fill: #d6d6b6;
+    --rank-text: #75755d;
+    display: flex;
+    align-items: center;
+    gap: calc(7 * var(--u));
+    padding: calc(7 * var(--u)) calc(9 * var(--u));
+    border-radius: calc(10 * var(--u));
+    background: #ffffff;
+    box-shadow: 0 0.1rem 0.2rem rgb(0 0 0 / 0.08);
+  }
+
+  .ffc-row[data-tier='rest'] { --rank-fill: #fce1e0; --rank-text: #956a6b; }
+  .ffc-row[data-me] { background: #fce1e0; --rank-fill: #ffffff; }
+  .ffc-row[data-tier='first'] { --rank-fill: rgb(255 255 255 / 0.25); --rank-text: #ffffff; background: #97aec4; color: #ffffff; }
+
+  .ffc-row__rank {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: calc(17 * var(--u));
+    height: calc(17 * var(--u));
+    border-radius: 50%;
+    background: var(--rank-fill);
+    font-size: calc(8 * var(--u));
+    font-weight: var(--weight-medium);
+    color: var(--rank-text);
+  }
+
+  .ffc-row__who {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  .ffc-row__name {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: calc(10 * var(--u));
+    font-weight: var(--weight-medium);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ffc-row[data-me] .ffc-row__name {
+    font-weight: 700;
+  }
+
+  .ffc-row__prize {
+    max-width: 100%;
+    margin-top: 0.3em;
+    overflow: hidden;
+    padding: 0.1em 0.7em;
+    border-radius: calc(99 * var(--u));
+    background: var(--rank-fill);
+    font-size: calc(7 * var(--u));
+    font-weight: var(--weight-medium);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--rank-text);
+  }
+
+  .ffc-row[data-tier='first'] .ffc-row__prize { background: #acbed0; }
+
+  .ffc-row__score {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: calc(10 * var(--u));
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+  }
+
+  .ffc-row__score small {
+    font-size: 0.8em;
+    font-weight: var(--weight-regular);
+    opacity: 0.7;
+  }
+
+  /* ---------- Character select ---------- */
+  .ffc-select {
+    align-items: center;
+    padding-top: calc(14 * var(--u));
+  }
+
+  .ffc-select :global(.ffc-select__wordmark) {
+    width: 72%;
+    height: auto;
+  }
+
+  .ffc-select__climb {
+    margin-top: calc(2 * var(--u));
+  }
+
+  .ffc-select__carousel {
+    display: flex;
+    align-items: center;
+    gap: calc(6 * var(--u));
+    margin-top: calc(14 * var(--u));
+  }
+
+  .ffc-select__tile {
+    width: calc(112 * var(--u));
+  }
+
+  /* The tile's text scales with the small tile here, without the page tiles' minimum sizes */
+  .ffc-screen .ffc-select__tile :global(.ffc-tile__name) {
+    font-size: 9.5cqi;
+  }
+
+  .ffc-screen .ffc-select__tile :global(.ffc-tile__print-name) {
+    font-size: 6.3cqi;
+  }
+
+  .ffc-select__arrow {
+    font-size: calc(20 * var(--u));
+    line-height: 1;
+    color: #a8a8a8;
+  }
+
+  .ffc-select__dots {
+    display: flex;
+    gap: calc(4 * var(--u));
+    margin-block: calc(9 * var(--u)) calc(6 * var(--u));
+  }
+
+  .ffc-select__dots i {
+    width: calc(5 * var(--u));
+    height: calc(5 * var(--u));
+    border-radius: 50%;
+    background: #d4d4d4;
+  }
+
+  .ffc-select__dots i[data-on] {
+    background: #458b90;
+  }
+
+  .ffc-select .ffc-pill {
+    width: 100%;
+  }
+
+  @media (min-width: 48rem) {
+    .ffc-screens {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -23,18 +23,21 @@ hero:
 import SectionNav from '../../components/case/SectionNav.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
 import Panel from '../../components/case/Panel.astro';
-import KeyPoints from '../../components/case/KeyPoints.astro';
 import ImageSlot from '../../components/ImageSlot.astro';
 import CharacterTiles from '../../components/projects/farm-friends/CharacterTiles.astro';
 import SkyClimb from '../../components/projects/farm-friends/SkyClimb.astro';
 import Platforms from '../../components/projects/farm-friends/Platforms.astro';
 import MarketingLoop from '../../components/projects/farm-friends/MarketingLoop.astro';
 import PrizeTiers from '../../components/projects/farm-friends/PrizeTiers.astro';
-import ScreenFunctions from '../../components/projects/farm-friends/ScreenFunctions.astro';
 import BriefIntro from '../../components/projects/farm-friends/BriefIntro.astro';
 import Deliverables from '../../components/projects/farm-friends/Deliverables.astro';
 import ConceptDemo from '../../components/projects/farm-friends/ConceptDemo.astro';
 import Pairing from '../../components/projects/farm-friends/Pairing.astro';
+import GameScreens from '../../components/projects/farm-friends/GameScreens.astro';
+import KpiCards from '../../components/projects/farm-friends/KpiCards.astro';
+import BuildPipeline from '../../components/projects/farm-friends/BuildPipeline.astro';
+import DeviceFix from '../../components/projects/farm-friends/DeviceFix.astro';
+import NightClose from '../../components/projects/farm-friends/NightClose.astro';
 
 <SectionNav
   items={[
@@ -45,6 +48,7 @@ import Pairing from '../../components/projects/farm-friends/Pairing.astro';
     { label: 'Characters', href: '#characters' },
     { label: 'Marketing', href: '#marketing' },
     { label: 'Process & Tools', href: '#process' },
+    { label: 'What I Learned', href: '#learned' },
   ]}
 />
 
@@ -127,41 +131,34 @@ Each run starts on a static barn-and-grass scene before the climb begins. Cloud 
   />
 </Panel>
 
-<SectionTitle level={3}>Screens & Marketing Function</SectionTitle>
-
-Every screen is doing a job beyond gameplay:
-
-<ScreenFunctions
-  rows={[
-    { screen: 'Email capture', job: 'CRM and remarketing list growth' },
-    { screen: 'Leaderboard & prizes', job: 'Urgency and a reason to share' },
-    { screen: 'Character select', job: 'Awareness across the full collection' },
-  ]}
-/>
+<Panel title="Screens & Marketing Function" tone="light" intro="Every screen is doing a job beyond gameplay.">
+  <GameScreens />
+</Panel>
 
 <SectionTitle level={3}>Marketing KPIs</SectionTitle>
 
 If this ran as a real activation, I'd track it against these numbers. They show whether the game is doing its job: promoting the collection and keeping people opening the app.
 
-<KeyPoints
-  items={[
-    { title: 'Email signups', text: 'Collected during the campaign window.' },
-    { title: 'Replays per user', text: 'Whether the climb keeps people coming back.' },
-    { title: 'Social shares', text: 'Scores posted and shared.' },
-    { title: 'Session time', text: 'Average session or dwell time.' },
-  ]}
-/>
+<KpiCards />
 
 <SectionTitle id="process">Process & Tools</SectionTitle>
 
 I built the game using Claude Code connected to Figma through its Dev Mode MCP server, pulling real screen designs straight into the codebase instead of rebuilding them from static references. I worked in small, single-purpose prompts, one feature or fix at a time, so every change was easy to check against the brief's standard:
 
+<BuildPipeline />
+
 > Small and polished beats ambitious and broken.
 
-Visual changes were previewed before going live wherever possible, and testing on a real iPhone 16 Pro caught a layout bug (the canvas not filling the actual device viewport) that a desktop browser preview never would have shown.
+Visual changes were previewed before going live wherever possible, and testing on a real iPhone 16 Pro caught a layout bug that a desktop browser preview never would have shown: the canvas not filling the actual device viewport.
 
-<SectionTitle level={3}>What I Learned</SectionTitle>
+<DeviceFix />
 
-This project pushed me to think about game design as marketing design: every mechanic, character trait and prize tier had to answer "does this get someone to play again, share their score, or want the product?" rather than just "is this fun."
-
-Scoping tightly mattered as much as designing well. Choosing a simple, provably reliable mechanic over a more ambitious one, and building iteratively with real-device testing, is what got this from an idea to a working prototype in three weeks.
+<NightClose
+  id="learned"
+  title="What I Learned"
+  lead="Does this get someone to play again, share their score, or want the product?"
+  lessons={[
+    { title: 'Game design is marketing design', text: 'This project pushed me to think about game design as marketing design: every mechanic, character trait and prize tier had to answer that question, rather than just "is this fun."' },
+    { title: 'Scoping tightly mattered as much as designing well', text: 'Choosing a simple, provably reliable mechanic over a more ambitious one, and building iteratively with real-device testing, is what got this from an idea to a working prototype in three weeks.' },
+  ]}
+/>
