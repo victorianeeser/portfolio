@@ -2,17 +2,13 @@
  * Farm Friends Climb project theme, applied via `theme: farm-friends`.
  * Colors come from the game itself (css/home.css and js/config.js in the game folder):
  * Merlot is the Mallard Duck print and the Play button, cream is the home screen,
- * and the sky stops run sunset gold to night navy. Headings use Playfair Display
- * like the game's character cards; body copy stays DM Sans.
+ * and the sky stops run sunset gold to night navy. Type is the portfolio's DM Sans.
  */
-@import '@fontsource/playfair-display/600.css';
-@import '@fontsource/playfair-display/600-italic.css';
 
 /* Dark palette: Merlot bands */
 .theme-farm-friends,
 .theme-farm-friends [data-tone='dark'] {
   --case-font: var(--font-sans);
-  --case-display: 'Playfair Display', Georgia, serif;
   --case-bg: #621a28;
   --case-surface: #752535;
   --case-border: #8b3b4a;
@@ -50,19 +46,6 @@
   --case-accent-3-text: #6b6b4f;
 }
 
-/* Section headings in the game's serif */
-.theme-farm-friends .case-body :is(.section-title, .panel__title) {
-  font-family: var(--case-display);
-  font-weight: 600;
-}
-
-/* Pull quotes in the game's red and serif */
-.theme-farm-friends .case-body.prose > blockquote {
-  --quote-color: #8b2a3a;
-  font-family: var(--case-display);
-  font-weight: 600;
-}
-
 /* Design process: wireframes, hi-fi screens and prototype side by side (phone-shaped slots) */
 .ffc-process {
   display: grid;
@@ -79,4 +62,9 @@
   .ffc-process {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+/* Pull quotes in the game's red */
+.theme-farm-friends .case-body.prose > blockquote {
+  --quote-color: #8b2a3a;
 }

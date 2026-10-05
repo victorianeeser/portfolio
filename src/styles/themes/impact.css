@@ -18,7 +18,7 @@
 /* Dark palette: the default, and for dark elements placed inside a light panel */
 .theme-impact,
 .theme-impact [data-tone='dark'] {
-  --case-font: 'Instrument Sans', var(--font-sans);
+  --case-font: var(--font-sans);
   --case-bg: #000000;
   --case-surface: #1a1a1a;
   --case-surface-2: #262626;
