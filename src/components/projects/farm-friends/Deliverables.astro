@@ -1,0 +1,205 @@
+---
+// The three deliverables, each with a small illustration built from the game's art:
+// the design system's print colors and Play button, a scene from the prototype, and a
+// needlepoint-style collector's token in the Pink Gingham print.
+import { Image } from 'astro:assets';
+import sheep from '../../../assets/projects/farm-friends-climb/characters/sheep.png';
+import rooster from '../../../assets/projects/farm-friends-climb/characters/rooster.png';
+import cloud from '../../../assets/projects/farm-friends-climb/clouds/static.png';
+
+// Print colors from the game's character list (js/characters.js)
+const prints = ['#7798b6', '#621a28', '#db9c9d', '#979766', '#9a9a7b', '#458b90'];
+---
+
+<ol class="ffc-deliver case-wide" role="list">
+  <li class="ffc-deliver__item">
+    <div class="ffc-deliver__art ffc-deliver__art--system" aria-hidden="true">
+      <div class="ffc-system">
+        <div class="ffc-system__chips">
+          {prints.map((c) => <span style={`background: ${c}`} />)}
+        </div>
+        <div class="ffc-system__row">
+          <span class="ffc-system__type">Aa</span>
+          <span class="ffc-system__button">Play</span>
+        </div>
+      </div>
+    </div>
+    <span class="ffc-deliver__num">01</span>
+    <h3 class="ffc-deliver__title">Figma design system</h3>
+    <p class="ffc-deliver__text">The foundation every screen and character is built on.</p>
+  </li>
+
+  <li class="ffc-deliver__item">
+    <div class="ffc-deliver__art ffc-deliver__art--proto" aria-hidden="true">
+      <Image src={sheep} alt="" class="ffc-proto__sprite" width={sheep.width} />
+      <Image src={cloud} alt="" class="ffc-proto__cloud" width={480} />
+    </div>
+    <span class="ffc-deliver__num">02</span>
+    <h3 class="ffc-deliver__title">Working prototype</h3>
+    <p class="ffc-deliver__text">The proof of concept: a tap-to-play build.</p>
+  </li>
+
+  <li class="ffc-deliver__item">
+    <div class="ffc-deliver__art ffc-deliver__art--token" aria-hidden="true">
+      <div class="ffc-token">
+        <div class="ffc-token__inner">
+          <Image src={rooster} alt="" width={rooster.width} />
+        </div>
+      </div>
+    </div>
+    <span class="ffc-deliver__num">03</span>
+    <h3 class="ffc-deliver__title">Collector's token</h3>
+    <p class="ffc-deliver__text">The tangible extension that makes the idea feel real.</p>
+  </li>
+</ol>
+
+<style>
+  .ffc-deliver {
+    display: grid;
+    gap: var(--space-6) var(--grid-gap);
+    margin-block: var(--space-6) var(--space-8);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ffc-deliver__art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+  }
+
+  .ffc-deliver__art :global(img) {
+    image-rendering: pixelated;
+  }
+
+  .ffc-deliver__num {
+    display: block;
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--case-heading-1);
+  }
+
+  .ffc-deliver__title {
+    margin-top: var(--space-1);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+  }
+
+  .ffc-deliver__text {
+    margin-top: var(--space-1);
+    color: var(--color-text-secondary);
+  }
+
+  /* 01: the design system on the home screen's cream */
+  .ffc-deliver__art--system {
+    background: #faf7f2;
+  }
+
+  .ffc-system {
+    display: grid;
+    gap: var(--space-4);
+    width: 72%;
+  }
+
+  .ffc-system__chips {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-2);
+  }
+
+  .ffc-system__chips span {
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+  }
+
+  .ffc-system__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .ffc-system__type {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    color: #3a2a20;
+  }
+
+  .ffc-system__button {
+    flex: 1;
+    padding: var(--space-2);
+    border-radius: var(--radius-pill);
+    background: #621a28;
+    font-size: var(--text-small);
+    text-align: center;
+    color: #ffffff;
+  }
+
+  /* 02: a moment from the climb, on the sunset sky */
+  .ffc-deliver__art--proto {
+    background: linear-gradient(#f3afa0, #ffc98a 60%, #fde9aa);
+  }
+
+  .ffc-deliver__art--proto :global(.ffc-proto__sprite) {
+    position: absolute;
+    bottom: 47%;
+    left: 50%;
+    width: 22%;
+    height: auto;
+    transform: translateX(-50%);
+  }
+
+  .ffc-deliver__art--proto :global(.ffc-proto__cloud) {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    width: 52%;
+    height: auto;
+    transform: translateX(-50%);
+  }
+
+  /* 03: a round needlepoint token in the Pink Gingham print */
+  .ffc-deliver__art--token {
+    background: #f3d1d0;
+  }
+
+  .ffc-token {
+    display: grid;
+    place-items: center;
+    width: 58%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      repeating-linear-gradient(90deg, rgb(205 126 129 / 0.45) 0 8%, transparent 8% 16%),
+      repeating-linear-gradient(0deg, rgb(205 126 129 / 0.45) 0 8%, transparent 8% 16%),
+      #f9e4e3;
+    box-shadow:
+      0 0 0 var(--space-1) #ffffff,
+      0 0 0 calc(var(--space-1) * 2) #cd7e81,
+      0 var(--space-3) var(--space-5) rgb(98 26 40 / 0.18);
+  }
+
+  .ffc-token__inner {
+    display: grid;
+    place-items: center;
+    width: 64%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #ffffff;
+  }
+
+  .ffc-token__inner :global(img) {
+    width: 62%;
+    height: auto;
+  }
+
+  @media (min-width: 48rem) {
+    .ffc-deliver {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

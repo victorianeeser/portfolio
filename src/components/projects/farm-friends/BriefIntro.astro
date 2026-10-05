@@ -1,0 +1,68 @@
+---
+// The Brief's opening: the copy on the left and the guiding question as a Merlot callout
+// on the right (stacked on phones). The copy goes in the default slot.
+interface Props {
+  question: string;
+  label?: string;
+}
+
+const { question, label = 'The guiding question' } = Astro.props;
+---
+
+<div class="ffc-intro case-wide">
+  <div class="ffc-intro__text"><slot /></div>
+  <aside class="ffc-intro__question" aria-label={label}>
+    <p class="ffc-intro__label">{label}</p>
+    <p class="ffc-intro__quote">{question}</p>
+  </aside>
+</div>
+
+<style>
+  .ffc-intro {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+    margin-block: var(--space-4) var(--space-7);
+  }
+
+  .ffc-intro__text > :global(* + *) {
+    margin-top: var(--space-4);
+  }
+
+  .ffc-intro__question {
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    background: #621a28;
+  }
+
+  .ffc-intro__label {
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #fde9aa;
+  }
+
+  .ffc-intro__quote {
+    margin-top: var(--space-3);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-heading);
+    color: #ffffff;
+  }
+
+  @media (min-width: 48rem) {
+    /* Same size as the case study's other body paragraphs */
+    .ffc-intro__text {
+      font-size: var(--text-h3);
+    }
+
+    .ffc-intro {
+      grid-template-columns: 3fr 2fr;
+      gap: var(--space-8);
+    }
+
+    .ffc-intro__question {
+      padding: var(--space-7);
+    }
+  }
+</style>

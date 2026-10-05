@@ -1,0 +1,102 @@
+---
+// "Two things made this pairing work": two cards, each with a visual. The first lines up
+// all six Farm Friends; the second lists what makes the mechanic suit a launch, on Merlot.
+import { Image } from 'astro:assets';
+import cow from '../../../assets/projects/farm-friends-climb/characters/cow.png';
+import duck from '../../../assets/projects/farm-friends-climb/characters/duck.png';
+import rooster from '../../../assets/projects/farm-friends-climb/characters/rooster.png';
+import mouse from '../../../assets/projects/farm-friends-climb/characters/mouse.png';
+import sheep from '../../../assets/projects/farm-friends-climb/characters/sheep.png';
+import piglet from '../../../assets/projects/farm-friends-climb/characters/piglet.png';
+
+const sprites = [cow, duck, rooster, mouse, sheep, piglet];
+const traits = ['Quick to learn', 'One-handed', 'Short, replayable bursts', 'Easy to show off'];
+---
+
+<ul class="ffc-pair case-wide" role="list">
+  <li class="ffc-pair__card">
+    <div class="ffc-pair__art ffc-pair__art--roster" aria-hidden="true">
+      {sprites.map((s) => <Image src={s} alt="" width={s.width} />)}
+    </div>
+    <h3 class="ffc-pair__title">The collection fits the mechanic</h3>
+    <p class="ffc-pair__text">Six characters map directly onto a character-select roster, giving players a natural reason to try, and want, the whole lineup, not just one piece.</p>
+  </li>
+  <li class="ffc-pair__card">
+    <div class="ffc-pair__art ffc-pair__art--traits">
+      <ul class="ffc-pair__traits" role="list">
+        {traits.map((t) => <li>{t}</li>)}
+      </ul>
+    </div>
+    <h3 class="ffc-pair__title">The mechanic fits the marketing goal</h3>
+    <p class="ffc-pair__text">It's quick to learn, one-handed, replayable in short bursts and easy to show off: exactly what keeps a player opening the game again during a launch week.</p>
+  </li>
+</ul>
+
+<style>
+  .ffc-pair {
+    display: grid;
+    gap: var(--space-6) var(--grid-gap);
+    margin-block: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ffc-pair__art {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    min-height: 10rem;
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+  }
+
+  .ffc-pair__art--roster {
+    gap: var(--space-4) var(--space-5);
+    background: #faf7f2;
+  }
+
+  .ffc-pair__art--roster :global(img) {
+    width: auto;
+    height: 3rem;
+    image-rendering: pixelated;
+  }
+
+  .ffc-pair__art--traits {
+    background: #621a28;
+  }
+
+  .ffc-pair__traits {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ffc-pair__traits li {
+    padding: var(--space-2) var(--space-4);
+    border: var(--border-width) solid rgb(253 233 170 / 0.5);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    color: #fde9aa;
+  }
+
+  .ffc-pair__title {
+    margin-top: var(--space-4);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+  }
+
+  .ffc-pair__text {
+    margin-top: var(--space-1);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .ffc-pair {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

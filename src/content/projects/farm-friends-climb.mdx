@@ -31,6 +31,10 @@ import Platforms from '../../components/projects/farm-friends/Platforms.astro';
 import MarketingLoop from '../../components/projects/farm-friends/MarketingLoop.astro';
 import PrizeTiers from '../../components/projects/farm-friends/PrizeTiers.astro';
 import ScreenFunctions from '../../components/projects/farm-friends/ScreenFunctions.astro';
+import BriefIntro from '../../components/projects/farm-friends/BriefIntro.astro';
+import Deliverables from '../../components/projects/farm-friends/Deliverables.astro';
+import ConceptDemo from '../../components/projects/farm-friends/ConceptDemo.astro';
+import Pairing from '../../components/projects/farm-friends/Pairing.astro';
 
 <SectionNav
   items={[
@@ -46,19 +50,19 @@ import ScreenFunctions from '../../components/projects/farm-friends/ScreenFuncti
 
 <SectionTitle id="brief">The Brief</SectionTitle>
 
-For my IXD 432 Game Design Project class, I set out to prove something bigger than "I made a game": that I could design and prototype a real marketing activation. The guiding question was simple: what would this look like if I'd built the activation for this drop?
+<BriefIntro question="What would this look like if I'd built the activation for this drop?">
+
+For my IXD 432 Game Design Project class, I set out to prove something bigger than "I made a game": that I could design and prototype a real marketing activation.
 
 I chose Dairy Boy's Farm Friends collection, a line of six cross-stitch-embroidered animal characters, as the brand to design for, and built Farm Friends Climb as the campaign I'd pitch to launch it. Three deliverables make the case:
 
-<KeyPoints
-  items={[
-    { title: 'Figma design system', text: 'The foundation every screen and character is built on.' },
-    { title: 'Working prototype', text: 'The proof of concept: a tap-to-play build.' },
-    { title: "Collector's token", text: 'The tangible extension that makes the idea feel real.' },
-  ]}
-/>
+</BriefIntro>
+
+<Deliverables />
 
 <SectionTitle id="concept">The Concept</SectionTitle>
+
+<ConceptDemo>
 
 Farm Friends Climb is a tap-to-steer, auto-bounce climber styled after Jelly Jump. Players tap left or right to steer their character upward across cloud platforms, climbing as high as they can before missing a platform ends the run.
 
@@ -66,14 +70,11 @@ I chose this mechanic over a traditional platformer (too much scope risk for a t
 
 Tap controls, rather than tilt, meant the game also had to work reliably during laptop browser testing, not just on a phone. The result is a mechanic that's one-handed, learnable in seconds, and fast enough to replay in short bursts: exactly what a marketing game needs to keep players coming back.
 
-Two things made this pairing work:
+</ConceptDemo>
 
-<KeyPoints
-  items={[
-    { title: 'The collection fits the mechanic', text: 'Six characters map directly onto a character-select roster, giving players a natural reason to try, and want, the whole lineup, not just one piece.' },
-    { title: 'The mechanic fits the marketing goal', text: "It's quick to learn, one-handed, replayable in short bursts and easy to show off: exactly what keeps a player opening the game again during a launch week." },
-  ]}
-/>
+<SectionTitle level={3}>Two things made this pairing work</SectionTitle>
+
+<Pairing />
 
 <SectionTitle id="design-process">Design Process</SectionTitle>
 
@@ -98,7 +99,7 @@ The game uses detailed, soft-shaded pixel art rather than blocky 8-bit: 64×64px
 
 <SkyClimb />
 
-Each run starts on a static barn-and-grass scene before the climb begins. Cloud platforms come in four variants, and obstacles shift with the sky: birds and a curling wind gust by day, an owl and a bee as night falls.
+Each run starts on a static barn-and-grass scene before the climb begins. Cloud platforms come in four variants, and obstacles shift with the sky: a bee and a curling wind gust by day, birds as the sun sets, and an owl as night falls.
 
 <Platforms />
 

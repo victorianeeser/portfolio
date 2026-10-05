@@ -1,0 +1,123 @@
+---
+// The Concept: the copy beside a phone that shows the mechanic. The cow auto-bounces on a
+// cloud, a moving cloud drifts above, and the screen's two halves are the tap zones.
+// Motion stops for people who prefer reduced motion. The copy goes in the default slot.
+import { Image } from 'astro:assets';
+import cow from '../../../assets/projects/farm-friends-climb/characters/cow.png';
+import staticCloud from '../../../assets/projects/farm-friends-climb/clouds/static.png';
+import movingCloud from '../../../assets/projects/farm-friends-climb/clouds/moving.png';
+import springCloud from '../../../assets/projects/farm-friends-climb/clouds/spring.png';
+---
+
+<div class="ffc-concept case-wide">
+  <div class="ffc-concept__text"><slot /></div>
+
+  <figure class="ffc-phone">
+    <div class="ffc-phone__screen" role="img" aria-label="Gameplay: the cow bounces up from cloud to cloud while the player taps the left or right half of the screen to steer">
+      <Image src={springCloud} alt="" class="ffc-phone__cloud ffc-phone__cloud--spring" width={480} />
+      <Image src={movingCloud} alt="" class="ffc-phone__cloud ffc-phone__cloud--moving" width={480} />
+      <Image src={staticCloud} alt="" class="ffc-phone__cloud ffc-phone__cloud--base" width={480} />
+      <Image src={cow} alt="" class="ffc-phone__cow" width={cow.width} />
+      <span class="ffc-phone__zone ffc-phone__zone--left" aria-hidden="true">← Tap</span>
+      <span class="ffc-phone__zone ffc-phone__zone--right" aria-hidden="true">Tap →</span>
+    </div>
+    <figcaption class="ffc-phone__caption">Tap either half of the screen to steer; the bounce is automatic.</figcaption>
+  </figure>
+</div>
+
+<style>
+  .ffc-concept {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    margin-block: var(--space-4) var(--space-7);
+  }
+
+  .ffc-concept__text > :global(* + *) {
+    margin-top: var(--space-4);
+  }
+
+  .ffc-phone {
+    justify-self: center;
+    width: min(100%, 15rem);
+  }
+
+  .ffc-phone__screen {
+    position: relative;
+    aspect-ratio: 9 / 18;
+    overflow: hidden;
+    container-type: size;
+    border: 0.5rem solid #1b1b22;
+    border-radius: 2.25rem;
+    background: linear-gradient(#cab0bf, #f3afa0 35%, #ffc98a 70%, #fde9aa);
+  }
+
+  .ffc-phone__screen :global(img) {
+    position: absolute;
+    height: auto;
+    image-rendering: pixelated;
+  }
+
+  .ffc-phone__screen :global(.ffc-phone__cloud--spring) { top: 10%; left: 52%; width: 44%; }
+  .ffc-phone__screen :global(.ffc-phone__cloud--moving) { top: 38%; left: 8%; width: 44%; animation: ffc-drift 4s ease-in-out infinite alternate; }
+  .ffc-phone__screen :global(.ffc-phone__cloud--base) { top: 70%; left: 30%; width: 44%; }
+
+  /* Feet rest on the base cloud's top edge; the bounce rises and falls like the game's arc */
+  .ffc-phone__screen :global(.ffc-phone__cow) {
+    top: calc(70% - 8cqh);
+    left: 37%;
+    width: 30%;
+    animation: ffc-bounce 1.1s cubic-bezier(0.33, 0, 0.67, 1) infinite alternate;
+  }
+
+  /* Tap zones: the screen's two halves, split by a faint line */
+  .ffc-phone__zone {
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    padding-block: var(--space-3);
+    background: rgb(255 255 255 / 0.55);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    text-align: center;
+    color: #3a2a20;
+  }
+
+  .ffc-phone__zone--left { left: 0; border-right: var(--border-width) solid rgb(58 42 32 / 0.25); }
+  .ffc-phone__zone--right { right: 0; }
+
+  .ffc-phone__caption {
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    text-align: center;
+    color: var(--color-text-secondary);
+  }
+
+  @keyframes ffc-bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20cqh); }
+  }
+
+  @keyframes ffc-drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(16cqw); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ffc-phone__screen :global(img) {
+      animation: none !important;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    /* Same size as the case study's other body paragraphs */
+    .ffc-concept__text {
+      font-size: var(--text-h3);
+    }
+
+    .ffc-concept {
+      grid-template-columns: 3fr 2fr;
+      gap: var(--space-8);
+    }
+  }
+</style>
