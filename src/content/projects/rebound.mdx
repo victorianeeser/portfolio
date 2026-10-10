@@ -1,0 +1,90 @@
+---
+title: "Rebound Physical Therapy"
+summary: "A physical therapy app that helps teenage athletes stay on top of their rehab, track their progress, and rebuild confidence as they recover from injury and return to the sport they love."
+role: "UX/UI Designer"
+timeline: "Fall 2025"
+tools: ["Figma"]
+team: "Group of 3"
+tags: ["UX", "UI"]
+order: 5
+featured: true
+# figma: "https://www.figma.com/design/xknDOzYjo4CSoe9EtRStu8"
+cover:
+  label: "Rebound: cover"
+  alt: ""
+hero:
+  label: "Rebound: hero image"
+  alt: ""
+---
+
+import SectionNav from '../../components/case/SectionNav.astro';
+import SectionTitle from '../../components/case/SectionTitle.astro';
+import CompareCards from '../../components/case/CompareCards.astro';
+
+<SectionNav
+  items={[
+    { label: 'Problem', href: '#problem' },
+    { label: 'Solution', href: '#solution' },
+    { label: 'Competitive Analysis', href: '#competitive-analysis' },
+  ]}
+/>
+
+<SectionTitle id="problem">Problem Statement</SectionTitle>
+
+> How might we help high school athletes in rehab from a sports-related injury stay motivated, track meaningful progress, and maintain consistent, engaging exercise routines?
+
+<SectionTitle id="solution">The Solution</SectionTitle>
+
+A physical therapy app that helps teenage athletes stay on top of their rehab, track their progress, and rebuild confidence as they recover from injury.
+
+{/* Secondary Research (add "{ label: 'Research', href: '#research' }" to the nav with it):
+    <SectionTitle id="research">Secondary Research</SectionTitle>
+    Insights from secondary research go here as horizontal, swipeable cards (SwipeCards, like CourtSync's
+    deliverables), built from the Figma frame 2028:983 in file xknDOzYjo4CSoe9EtRStu8 once Figma is reconnected. */}
+
+<SectionTitle id="competitive-analysis">Competitive Analysis</SectionTitle>
+
+<CompareCards
+  items={[
+    {
+      name: 'App 1',
+      features: [
+        'Onboarding questionnaire personalizes the experience',
+        'Phases shown as "achievements," which encourages completion',
+        'Different programs for specific injuries',
+      ],
+      improve: [
+        'Simplify onboarding with clearer steps and personalized injury inputs',
+        'Strengthen progress tracking with clearer visuals and motivational milestones',
+        'Boost emotional support through positive copy',
+      ],
+    },
+    {
+      name: 'App 2',
+      features: [
+        'Advanced recommendation algorithm',
+        'Progress tracking, streaks and analytics',
+        'Personal favorites, library and saved exercises',
+        'Convenience and habit building',
+      ],
+      improve: [
+        'Assessment and recommendations may still be generic compared with an individual in-person evaluation',
+        'Discover could use a community tab',
+        'Relies on users motivating themselves and doing exercises correctly',
+      ],
+    },
+    {
+      name: 'App 3',
+      features: [
+        'Personalized programs and workouts',
+        'In-depth onboarding that specifies injury and pain',
+        'Very in-depth physical programs with detailed descriptions',
+      ],
+      improve: [
+        'Not very focused on mental health, scheduling or the mind-body connection',
+        'No motivation beyond workout reminders',
+        'Visual hierarchy could be clearer',
+      ],
+    },
+  ]}
+/>
