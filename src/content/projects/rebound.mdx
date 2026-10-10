@@ -9,22 +9,25 @@ tags: ["UX", "UI"]
 order: 5
 featured: true
 # figma: "https://www.figma.com/design/xknDOzYjo4CSoe9EtRStu8"
+theme: rebound
 cover:
   label: "Rebound: cover"
-  alt: ""
-hero:
-  label: "Rebound: hero image"
-  alt: ""
+  alt: "A physical therapist guides a teenage athlete through a knee exercise, beside the Rebound app's progress and agenda cards"
+  src: "../../assets/projects/rebound/cover.jpg"
+heroComponent: rebound
 ---
 
 import SectionNav from '../../components/case/SectionNav.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
 import CompareCards from '../../components/case/CompareCards.astro';
+import Panel from '../../components/case/Panel.astro';
+import ResearchCards from '../../components/projects/rebound/ResearchCards.astro';
 
 <SectionNav
   items={[
     { label: 'Problem', href: '#problem' },
     { label: 'Solution', href: '#solution' },
+    { label: 'Research', href: '#research' },
     { label: 'Competitive Analysis', href: '#competitive-analysis' },
   ]}
 />
@@ -37,15 +40,38 @@ import CompareCards from '../../components/case/CompareCards.astro';
 
 A physical therapy app that helps teenage athletes stay on top of their rehab, track their progress, and rebuild confidence as they recover from injury.
 
-{/* Secondary Research (add "{ label: 'Research', href: '#research' }" to the nav with it):
-    <SectionTitle id="research">Secondary Research</SectionTitle>
-    Insights from secondary research go here as horizontal, swipeable cards (SwipeCards, like CourtSync's
-    deliverables), built from the Figma frame 2028:983 in file xknDOzYjo4CSoe9EtRStu8 once Figma is reconnected. */}
+<Panel id="research" level={2} title="Insights from Secondary Research" highlight="Secondary Research">
+  <ResearchCards
+    items={[
+      {
+        icon: 'physical',
+        title: 'Physical Challenges',
+        text: 'Pain, fatigue, stiffness, and limited mobility are common, but growth-plate and overuse injuries are the biggest concerns. Psychological and social barriers often impact rehab adherence more than physical ones.',
+      },
+      {
+        icon: 'brain',
+        title: 'Psychological Challenges',
+        text: 'Athletes often bridge poor communication between coaches and providers. Injury can lead to exclusion, identity loss, and isolation. Repetitive rehab and negative comparisons decrease motivation.',
+      },
+      {
+        icon: 'barrier',
+        title: 'Practical Barriers',
+        text: 'School, therapy, and activities create tight time constraints. Limited access to specialized care makes rehab harder. Communication gaps between coaches, providers, and athletes add stress and uncertainty.',
+      },
+      {
+        icon: 'heart',
+        title: 'Support Factors',
+        text: 'Emotional support and positive feedback boost motivation. Individualized, specific rehab plans keep athletes engaged. Peer support reduces isolation and anxiety. Mental-health resources, goal tracking, and progress visualization improve adherence.',
+      },
+    ]}
+  />
+</Panel>
 
 <SectionTitle id="competitive-analysis">Competitive Analysis</SectionTitle>
 
 <CompareCards
   label="Competitors"
+  tone="dark"
   items={[
     {
       name: 'Curovate',

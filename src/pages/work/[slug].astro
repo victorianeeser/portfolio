@@ -7,10 +7,12 @@ import '../../styles/themes/impact.css';
 import '../../styles/themes/courtsync.css';
 import '../../styles/themes/wellness.css';
 import '../../styles/themes/farm-friends.css';
+import '../../styles/themes/rebound.css';
 import CourtSyncHero from '../../components/projects/courtsync/CourtSyncHero.astro';
+import ReboundHero from '../../components/projects/rebound/ReboundHero.astro';
 
 // Projects whose hero is built as a custom section rather than a single image
-const heroComponents = { courtsync: CourtSyncHero };
+const heroComponents = { courtsync: CourtSyncHero, rebound: ReboundHero };
 
 export async function getStaticPaths() {
   const projects = await getProjects();

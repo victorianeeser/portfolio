@@ -3,6 +3,7 @@
 // previous/next buttons (same pattern as SwipeCards). Each card shows the app's icon and
 // name, then its features beside its areas to improve. Keep lists the same length so the
 // cards match. Without an icon, the card shows the app's initial on a tile.
+// tone="dark" sets the cards in the theme's dark surface color (e.g. Rebound's dark purple).
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
@@ -19,13 +20,14 @@ interface Props {
   items: App[];
   featuresLabel?: string;
   improveLabel?: string;
+  tone?: 'light' | 'dark';
 }
 
-const { label = 'Competitors', items, featuresLabel = 'Features', improveLabel = 'Areas to improve' } = Astro.props;
+const { label = 'Competitors', items, featuresLabel = 'Features', improveLabel = 'Areas to improve', tone = 'light' } = Astro.props;
 const id = `compare-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 ---
 
-<section class="compare case-wide" aria-labelledby={`${id}-title`}>
+<section class="compare case-wide" data-cards={tone} aria-labelledby={`${id}-title`}>
   <div class="compare__top">
     <h3 id={`${id}-title`} class="compare__label">{label}</h3>
     <div class="compare__controls" hidden>
@@ -37,7 +39,7 @@ const id = `compare-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   <ul id={id} class="compare__track" role="list" tabindex="0" aria-label={`${label}, scrollable`}>
     {
       items.map(({ name, type, icon, features, improve }) => (
-        <li class="compare__card">
+        <li class="compare__card" data-tone={tone === 'dark' ? 'dark' : undefined}>
           <header class="compare__head">
             {icon ? (
               <Image src={icon} alt="" class="compare__icon" width={112} height={112} />
@@ -258,6 +260,34 @@ const id = `compare-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
   .compare__list[data-kind='features'] li::before { content: '✓'; }
   .compare__list[data-kind='improve'] li::before { content: '→'; }
+
+  /* Dark cards: the theme's surface color, light text and bright accent markers */
+  .compare[data-cards='dark'] .compare__card {
+    border-color: var(--case-surface);
+    background: var(--case-surface);
+    color: var(--case-muted);
+  }
+
+  .compare[data-cards='dark'] .compare__head {
+    border-bottom-color: var(--case-border);
+  }
+
+  .compare[data-cards='dark'] .compare__name {
+    color: var(--case-text);
+  }
+
+  .compare[data-cards='dark'] :is(.compare__type, .compare__group) {
+    color: var(--case-subtle, var(--case-muted));
+  }
+
+  .compare[data-cards='dark'] .compare__list li::before {
+    color: var(--case-accent-1-text);
+  }
+
+  .compare[data-cards='dark'] .compare__icon--blank {
+    background: var(--case-accent-1);
+    color: var(--case-surface);
+  }
 
   /* Wide screens: about one and a half cards in view, so the row reads as scrollable,
      with features and improvements side by side */
