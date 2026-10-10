@@ -1,7 +1,7 @@
 ---
 // Rebound conclusion, rebuilt from the Figma "Conclusion" slide: a bright purple band with
-// the closing text, takeaways and next steps, beside the app's home screen in a phone
-// that runs off the bottom edge.
+// the closing text beside the app's home screen (a phone cut off at the divider), then
+// takeaways and next steps in rows of three across the full width.
 // Text is black on the bright purple (7.3:1), as in the slide; white would fail (2.9:1).
 import { Image } from 'astro:assets';
 import frame from '../../../assets/projects/rebound/phone-frame.png';
@@ -20,16 +20,28 @@ const { id, eyebrow, title, takeaways, nextSteps } = Astro.props;
 
 <section class="rb-close full-bleed" id={id}>
   <div class="rb-close__inner">
-    <div class="rb-close__text">
-      <p class="rb-close__eyebrow">{eyebrow}</p>
-      <h2 class="rb-close__title">{title}</h2>
-      <div class="rb-close__body"><slot /></div>
+    <div class="rb-close__top">
+      <div class="rb-close__text">
+        <p class="rb-close__eyebrow">{eyebrow}</p>
+        <h2 class="rb-close__title">{title}</h2>
+        <div class="rb-close__body"><slot /></div>
+      </div>
 
+      {/* The phone rises from the divider below, cut off at the bottom like the slide */}
+      <div class="rb-close__stage" aria-hidden="true">
+        <div class="rb-close__phone">
+          <Image src={screenHome} alt="" class="rb-close__screen" />
+          <Image src={frame} alt="" class="rb-close__frame" widths={[600, 900]} sizes="(min-width: 64rem) 340px, 70vw" />
+        </div>
+      </div>
+    </div>
+
+    <div class="rb-close__group">
       <h3 class="rb-close__label">Takeaways</h3>
-      <ol class="rb-close__takeaways" role="list">
+      <ol class="rb-close__cards" role="list">
         {
           takeaways.map(({ title: t, text }, i) => (
-            <li>
+            <li class="rb-close__card">
               <span class="rb-close__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h4>{t}</h4>
               <p>{text}</p>
@@ -37,16 +49,13 @@ const { id, eyebrow, title, takeaways, nextSteps } = Astro.props;
           ))
         }
       </ol>
-
-      <h3 class="rb-close__label">Next steps</h3>
-      <ul class="rb-close__next">
-        {nextSteps.map((step) => <li>{step}</li>)}
-      </ul>
     </div>
 
-    <div class="rb-close__phone" aria-hidden="true">
-      <Image src={frame} alt="" class="rb-close__frame" widths={[600, 900]} sizes="(min-width: 64rem) 380px, 70vw" />
-      <Image src={screenHome} alt="" class="rb-close__screen" />
+    <div class="rb-close__group">
+      <h3 class="rb-close__label">Next steps</h3>
+      <ul class="rb-close__next" role="list">
+        {nextSteps.map((step) => <li>{step}</li>)}
+      </ul>
     </div>
   </div>
 </section>
@@ -54,7 +63,6 @@ const { id, eyebrow, title, takeaways, nextSteps } = Astro.props;
 <style>
   .rb-close {
     grid-column: full;
-    overflow: hidden;
     margin-top: var(--space-8);
     background: var(--case-accent-1, #9e86fe);
     color: #000;
@@ -62,11 +70,16 @@ const { id, eyebrow, title, takeaways, nextSteps } = Astro.props;
   }
 
   .rb-close__inner {
-    display: grid;
-    gap: var(--space-7);
     max-width: calc(var(--container-max) + var(--gutter) * 2);
     margin-inline: auto;
-    padding: var(--space-8) var(--gutter) 0;
+    padding: var(--space-8) var(--gutter);
+  }
+
+  /* Intro text beside the phone; the phone's box ends on the divider line */
+  .rb-close__top {
+    display: grid;
+    gap: var(--space-7);
+    border-bottom: var(--border-width) solid rgb(0 0 0 / 0.3);
   }
 
   .rb-close__eyebrow {
@@ -90,57 +103,19 @@ const { id, eyebrow, title, takeaways, nextSteps } = Astro.props;
     margin-top: var(--space-4);
   }
 
-  .rb-close__label {
-    margin-top: var(--space-7);
-    padding-bottom: var(--space-3);
-    border-bottom: var(--border-width) solid rgb(0 0 0 / 0.3);
-    font-size: var(--text-small);
-    font-weight: var(--weight-medium);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
-  }
-
-  .rb-close__takeaways {
-    display: grid;
-    gap: var(--space-5);
-    margin: var(--space-5) 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .rb-close__takeaways li {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    column-gap: var(--space-4);
-  }
-
-  .rb-close__num {
-    grid-row: span 2;
-    font-size: var(--text-small);
-    font-weight: var(--weight-bold);
-    line-height: 1.9;
-  }
-
-  .rb-close__takeaways h4 {
-    font-size: var(--text-h3);
-    font-weight: var(--weight-bold);
-    color: #000;
-  }
-
-  .rb-close__next {
-    display: grid;
-    gap: var(--space-2);
-    margin: var(--space-4) 0 0;
-    padding-left: var(--space-5);
-  }
-
-  /* The app's home screen in a phone, cut off by the band's bottom edge */
-  .rb-close__phone {
+  .rb-close__stage {
     position: relative;
-    justify-self: center;
-    width: min(70%, 22rem);
+    overflow: hidden;
+    height: 22rem;
+  }
+
+  .rb-close__phone {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: min(80%, 20rem);
     aspect-ratio: 1400 / 2700;
-    margin-bottom: -40%;
+    transform: translateX(-50%);
   }
 
   .rb-close__phone :global(img) {
@@ -150,7 +125,6 @@ const { id, eyebrow, title, takeaways, nextSteps } = Astro.props;
 
   .rb-close__phone :global(.rb-close__frame) {
     inset: 0;
-    z-index: 1;
     width: 100%;
     height: 100%;
     border-radius: 0;
@@ -166,22 +140,83 @@ const { id, eyebrow, title, takeaways, nextSteps } = Astro.props;
     object-position: top;
   }
 
+  .rb-close__group {
+    margin-top: var(--space-7);
+  }
+
+  .rb-close__label {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+  }
+
+  .rb-close__cards,
+  .rb-close__next {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Takeaways as black cards with bright purple numbers, echoing the app */
+  .rb-close__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border-radius: 1rem;
+    background: #000;
+    color: var(--case-muted, #dedcdc);
+  }
+
+  .rb-close__num {
+    font-size: var(--text-small);
+    font-weight: var(--weight-bold);
+    color: var(--case-accent-1, #9e86fe);
+  }
+
+  .rb-close__card h4 {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    color: #fff;
+  }
+
+  .rb-close__next li {
+    display: flex;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 2px solid #000;
+    font-weight: var(--weight-medium);
+  }
+
+  .rb-close__next li::before {
+    content: '→';
+  }
+
+  @media (min-width: 48rem) {
+    .rb-close__cards,
+    .rb-close__next {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
   @media (min-width: 64rem) {
-    .rb-close__inner {
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-      gap: var(--space-9);
-      align-items: start;
+    .rb-close__top {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: var(--space-8);
     }
 
     .rb-close__text {
-      padding-bottom: var(--space-8);
+      padding-bottom: var(--space-7);
     }
 
-    /* Sits at the bottom of the band with its lower part cut off, as in the slide */
-    .rb-close__phone {
-      align-self: end;
-      width: min(100%, 24rem);
-      margin-bottom: -14rem;
+    /* As tall as the text beside it */
+    .rb-close__stage {
+      height: auto;
+      min-height: 22rem;
     }
   }
 </style>

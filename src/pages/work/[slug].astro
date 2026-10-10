@@ -244,14 +244,10 @@ const meta = [
     margin-top: var(--space-2);
   }
 
-  /* A centered statement section, e.g. a solution between two dark bands:
-     label, title and a short paragraph */
+  /* A short statement section between two dark bands (label, title and a paragraph),
+     with equal space above and below so it sits centered between them */
   .case-body > :global(.case-centered) {
-    grid-column: wide;
-    max-width: var(--container-slide);
-    margin-inline: auto;
     padding-block: var(--space-6);
-    text-align: center;
   }
 
   .case-body > :global(.case-centered) > :global(.eyebrow) {
