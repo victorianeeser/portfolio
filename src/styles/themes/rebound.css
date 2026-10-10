@@ -6,8 +6,9 @@
  * surface color, and black is the background. Body copy uses the portfolio's own font.
  *
  * Bright purple reads well on black (7.3:1) and dark purple (5.8:1) but not on white
- * (2.9:1), so text on white uses a deeper purple (#6C4EE6, 5.4:1). Icons, buttons and
- * anything on a dark background keep the true bright purple.
+ * (2.9:1), so text on white uses the deep purple from the color accessibility tests
+ * (#4D37A4, 8.8:1). Icons, buttons and anything on a dark background keep the true
+ * bright purple.
  */
 .theme-rebound,
 .theme-rebound [data-tone='dark'] {
@@ -22,7 +23,7 @@
 
   --case-accent-1: #9e86fe;
   /* The pull quote sits on white, where it reads the accent-2 slot directly */
-  --case-accent-2: #6c4ee6;
+  --case-accent-2: #4d37a4;
   --case-accent-3: #9e86fe;
   --case-accent-1-text: #9e86fe;
   --case-accent-2-text: #9e86fe;
@@ -32,9 +33,9 @@
   --case-glow: radial-gradient(60% 80% at 100% 0%, rgb(32 27 53 / 0.9), transparent 70%);
 
   /* Section headings and list markers on white */
-  --case-heading-1: #6c4ee6;
-  --case-heading-2: #6c4ee6;
-  --case-heading-3: #6c4ee6;
+  --case-heading-1: #4d37a4;
+  --case-heading-2: #4d37a4;
+  --case-heading-3: #4d37a4;
 }
 
 .theme-rebound [data-tone='light'] {
@@ -43,8 +44,53 @@
   --case-border: var(--color-border);
   --case-text: var(--color-text);
   --case-muted: var(--color-text-secondary);
-  --case-accent-1-text: #6c4ee6;
-  --case-accent-2-text: #6c4ee6;
-  --case-accent-3-text: #6c4ee6;
+  --case-accent-1-text: #4d37a4;
+  --case-accent-2-text: #4d37a4;
+  --case-accent-3-text: #4d37a4;
   --case-glow: none;
+}
+
+/* Design process panel: sketches in a row sized so they share one height, and the four
+   low-fi wireframes as a row of phones (two by two on phones) */
+.theme-rebound .rb-process-label {
+  color: var(--case-text);
+}
+
+.theme-rebound .panel .rb-process-label + * {
+  margin-top: var(--space-4);
+}
+
+.theme-rebound .rb-sketches,
+.theme-rebound .rb-wireframes {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.theme-rebound .rb-sketches img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+.theme-rebound .rb-wireframes {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.theme-rebound .rb-wireframes img {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.25);
+}
+
+@media (min-width: 48rem) {
+  /* Columns in proportion to each sketch's width at the same height */
+  .theme-rebound .rb-sketches {
+    grid-template-columns: 0.695fr 0.75fr 0.94fr;
+  }
+
+  .theme-rebound .rb-wireframes {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-5);
+  }
 }

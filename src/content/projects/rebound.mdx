@@ -22,7 +22,15 @@ import SectionTitle from '../../components/case/SectionTitle.astro';
 import CompareCards from '../../components/case/CompareCards.astro';
 import Panel from '../../components/case/Panel.astro';
 import ResearchCards from '../../components/projects/rebound/ResearchCards.astro';
-import ReboundCover from '../../components/projects/rebound/ReboundCover.astro';
+import { Image } from 'astro:assets';
+import ContrastPairs from '../../components/case/ContrastPairs.astro';
+import sketch1 from '../../assets/projects/rebound/sketch-1.jpg';
+import sketch2 from '../../assets/projects/rebound/sketch-2.png';
+import sketch3 from '../../assets/projects/rebound/sketch-3.png';
+import wireProgram from '../../assets/projects/rebound/wireframe-program.png';
+import wireHome from '../../assets/projects/rebound/wireframe-home.png';
+import wireCommunity from '../../assets/projects/rebound/wireframe-community.png';
+import wireChats from '../../assets/projects/rebound/wireframe-chats.png';
 import ReboundPersona from '../../components/projects/rebound/ReboundPersona.astro';
 import JourneyStages from '../../components/projects/rebound/JourneyStages.astro';
 import personaPhoto from '../../assets/projects/rebound/photo.jpg';
@@ -38,6 +46,8 @@ import prehab from '../../assets/projects/rebound/competitor-prehab.png';
     { label: 'Competitive Analysis', href: '#competitive-analysis' },
     { label: 'Persona', href: '#persona' },
     { label: 'User Journey', href: '#journey' },
+    { label: 'Accessibility', href: '#accessibility' },
+    { label: 'Sketches', href: '#sketches' },
   ]}
 />
 
@@ -52,10 +62,6 @@ import prehab from '../../assets/projects/rebound/competitor-prehab.png';
 <SectionTitle>Come Back Stronger</SectionTitle>
 
 A physical therapy app that helps teenage athletes stay on top of their rehab, track their progress, and rebuild confidence as they recover from injury.
-
-<div class="case-wide">
-  <ReboundCover />
-</div>
 
 <Panel id="research" level={2} eyebrow="Research" title="Insights from Secondary Research" highlight="Secondary Research">
   <ResearchCards
@@ -190,3 +196,41 @@ Annie’s recovery runs through five stages. We focused the design on mid rehab,
     },
   ]}
 />
+
+<p id="accessibility" class="eyebrow collection-label">Color accessibility</p>
+
+<SectionTitle>Purple That Passes</SectionTitle>
+
+We tested every text and background pairing in the palette against WCAG. Bright purple works on black and as a background for black text, and a deeper purple carries text on white.
+
+<ContrastPairs
+  items={[
+    { fg: '#000000', bg: '#9e86fd', label: 'Black on bright purple' },
+    { fg: '#9e86fd', bg: '#000000', label: 'Bright purple on black' },
+    { fg: '#4d37a4', bg: '#ffffff', label: 'Deep purple on white' },
+  ]}
+/>
+
+<Panel
+  id="sketches"
+  level={2}
+  eyebrow="Design process"
+  title="Sketches to Low-fi Wireframes"
+  highlight="Low-fi Wireframes"
+  background="linear-gradient(to bottom, #000 0%, #000 25%, #9e86fe 100%)"
+>
+  <h3 class="eyebrow rb-process-label">Sketches</h3>
+  <div class="rb-sketches">
+    <Image src={sketch1} alt="Pencil sketches of onboarding, home, workout, discover and profile screens" widths={[500, 900]} sizes="(min-width: 48rem) 30vw, 100vw" />
+    <Image src={sketch2} alt="Sketches of the home, workout and community screens with notes on each feature" widths={[500, 768]} sizes="(min-width: 48rem) 30vw, 100vw" />
+    <Image src={sketch3} alt="Pencil sketches of the full app flow, from onboarding to the journal, profile and calendar" widths={[500, 1100]} sizes="(min-width: 48rem) 40vw, 100vw" />
+  </div>
+
+  <h3 class="eyebrow rb-process-label">Low-fi wireframes</h3>
+  <div class="rb-wireframes">
+    <Image src={wireProgram} alt="Low-fi wireframe of the onboarding screen for choosing a rehab program" />
+    <Image src={wireHome} alt="Low-fi wireframe of the home screen with today's plan, progress bar, streak and exercises" />
+    <Image src={wireCommunity} alt="Low-fi wireframe of the community tab with groups and a feed of posts" />
+    <Image src={wireChats} alt="Low-fi wireframe of the chat tab with conversations with a doctor and coach" />
+  </div>
+</Panel>

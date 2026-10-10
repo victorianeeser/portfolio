@@ -14,15 +14,17 @@ interface Props {
   level?: 2 | 3;
   /** Anchor id, e.g. for a section nav link */
   id?: string;
+  /** A custom background in place of the theme's, e.g. a gradient */
+  background?: string;
 }
 
-const { eyebrow, title, highlight, accent = 1, intro, tone = 'dark', level = 3, id } = Astro.props;
+const { eyebrow, title, highlight, accent = 1, intro, tone = 'dark', level = 3, id, background } = Astro.props;
 const Heading = `h${level}` as const;
 
 const [before, after] = highlight && title.includes(highlight) ? title.split(highlight) : [title, undefined];
 ---
 
-<section class="panel" id={id} data-accent={accent} data-tone={tone}>
+<section class="panel" id={id} data-accent={accent} data-tone={tone} style={background ? `background: ${background}` : undefined}>
   <div class="panel__inner">
     <header class="panel__head">
       {eyebrow && <p class="panel__eyebrow">{eyebrow}</p>}

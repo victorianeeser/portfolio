@@ -1,0 +1,246 @@
+---
+// Color accessibility: one card per foreground/background pair, showing sample text and a
+// UI icon in those colors, the contrast ratio, and WCAG pass/fail results.
+// The ratio and results are calculated from the hex values at build time, so they always
+// match the colors shown.
+interface Pair {
+  fg: string; // hex, e.g. "#000000"
+  bg: string;
+  /** Short label, e.g. "Black on purple" */
+  label: string;
+}
+
+interface Props {
+  items: Pair[];
+  sample?: string;
+}
+
+const { items, sample = 'The five boxing wizards jump quickly.' } = Astro.props;
+
+// WCAG 2 relative luminance and contrast ratio
+const luminance = (hex: string) => {
+  const [r, g, b] = [1, 3, 5].map((i) => {
+    const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a: string, b: string) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+
+const checks = (ratio: number) => [
+  { name: 'Normal text', aa: ratio >= 4.5, aaa: ratio >= 7 },
+  { name: 'Large text', aa: ratio >= 3, aaa: ratio >= 4.5 },
+  { name: 'UI components', aa: ratio >= 3 },
+];
+---
+
+<ul class="contrast case-wide" role="list">
+  {
+    items.map(({ fg, bg, label }) => {
+      const ratio = contrast(fg, bg);
+      return (
+        <li class="contrast__card">
+          <div class="contrast__sample" style={`--fg: ${fg}; --bg: ${bg}`}>
+            <p class="contrast__large">{sample}</p>
+            <p>{sample}</p>
+            <span class="contrast__ui" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="m12 2.5 2.9 6.2 6.6.7-5 4.5 1.4 6.6L12 17.2l-5.9 3.3 1.4-6.6-5-4.5 6.6-.7z" />
+              </svg>
+              <span class="contrast__input">Text input</span>
+            </span>
+          </div>
+
+          <div class="contrast__info">
+            <div class="contrast__head">
+              <div>
+                <h4 class="contrast__label">{label}</h4>
+                <p class="contrast__hex">
+                  <span class="contrast__chip" style={`background: ${fg}`} />
+                  {fg.toUpperCase()}
+                  <span aria-hidden="true">/</span>
+                  <span class="visually-hidden">on</span>
+                  <span class="contrast__chip" style={`background: ${bg}`} />
+                  {bg.toUpperCase()}
+                </p>
+              </div>
+              <p class="contrast__ratio">
+                {ratio.toFixed(2)}<span>:1</span>
+              </p>
+            </div>
+
+            <dl class="contrast__checks">
+              {
+                checks(ratio).map(({ name, aa, aaa }) => (
+                  <div>
+                    <dt>{name}</dt>
+                    <dd>
+                      <span class:list={['contrast__badge', !aa && 'is-fail']}>AA {aa ? 'pass' : 'fail'}</span>
+                      {aaa !== undefined && (
+                        <span class:list={['contrast__badge', !aaa && 'is-fail']}>AAA {aaa ? 'pass' : 'fail'}</span>
+                      )}
+                    </dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  .contrast {
+    display: grid;
+    gap: var(--space-4);
+    margin-block: var(--space-6);
+    padding: 0;
+    list-style: none;
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .contrast__card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: var(--border);
+    border-radius: 1rem;
+    background: var(--color-bg);
+  }
+
+  /* The pair itself: sample text and a UI icon in the tested colors */
+  .contrast__sample {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border-bottom: var(--border);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: var(--text-small);
+  }
+
+  .contrast__large {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-heading);
+  }
+
+  .contrast__ui {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .contrast__input {
+    padding: 0.15em 0.6em;
+    border: 2px solid var(--fg);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+  }
+
+  .contrast__info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+
+  .contrast__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .contrast__label {
+    font-size: var(--text-body);
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+  }
+
+  .contrast__hex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+    margin-top: var(--space-1);
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .contrast__chip {
+    width: 0.75rem;
+    height: 0.75rem;
+    border: var(--border);
+    border-radius: 50%;
+  }
+
+  .contrast__ratio {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+
+  .contrast__ratio span {
+    font-weight: var(--weight-regular);
+    color: var(--color-text-tertiary);
+  }
+
+  .contrast__checks {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-top: var(--space-4);
+    border-top: var(--border);
+  }
+
+  .contrast__checks div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .contrast__checks dt {
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  .contrast__checks dd {
+    display: flex;
+    gap: var(--space-1);
+    margin: 0;
+  }
+
+  /* Pass badges: dark purple on the theme's bright accent (7.3:1) */
+  .contrast__badge {
+    padding: 0.1em 0.6em;
+    border-radius: var(--radius-pill);
+    background: var(--case-accent-1, var(--color-text));
+    font-size: 0.75rem;
+    font-weight: var(--weight-medium);
+    color: var(--case-surface, var(--color-bg));
+    white-space: nowrap;
+  }
+
+  .contrast__badge.is-fail {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .contrast {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
