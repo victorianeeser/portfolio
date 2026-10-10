@@ -22,6 +22,10 @@ import SectionTitle from '../../components/case/SectionTitle.astro';
 import CompareCards from '../../components/case/CompareCards.astro';
 import Panel from '../../components/case/Panel.astro';
 import ResearchCards from '../../components/projects/rebound/ResearchCards.astro';
+import ReboundCover from '../../components/projects/rebound/ReboundCover.astro';
+import curovate from '../../assets/projects/rebound/competitor-curovate.png';
+import movewise from '../../assets/projects/rebound/competitor-movewise.png';
+import prehab from '../../assets/projects/rebound/competitor-prehab.png';
 
 <SectionNav
   items={[
@@ -32,13 +36,19 @@ import ResearchCards from '../../components/projects/rebound/ResearchCards.astro
   ]}
 />
 
-<SectionTitle id="problem">Problem Statement</SectionTitle>
+<Panel id="problem" level={2} title="Problem Statement" highlight="Problem">
 
-> How might we help high school athletes in rehab from a sports-related injury stay motivated, track meaningful progress, and maintain consistent, engaging exercise routines?
+> **How might we** help high school athletes in rehab from a sports-related injury stay motivated, track meaningful progress, and maintain consistent, engaging exercise routines?
+
+</Panel>
 
 <SectionTitle id="solution">The Solution</SectionTitle>
 
 A physical therapy app that helps teenage athletes stay on top of their rehab, track their progress, and rebuild confidence as they recover from injury.
+
+<div class="case-wide">
+  <ReboundCover />
+</div>
 
 <Panel id="research" level={2} title="Insights from Secondary Research" highlight="Secondary Research">
   <ResearchCards
@@ -75,16 +85,19 @@ A physical therapy app that helps teenage athletes stay on top of their rehab, t
   items={[
     {
       name: 'Curovate',
+      icon: curovate,
       features: ['Personalized onboarding questionnaire', 'Phases shown as achievements', 'Programs for specific injuries'],
       improve: ['Simpler onboarding steps', 'Clearer progress visuals and milestones', 'More emotional support in the copy'],
     },
     {
       name: 'MoveWise',
+      icon: movewise,
       features: ['Advanced recommendations', 'Progress tracking and streaks', 'Saved exercise library'],
       improve: ['Generic next to an in-person evaluation', 'No community tab in Discover', 'Relies on self-motivation'],
     },
     {
       name: 'Prehab',
+      icon: prehab,
       features: ['Personalized programs', 'In-depth injury and pain onboarding', 'Detailed exercise descriptions'],
       improve: ['Little focus on mental health', 'Motivation limited to reminders', 'Weak visual hierarchy'],
     },

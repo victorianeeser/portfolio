@@ -1,315 +1,109 @@
 ---
-// Rebound cover, rebuilt from the Figma cover slide: the knee rehab photo with the app's
-// home screen cards laid over it as real elements (resume button, streak, stage card,
-// progress bar and today's agenda).
-// Sizes use --u, one pixel of the 1920×1080 slide, so the cards scale with the stage.
-// On desktop the cards sit over the photo's right side, as in the slide. On phones the
-// photo sits on top and the cards follow below it at a readable size.
+// Rebound title section, rebuilt from the Figma intro slide: a purple-to-black gradient,
+// two phones (sign-in and home screens) and the Rebound wordmark.
+// Each phone is a frame image with its app screen set inside it, so the screens stay
+// sharp. Positions are percentages of the stage, taken from the 1920×1080 slide on
+// desktop, with a taller arrangement for phones.
 import { Image } from 'astro:assets';
-import photo from '../../../assets/projects/rebound/photo.jpg';
-import fire from '../../../assets/projects/rebound/icon-fire.svg';
+import wordmark from '../../../assets/projects/rebound/wordmark.svg';
+import frame from '../../../assets/projects/rebound/phone-frame.png';
+import screenHome from '../../../assets/projects/rebound/screen-home.png';
+import screenSignIn from '../../../assets/projects/rebound/screen-sign-in.png';
 
-const agenda = [
-  { title: 'Complete Daily Exercises', time: '10:00 am', done: true },
-  { title: 'Virtual Physical Therapy Check In', time: '12:00 pm - 12:30 pm' },
-  { title: 'Daily Journaling', time: '2:30 pm' },
-];
+const frameSizes = '(min-width: 48rem) 280px, 46vw';
 ---
 
 <div
-  class="rb-hero"
+  class="rb-intro"
   role="img"
-  aria-label="Rebound: a physical therapist works with a teenage athlete on a knee exercise. Beside them, the app shows Resume Program, a 10-day streak, Stage 1 Early Recovery at day 10 of 180, 5% of the program complete and today's agenda."
+  aria-label="Rebound: Come Back Stronger. Two phones show the app's sign-in screen and its home screen, with a 10-day streak and Stage 1 Early Recovery."
 >
-  <Image
-    src={photo}
-    alt=""
-    class="rb-hero__photo"
-    widths={[800, 1200, photo.width]}
-    sizes="(min-width: 75rem) 1340px, 112vw"
-    loading="eager"
-  />
-  <div class="rb-hero__shade" aria-hidden="true"></div>
-
-  <div class="rb-hero__ui" aria-hidden="true">
-    <div class="rb-hero__row">
-      <p class="rb-card rb-card--resume">
-        <svg class="rb-card__play" viewBox="0 0 35.95 44.38" fill="currentColor" stroke="currentColor" stroke-width="3.29" stroke-linejoin="round">
-          <path d="M1.64 1.64 34.3 22.19 1.64 42.74z" />
-        </svg>
-        <span><strong>Resume</strong><br />Program</span>
-      </p>
-      <p class="rb-card rb-card--streak">
-        <Image src={fire} alt="" class="rb-card__fire" />
-        <span><strong>Streak</strong><br />10 Days</span>
-      </p>
-    </div>
-
-    <div class="rb-card rb-card--stage">
-      <p class="rb-stage__title">Stage 1 - <span>Early Recovery</span></p>
-      <p class="rb-stage__day">Day 10/180</p>
-      <p class="rb-stage__goal">Reduce pain, control swelling, and restore basic movement.</p>
-    </div>
-
-    <div class="rb-progress">
-      <span class="rb-progress__bar"><span class="rb-progress__fill"></span></span>
-      <p>Program 5% Completed</p>
-    </div>
-
-    <div class="rb-card rb-card--agenda">
-      <p class="rb-agenda__title">Today’s Agenda</p>
-      <ol class="rb-agenda">
-        {
-          agenda.map(({ title, time, done }) => (
-            <li class:list={['rb-agenda__item', done && 'is-done']}>
-              <span class="rb-agenda__dot" />
-              <span class="rb-agenda__name">{title}</span>
-              <span class="rb-agenda__time">{time}</span>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
+  <div class="rb-intro__phone rb-intro__phone--home">
+    <Image src={screenHome} alt="" class="rb-intro__screen" loading="eager" />
+    <Image src={frame} alt="" class="rb-intro__frame" widths={[600, 900]} sizes={frameSizes} loading="eager" />
   </div>
+  <div class="rb-intro__phone rb-intro__phone--sign-in">
+    <Image src={screenSignIn} alt="" class="rb-intro__screen" loading="eager" />
+    <Image src={frame} alt="" class="rb-intro__frame" widths={[600, 900]} sizes={frameSizes} loading="eager" />
+  </div>
+  <Image src={wordmark} alt="" class="rb-intro__wordmark" />
 </div>
 
 <style>
-  .rb-hero {
-    /* Phones: the card column is 539 slide pixels wide, filling most of the stage */
-    --u: calc(100cqw / 600);
+  /* Phones: taller stage, wordmark on top and the phones overlapping below it */
+  .rb-intro {
+    --mark-x: 8%;      --mark-y: 6%;   --mark-w: 84%;
+    --home-x: 44%;     --home-y: 29%;  --phone-w: 46%;
+    --sign-in-x: 10%;  --sign-in-y: 40%;
+
     position: relative;
-    container-type: inline-size;
     overflow: hidden;
+    aspect-ratio: 4 / 5;
     border-radius: var(--radius-md);
-    background: var(--case-bg, #000);
-    color: var(--case-text, #fff);
-    font-family: var(--case-font, var(--font-sans));
-    line-height: normal;
+    background: linear-gradient(to bottom, var(--case-accent-1, #9e86fe) 36%, var(--case-bg, #000));
   }
 
-  .rb-hero p {
-    margin: 0;
+  .rb-intro > :global(*) {
+    position: absolute;
   }
 
-  /* Phones: the photo crops to the therapist and athlete */
-  .rb-hero :global(.rb-hero__photo) {
-    display: block;
-    width: 100%;
+  .rb-intro :global(.rb-intro__wordmark) {
+    left: var(--mark-x);
+    top: var(--mark-y);
+    width: var(--mark-w);
     height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    object-position: 30% 50%;
+  }
+
+  /* A phone is the frame's size (1400×2700); the screen sits inside its bezel */
+  .rb-intro__phone {
+    width: var(--phone-w);
+    aspect-ratio: 1400 / 2700;
+  }
+
+  .rb-intro__phone--home    { left: var(--home-x);    top: var(--home-y); }
+  .rb-intro__phone--sign-in { left: var(--sign-in-x); top: var(--sign-in-y); }
+
+  .rb-intro__phone :global(img) {
+    position: absolute;
+    max-width: none;
+  }
+
+  .rb-intro__phone :global(.rb-intro__frame) {
+    inset: 0;
+    width: 100%;
+    height: 100%;
     border-radius: 0;
   }
 
-  /* The slide's dark purple gradient, fading in from the right */
-  .rb-hero__shade {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, var(--case-surface, #201b35) 0%, transparent 55%);
-    pointer-events: none;
+  /* The screens are inset from the frame's edges, as in Figma */
+  .rb-intro__phone :global(.rb-intro__screen) {
+    border-radius: 8.7% / 4.1%;
+    object-fit: cover;
+    object-position: top;
   }
 
-  .rb-hero__ui {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: calc(30 * var(--u));
-    width: calc(539 * var(--u));
-    margin: calc(-60 * var(--u)) auto 0;
-    padding-bottom: calc(30 * var(--u));
+  .rb-intro__phone--home :global(.rb-intro__screen) {
+    left: 6.55%;
+    top: 3%;
+    width: 87%;
+    height: 94.7%;
   }
 
-  .rb-hero__row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: calc(18 * var(--u));
+  .rb-intro__phone--sign-in :global(.rb-intro__screen) {
+    left: 7.43%;
+    top: 2.53%;
+    width: 85.15%;
+    height: 95.5%;
   }
 
-  .rb-card {
-    border: calc(3 * var(--u)) solid var(--case-border, #343339);
-    border-radius: calc(16.4 * var(--u));
-    background: var(--case-surface, #201b35);
-  }
-
-  .rb-card--resume,
-  .rb-card--streak {
-    display: flex;
-    align-items: center;
-    gap: calc(20 * var(--u));
-    height: calc(105 * var(--u));
-    padding-inline: calc(28 * var(--u));
-    font-size: calc(29.6 * var(--u));
-    line-height: 1.2;
-  }
-
-  .rb-card--resume {
-    border-color: var(--case-accent-1, #9e86fe);
-    background: var(--case-accent-1, #9e86fe);
-    color: #000;
-  }
-
-  .rb-card__play {
-    flex: none;
-    width: calc(36 * var(--u));
-    height: calc(44 * var(--u));
-    margin-right: calc(18 * var(--u));
-  }
-
-  .rb-hero :global(.rb-card__fire) {
-    flex: none;
-    width: calc(72 * var(--u));
-    height: calc(72 * var(--u));
-  }
-
-  .rb-card--streak strong {
-    color: var(--case-accent-1, #9e86fe);
-  }
-
-  .rb-card--stage {
-    padding: calc(28 * var(--u)) calc(30 * var(--u)) calc(32 * var(--u));
-  }
-
-  .rb-stage__title {
-    font-size: calc(32.9 * var(--u));
-  }
-
-  .rb-stage__title span {
-    color: var(--case-accent-1, #9e86fe);
-  }
-
-  .rb-stage__day {
-    margin-top: calc(8 * var(--u)) !important;
-    font-size: calc(26.3 * var(--u));
-    color: var(--case-subtle, #a1a1a1);
-  }
-
-  .rb-stage__goal {
-    margin-top: calc(10 * var(--u)) !important;
-    font-size: calc(24.7 * var(--u));
-    line-height: 1.2;
-    color: var(--case-muted, #dedcdc);
-  }
-
-  .rb-progress {
-    display: grid;
-    gap: calc(16 * var(--u));
-    text-align: center;
-    font-size: calc(26.3 * var(--u));
-  }
-
-  .rb-progress__bar {
-    display: block;
-    height: calc(23 * var(--u));
-    padding: calc(3 * var(--u));
-    border: calc(3 * var(--u)) solid var(--case-border, #343339);
-    border-radius: var(--radius-pill);
-    background: var(--case-surface, #201b35);
-  }
-
-  .rb-progress__fill {
-    display: block;
-    width: 5%;
-    height: 100%;
-    border-radius: var(--radius-pill);
-    background: var(--case-accent-1, #9e86fe);
-  }
-
-  .rb-card--agenda {
-    padding: calc(28 * var(--u)) calc(30 * var(--u)) calc(40 * var(--u));
-  }
-
-  .rb-agenda__title {
-    font-size: calc(32.9 * var(--u));
-  }
-
-  .rb-agenda {
-    display: grid;
-    gap: calc(40 * var(--u));
-    margin: calc(34 * var(--u)) 0 0;
-    padding: 0 0 0 calc(12 * var(--u));
-    list-style: none;
-  }
-
-  .rb-agenda__item {
-    position: relative;
-    display: grid;
-    grid-template-columns: calc(33 * var(--u)) 1fr;
-    column-gap: calc(19 * var(--u));
-    align-items: center;
-    font-size: calc(23 * var(--u));
-  }
-
-  /* Short line linking each step to the next, centered in the 40-pixel gap */
-  .rb-agenda__item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: calc(15 * var(--u));
-    top: calc(100% + 6.5 * var(--u));
-    width: 0;
-    height: calc(27 * var(--u));
-    border-left: calc(3 * var(--u)) solid var(--case-border, #343339);
-  }
-
-  .rb-agenda__dot {
-    grid-row: span 2;
-    width: calc(33 * var(--u));
-    height: calc(33 * var(--u));
-    border: calc(3 * var(--u)) solid #fff;
-    border-radius: 50%;
-  }
-
-  .is-done .rb-agenda__dot {
-    background: var(--case-accent-1, #9e86fe);
-    box-shadow: inset 0 0 0 calc(3 * var(--u)) var(--case-surface, #201b35);
-  }
-
-  .rb-agenda__name {
-    letter-spacing: 0.0625em;
-    line-height: 1.2;
-  }
-
-  .rb-agenda__time {
-    grid-column: 2;
-    margin-top: calc(6 * var(--u));
-    color: var(--case-accent-1, #9e86fe);
-  }
-
-  /* Desktop: the slide's own 16:9 layout, with the cards over the photo's right side */
+  /* Desktop: the slide's own 16:9 layout (1920×1080 coordinates as percentages) */
   @media (min-width: 48rem) {
-    .rb-hero {
-      --u: calc(100cqw / 1920);
+    .rb-intro {
+      --mark-x: 46.8%;    --mark-y: 40.6%;  --mark-w: 42.9%;
+      --home-x: 21.13%;   --home-y: 9.39%;  --phone-w: 23.36%;
+      --sign-in-x: 9.45%; --sign-in-y: 30.44%;
+
       aspect-ratio: 16 / 9;
-    }
-
-    /* The photo runs past the slide's edges, as in Figma (2146×1112 at -224, -9) */
-    .rb-hero :global(.rb-hero__photo) {
-      position: absolute;
-      left: -11.66%;
-      top: -0.83%;
-      width: 111.75%;
-      max-width: none;
-      height: 103%;
-      aspect-ratio: auto;
-      object-position: 50% 50%;
-    }
-
-    .rb-hero__shade {
-      left: 31.4%;
-      top: -1.7%;
-      right: auto;
-      bottom: auto;
-      width: 91.9%;
-      height: 104.3%;
-      background: linear-gradient(264deg, var(--case-surface, #201b35) 1.95%, rgb(87 87 87 / 0) 91.2%);
-    }
-
-    .rb-hero__ui {
-      position: absolute;
-      left: calc(1280 * var(--u));
-      top: calc(108 * var(--u));
-      margin: 0;
-      padding: 0;
     }
   }
 </style>
