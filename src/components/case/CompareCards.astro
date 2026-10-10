@@ -21,15 +21,17 @@ interface Props {
   featuresLabel?: string;
   improveLabel?: string;
   tone?: 'light' | 'dark';
+  /** Keep the label for screen readers only, e.g. when a section title already names the row */
+  hideLabel?: boolean;
 }
 
-const { label = 'Competitors', items, featuresLabel = 'Features', improveLabel = 'Areas to improve', tone = 'light' } = Astro.props;
+const { label = 'Competitors', items, featuresLabel = 'Features', improveLabel = 'Areas to improve', tone = 'light', hideLabel = false } = Astro.props;
 const id = `compare-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 ---
 
 <section class="compare case-wide" data-cards={tone} aria-labelledby={`${id}-title`}>
   <div class="compare__top">
-    <h3 id={`${id}-title`} class="compare__label">{label}</h3>
+    <h3 id={`${id}-title`} class:list={['compare__label', hideLabel && 'visually-hidden']}>{label}</h3>
     <div class="compare__controls" hidden>
       <button type="button" class="compare__btn" data-dir="-1" aria-controls={id} aria-label="Previous app">←</button>
       <button type="button" class="compare__btn" data-dir="1" aria-controls={id} aria-label="Next app">→</button>
@@ -113,6 +115,11 @@ const id = `compare-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
     justify-content: space-between;
     gap: var(--space-4);
     margin-bottom: var(--space-5);
+  }
+
+  /* With the label hidden, the buttons sit on the right */
+  .compare__top:has(.visually-hidden) {
+    justify-content: flex-end;
   }
 
   .compare__label {
