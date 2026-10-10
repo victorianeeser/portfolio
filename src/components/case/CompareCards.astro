@@ -29,7 +29,7 @@ const { label = 'Competitors', items, featuresLabel = 'Features', improveLabel =
 const id = `compare-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 ---
 
-<section class="compare case-wide" data-cards={tone} aria-labelledby={`${id}-title`}>
+<section class="compare case-wide" data-cards={tone} data-label={hideLabel ? 'hidden' : undefined} aria-labelledby={`${id}-title`}>
   <div class="compare__top">
     <h3 id={`${id}-title`} class:list={['compare__label', hideLabel && 'visually-hidden']}>{label}</h3>
     <div class="compare__controls" hidden>
@@ -117,9 +117,21 @@ const id = `compare-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
     margin-bottom: var(--space-5);
   }
 
-  /* With the label hidden, the buttons sit on the right */
-  .compare__top:has(.visually-hidden) {
+  /* With the label hidden, the cards sit right under the section title and the
+     buttons move below them, on the right */
+  .compare[data-label='hidden'] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.case-body) > .compare[data-label='hidden'] {
+    margin-top: var(--space-5);
+  }
+
+  .compare[data-label='hidden'] .compare__top {
+    order: 1;
     justify-content: flex-end;
+    margin: var(--space-3) 0 0;
   }
 
   .compare__label {
