@@ -22,7 +22,7 @@ const hoverColors: Record<string, string> = {
 const hover = theme ? hoverColors[theme] : undefined;
 ---
 
-<article class:list={['card', comingSoon && 'card--soon']} style={hover && !comingSoon ? `--card-hover: ${hover}` : undefined}>
+<article class:list={['card', comingSoon && 'card--soon']} style={hover ? `--card-hover: ${hover}` : undefined}>
   <ImageSlot {...cover} ratio="thumb" />
   <div class="card__body">
     <Heading class="card__title">
@@ -109,7 +109,7 @@ const hover = theme ? hoverColors[theme] : undefined;
     margin-top: var(--space-2);
   }
 
-  /* Coming soon: a plain card with no link and no hover */
+  /* Coming soon: no link yet, but the same hover color and cover wash as the other cards */
   .card--soon .card__title {
     display: flex;
     flex-wrap: wrap;
@@ -126,7 +126,11 @@ const hover = theme ? hoverColors[theme] : undefined;
     color: var(--color-text-secondary);
   }
 
-  .card--soon:hover :global(.slot)::after {
-    opacity: 0;
+  .card--soon .card__title {
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .card--soon:hover .card__title {
+    color: var(--card-hover, var(--color-hover));
   }
 </style>
