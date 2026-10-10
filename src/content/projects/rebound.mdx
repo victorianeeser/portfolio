@@ -31,6 +31,29 @@ import wireProgram from '../../assets/projects/rebound/wireframe-program.png';
 import wireHome from '../../assets/projects/rebound/wireframe-home.png';
 import wireCommunity from '../../assets/projects/rebound/wireframe-community.png';
 import wireChats from '../../assets/projects/rebound/wireframe-chats.png';
+import ScreenTabs from '../../components/projects/rebound/ScreenTabs.astro';
+import TestingFindings from '../../components/projects/rebound/TestingFindings.astro';
+import beforeOnboarding1 from '../../assets/projects/rebound/before/onboarding-1.png';
+import beforeOnboarding2 from '../../assets/projects/rebound/before/onboarding-2.png';
+import beforeOnboarding3 from '../../assets/projects/rebound/before/onboarding-3.png';
+import beforeOnboarding4 from '../../assets/projects/rebound/before/onboarding-4.png';
+import beforeOnboarding5 from '../../assets/projects/rebound/before/onboarding-5.png';
+import beforeOnboarding6 from '../../assets/projects/rebound/before/onboarding-6.png';
+import beforeOverview1 from '../../assets/projects/rebound/before/overview-1.png';
+import beforeOverview2 from '../../assets/projects/rebound/before/overview-2.png';
+import beforeOverview3 from '../../assets/projects/rebound/before/overview-3.png';
+import beforeOverview4 from '../../assets/projects/rebound/before/overview-4.png';
+import beforeMainHome from '../../assets/projects/rebound/before/main-home.png';
+import beforeMainRoutine from '../../assets/projects/rebound/before/main-routine.png';
+import beforeMainProgress from '../../assets/projects/rebound/before/main-progress.png';
+import beforeMainChat from '../../assets/projects/rebound/before/main-chat.png';
+import testVideoBefore from '../../assets/projects/rebound/test-video-before.png';
+import testVideoAfter from '../../assets/projects/rebound/test-video-after.png';
+import testCheckinBefore from '../../assets/projects/rebound/test-checkin-before.png';
+import testCheckinAfter from '../../assets/projects/rebound/test-checkin-after.png';
+import testProgressBefore from '../../assets/projects/rebound/test-progress-before.png';
+import testProgressAfter from '../../assets/projects/rebound/test-progress-after.png';
+import testProgressMonth from '../../assets/projects/rebound/test-progress-month.png';
 import ReboundPersona from '../../components/projects/rebound/ReboundPersona.astro';
 import JourneyStages from '../../components/projects/rebound/JourneyStages.astro';
 import personaPhoto from '../../assets/projects/rebound/photo.jpg';
@@ -48,6 +71,8 @@ import prehab from '../../assets/projects/rebound/competitor-prehab.png';
     { label: 'User Journey', href: '#journey' },
     { label: 'Accessibility', href: '#accessibility' },
     { label: 'Sketches', href: '#sketches' },
+    { label: 'Before Testing', href: '#before-testing' },
+    { label: 'User Testing', href: '#user-testing' },
   ]}
 />
 
@@ -233,4 +258,84 @@ We tested every text and background pairing in the palette against WCAG. Bright 
     <Image src={wireCommunity} alt="Low-fi wireframe of the community tab with groups and a feed of posts" />
     <Image src={wireChats} alt="Low-fi wireframe of the chat tab with conversations with a doctor and coach" />
   </div>
+</Panel>
+
+<p id="before-testing" class="eyebrow collection-label">App before testing</p>
+
+<SectionTitle>The First Hi-fi Build</SectionTitle>
+
+Our first full design took Annie from sign-up to a daily routine, before we put it in front of testers.
+
+<ScreenTabs
+  label="App screens before user testing"
+  groups={[
+    {
+      label: 'Onboarding',
+      screens: [
+        { src: beforeOnboarding1, alt: 'Welcome screen with the Rebound logo and buttons to create an account or sign in' },
+        { src: beforeOnboarding2, alt: 'About You form asking for name, date of birth and other details' },
+        { src: beforeOnboarding3, alt: 'Choose Your Clinic screen with a search bar and a list of physical therapy clinics' },
+        { src: beforeOnboarding4, alt: 'Choose Therapist screen with a list of therapists to select' },
+        { src: beforeOnboarding5, alt: 'Is this you? screen confirming the patient’s name, injury and details' },
+        { src: beforeOnboarding6, alt: 'Loading screen thanking the user while their recovery plan is built' },
+      ],
+    },
+    {
+      label: 'App overview',
+      screens: [
+        { src: beforeOverview1, alt: 'Tour step on the home page: explore your plan, streak and exercises' },
+        { src: beforeOverview2, alt: 'Tour step on the routine page: view what exercises you will complete over time' },
+        { src: beforeOverview3, alt: 'Tour step on the progress page: track recovery, range of motion and progress' },
+        { src: beforeOverview4, alt: 'Tour step on the community page: connect with athletes and your doctor' },
+      ],
+    },
+    {
+      label: 'Main screens',
+      screens: [
+        { src: beforeMainHome, alt: 'Home screen with Resume Program, a 10-day streak, program progress and Stage 1 Early Recovery' },
+        { src: beforeMainRoutine, alt: 'Today’s Routine screen with progress, a Start Routine button and the exercise list' },
+        { src: beforeMainProgress, alt: 'Progress screen with a daily check-in and weekly pain and stiffness charts' },
+        { src: beforeMainChat, alt: 'Chat screen with an AI companion, a surgeon, a physical therapist and a group chat' },
+      ],
+    },
+  ]}
+/>
+
+<Panel id="user-testing" level={2} eyebrow="User testing" title="Key Findings & Refinements" highlight="Refinements">
+  <TestingFindings
+    items={[
+      {
+        title: 'Exercises were not immediately read as videos',
+        detail: 'Testers had trouble matching the screen to the visual cues of a video player.',
+        screen: 'Video screen',
+        before: { src: testVideoBefore, alt: 'Before: the Quad Sets exercise shows a still photo with a Start button' },
+        after: { src: testVideoAfter, alt: 'After: the exercise shows a video player with play and skip buttons, a scrubber and its length' },
+        change: 'Added video controls: play and skip buttons, a scrubber, and the video’s length.',
+        quote: 'Didn’t feel like a video. I am missing the visual cues that it’s a video, like the play button, the video time, etc.',
+      },
+      {
+        title: 'Users need clear confirmation of completion',
+        detail: 'There was a lack of confidence that an action had been completed.',
+        screen: 'Daily check-in',
+        before: { src: testCheckinBefore, alt: 'Before: the Daily Check In screen with pain and stiffness ratings and no save button' },
+        after: { src: testCheckinAfter, alt: 'After: a pop-up confirms the journal entry and says you’re on the right track' },
+        change: 'Added a Save button and a confirmation message once the entry is saved.',
+        quote: 'Maybe it should have some kind of confirmation or animation after it is done (way to go, keep going!) to help you want to do it. There is also no save button on the journal screen.',
+      },
+      {
+        title: 'Users want to track progress over multiple time periods',
+        detail: 'Testers wanted a more holistic view of their progress.',
+        screen: 'Progress screen',
+        before: { src: testProgressBefore, alt: 'Before: the progress screen shows only this week’s pain and stiffness bars', framed: true },
+        after: {
+          src: testProgressAfter,
+          alt: 'After: the progress screen adds average pain, stiffness and mobility scores and a Week / Month toggle on each chart',
+          framed: true,
+          overlay: { src: testProgressMonth, alt: 'The monthly view of pain levels, shown as a calendar grid' },
+        },
+        change: 'Added average scores and a Week / Month toggle, so slow changes show up over a month.',
+        quote: 'Since pain and stiffness don’t change drastically over a week, it would be nice to see a monthly progress view.',
+      },
+    ]}
+  />
 </Panel>

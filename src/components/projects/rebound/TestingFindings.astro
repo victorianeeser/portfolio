@@ -1,0 +1,247 @@
+---
+// User testing: each key finding with the refinement it led to. A finding shows its number,
+// the issue, what testers felt, the before and after screens, what changed, and the
+// tester's feedback. Place inside a dark Panel.
+//
+// Screens are either bare app screens, set into the phone frame here (`framed: false`),
+// or images that already include a phone (`framed: true`). An `overlay` image is laid over
+// the after screen, e.g. a callout showing a second state.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import frame from '../../../assets/projects/rebound/iphone-frame.png';
+
+interface Screen {
+  src: ImageMetadata;
+  alt: string;
+  framed?: boolean;
+}
+
+interface Finding {
+  title: string;
+  detail: string;
+  screen: string; // which screen was refined, e.g. "Video screen"
+  before: Screen;
+  after: Screen & { overlay?: { src: ImageMetadata; alt: string } };
+  change: string;
+  quote: string;
+}
+
+interface Props {
+  items: Finding[];
+}
+
+const { items } = Astro.props;
+const sizes = '(min-width: 64rem) 260px, 45vw';
+---
+
+<ol class="findings" role="list">
+  {
+    items.map(({ title, detail, screen, before, after, change, quote }, i) => (
+      <li class="finding">
+        <div class="finding__text">
+          <p class="finding__num">Finding {String(i + 1).padStart(2, '0')}</p>
+          <h4 class="finding__title">{title}</h4>
+          <p class="finding__detail">{detail}</p>
+
+          <div class="finding__change">
+            <h5>{screen}: what changed</h5>
+            <p>{change}</p>
+          </div>
+
+          <blockquote class="finding__quote">
+            <p>{quote}</p>
+            <footer>User feedback</footer>
+          </blockquote>
+        </div>
+
+        {/* Images with their own phone vary in padding, so their columns follow each image's
+            width, which keeps both phones the same height */}
+        <div
+          class="finding__phones"
+          style={before.framed && after.framed ? `grid-template-columns: ${before.src.width}fr ${after.src.width}fr` : undefined}
+        >
+          {[
+            { label: 'Before', shot: before },
+            { label: 'After', shot: after },
+          ].map(({ label, shot }) => (
+            <figure class="finding__phone">
+              <div class:list={['finding__device', shot.framed && 'is-framed']}>
+                {/* The frame's screen area is opaque, so the screen goes on top of it, as in Figma */}
+                {!shot.framed && <Image src={frame} alt="" class="finding__frame" widths={[400, 800]} sizes={sizes} />}
+                <Image src={shot.src} alt={shot.alt} class="finding__screen" sizes={sizes} />
+                {'overlay' in shot && shot.overlay && (
+                  <Image src={shot.overlay.src} alt={shot.overlay.alt} class="finding__overlay" />
+                )}
+              </div>
+              <figcaption class:list={['finding__label', label === 'After' && 'is-after']}>{label}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .findings {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .finding {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .finding__num {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-accent-1);
+  }
+
+  .findings .finding__title {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-heading);
+    color: var(--case-text);
+  }
+
+  .finding__detail {
+    margin-top: var(--space-2);
+    color: var(--case-accent-1);
+  }
+
+  .finding__change {
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--case-surface);
+  }
+
+  .finding__change h5 {
+    margin-bottom: var(--space-1);
+    font-size: 0.75rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-subtle, var(--case-muted));
+  }
+
+  .finding__change p {
+    color: var(--case-text);
+  }
+
+  /* Body-size quote, not the panel's large statement style */
+  .findings .finding__quote {
+    max-width: none;
+    margin-top: var(--space-5);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--case-accent-1);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-body);
+    color: var(--case-muted);
+  }
+
+  .finding__quote p::before { content: '“'; }
+  .finding__quote p::after { content: '”'; }
+
+  .finding__quote footer {
+    margin-top: var(--space-2);
+    font-size: var(--text-small);
+    color: var(--case-subtle, var(--case-muted));
+  }
+
+  .finding__phones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    max-width: 28rem;
+  }
+
+  .finding__phone {
+    margin: 0;
+  }
+
+  /* A phone is the frame's size (1753×3560); the screen sits inside its bezel */
+  .finding__device {
+    position: relative;
+    aspect-ratio: 1753 / 3560;
+  }
+
+  .finding__device :global(img) {
+    position: absolute;
+    max-width: none;
+  }
+
+  .finding__device :global(.finding__frame) {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .finding__device :global(.finding__screen) {
+    left: 5.25%;
+    top: 2.08%;
+    width: 89.86%;
+    height: 95.92%;
+    border-radius: 12% / 5.6%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* Images that already include a phone fill the space */
+  .finding__device.is-framed {
+    aspect-ratio: auto;
+  }
+
+  .finding__device.is-framed :global(.finding__screen) {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+  }
+
+  /* A callout over the after screen's chart, as in the slide (kept inside the phone so
+     it never runs off narrow screens) */
+  .finding__device :global(.finding__overlay) {
+    right: -4%;
+    top: 52%;
+    width: 64%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.5);
+  }
+
+  .finding__label {
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    text-align: center;
+    color: var(--case-subtle, var(--case-muted));
+  }
+
+  .finding__label.is-after {
+    font-weight: var(--weight-medium);
+    color: var(--case-accent-1);
+  }
+
+  @media (min-width: 64rem) {
+    .finding {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+
+    /* Alternate sides so the section reads as a sequence */
+    .finding:nth-child(even) .finding__phones {
+      order: -1;
+    }
+  }
+</style>

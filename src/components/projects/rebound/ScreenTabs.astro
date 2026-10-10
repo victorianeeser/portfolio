@@ -1,0 +1,246 @@
+---
+// Groups of app screens behind tabs (e.g. Onboarding / App overview / Main screens), so a
+// long set of screens takes the space of one row. Each group's screens sit in a row; on
+// phones the row scrolls sideways. Without JavaScript every group shows, one after another.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Group {
+  label: string;
+  /** One line about the group, shown under the tabs */
+  text?: string;
+  screens: { src: ImageMetadata; alt: string }[];
+}
+
+interface Props {
+  groups: Group[];
+  label: string; // accessible name for the tab list
+}
+
+const { groups, label } = Astro.props;
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+
+<div class="screen-tabs case-wide">
+  <div class="screen-tabs__list" role="tablist" aria-label={label} hidden>
+    {
+      groups.map(({ label: name }, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`screens-tab-${slug(name)}`}
+          class="screen-tabs__tab"
+          aria-selected={String(i === 0)}
+          aria-controls={`screens-${slug(name)}`}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          {name}
+          <span class="screen-tabs__count">{groups[i].screens.length}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="screen-tabs__panels">
+    {
+      groups.map(({ label: name, text, screens }, i) => (
+        <section
+          id={`screens-${slug(name)}`}
+          class="screen-tabs__panel"
+          role="tabpanel"
+          aria-labelledby={`screens-tab-${slug(name)}`}
+          data-active={i === 0 ? '' : undefined}
+        >
+          <h4 class="screen-tabs__heading">{name}</h4>
+          {text && <p class="screen-tabs__text">{text}</p>}
+          <ul class="screen-tabs__row" role="list" tabindex="0" aria-label={`${name} screens`} style={`--count: ${screens.length}`}>
+            {screens.map(({ src, alt }) => (
+              <li>
+                <Image src={src} alt={alt} sizes="(min-width: 48rem) 200px, 42vw" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.screen-tabs').forEach((root) => {
+    const list = root.querySelector<HTMLElement>('.screen-tabs__list')!;
+    const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('.screen-tabs__panel')];
+    list.hidden = false;
+    root.classList.add('is-ready');
+
+    const select = (index: number, focusTab = false) => {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+      });
+      panels.forEach((panel, i) => {
+        panel.toggleAttribute('data-active', i === index);
+        panel.inert = i !== index;
+      });
+      if (focusTab) tabs[index].focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        const keys: Record<string, number> = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+        if (!(e.key in keys)) return;
+        e.preventDefault();
+        select((keys[e.key] + tabs.length) % tabs.length, true);
+      });
+    });
+
+    select(0);
+  });
+</script>
+
+<style>
+  .screen-tabs {
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  /* Segmented tabs, like the app's own Week / Month toggle */
+  .screen-tabs__list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-bottom: var(--space-5);
+    padding: var(--space-1);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+  }
+
+  .screen-tabs__list[hidden] {
+    display: none;
+  }
+
+  .screen-tabs__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-target);
+    padding: 0 var(--space-4);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: none;
+    font: inherit;
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .screen-tabs__tab:hover {
+    color: var(--color-text);
+  }
+
+  .screen-tabs__tab[aria-selected='true'] {
+    background: var(--case-surface);
+    color: var(--color-bg);
+  }
+
+  .screen-tabs__count {
+    min-width: 1.5em;
+    padding: 0 0.4em;
+    border-radius: var(--radius-pill);
+    background: var(--color-bg);
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .screen-tabs__tab[aria-selected='true'] .screen-tabs__count {
+    background: var(--case-accent-1);
+    color: var(--case-surface);
+  }
+
+  /* With JavaScript, groups share one spot, sized to the tallest */
+  .is-ready .screen-tabs__panels {
+    display: grid;
+  }
+
+  .is-ready .screen-tabs__panel {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+
+  .is-ready .screen-tabs__panel[data-active] {
+    visibility: visible;
+  }
+
+  .screen-tabs__panel + .screen-tabs__panel {
+    margin-top: var(--space-7);
+  }
+
+  .is-ready .screen-tabs__panel + .screen-tabs__panel {
+    margin-top: 0;
+  }
+
+  /* The tabs already name the group */
+  .is-ready .screen-tabs__heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .screen-tabs__heading {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+  }
+
+  .screen-tabs__text {
+    margin-bottom: var(--space-5);
+    color: var(--color-text-secondary);
+  }
+
+  /* Phones: a sideways-scrolling row. Wider screens: the whole group in one row. */
+  .screen-tabs__row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 42%;
+    gap: var(--space-3);
+    align-items: start;
+    margin: 0;
+    padding: 0 0 var(--space-3);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    list-style: none;
+  }
+
+  .screen-tabs__row li {
+    scroll-snap-align: start;
+  }
+
+  .screen-tabs__row :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 0 1px var(--case-border);
+  }
+
+  @media (min-width: 48rem) {
+    .screen-tabs__row {
+      grid-auto-columns: minmax(0, 1fr);
+      grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+      gap: var(--space-4);
+      /* Short groups don't stretch into giant phones */
+      max-width: calc(var(--count) * 13.5rem);
+      overflow: visible;
+    }
+  }
+</style>
