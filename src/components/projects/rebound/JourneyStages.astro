@@ -1,0 +1,349 @@
+---
+// User journey as a recovery timeline, rebuilt from the Figma "User Journey" table.
+// The stages sit on a progress track like the app's own stage bar; choosing one shows its
+// experience, pain points, emotions and design opportunities. The `focus` stage (the one
+// the design targets) is selected first and marked on the track.
+// Without JavaScript every stage shows, one after another.
+interface Stage {
+  name: string;
+  experience: string;
+  painPoints: string[];
+  emotions: string[];
+  opportunities: string[];
+}
+
+interface Props {
+  stages: Stage[];
+  /** Index of the stage the design focuses on */
+  focus: number;
+  focusLabel?: string;
+}
+
+const { stages, focus, focusLabel = 'Design focus' } = Astro.props;
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+
+<div class="journey case-wide" style={`--count: ${stages.length}`}>
+  <div class="journey__track" role="tablist" aria-label="Recovery stages" hidden>
+    {
+      stages.map(({ name }, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`journey-tab-${slug(name)}`}
+          class="journey__step"
+          aria-selected={String(i === focus)}
+          aria-controls={`journey-${slug(name)}`}
+          tabindex={i === focus ? 0 : -1}
+          data-done={i < focus ? '' : undefined}
+        >
+          <span class="journey__dot" aria-hidden="true">{i + 1}</span>
+          <span class="journey__name">{name}</span>
+          {i === focus && <span class="journey__focus">{focusLabel}</span>}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    stages.map(({ name, experience, painPoints, emotions, opportunities }, i) => (
+      <section
+        class="journey__stage"
+        id={`journey-${slug(name)}`}
+        role="tabpanel"
+        aria-labelledby={`journey-tab-${slug(name)}`}
+        data-index={i}
+        tabindex="0"
+      >
+        <header class="journey__head">
+          <p class="journey__count">
+            Stage {i + 1} of {stages.length}
+          </p>
+          <h4 class="journey__title">{name}</h4>
+          <ul class="journey__emotions" aria-label="Emotions">
+            {emotions.map((e) => <li>{e}</li>)}
+          </ul>
+        </header>
+
+        <div class="journey__grid">
+          <div class="journey__block">
+            <h5>Experience & actions</h5>
+            <p>{experience}</p>
+          </div>
+          <div class="journey__block">
+            <h5>Pain points</h5>
+            <ul>{painPoints.map((p) => <li>{p}</li>)}</ul>
+          </div>
+          <div class="journey__block journey__block--opportunity">
+            <h5>Opportunities for design</h5>
+            <ul>{opportunities.map((o) => <li>{o}</li>)}</ul>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.journey').forEach((journey) => {
+    const track = journey.querySelector<HTMLElement>('.journey__track')!;
+    const tabs = [...track.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...journey.querySelectorAll<HTMLElement>('.journey__stage')];
+    track.hidden = false;
+
+    const select = (index: number, focusTab = false) => {
+      tabs.forEach((tab, i) => {
+        const on = i === index;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+        tab.toggleAttribute('data-done', i < index);
+      });
+      panels.forEach((panel, i) => (panel.hidden = i !== index));
+      journey.style.setProperty('--progress', String(index));
+      if (focusTab) tabs[index].focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      // Arrow keys move between stages, as in a standard tab list
+      tab.addEventListener('keydown', (e) => {
+        const keys: Record<string, number> = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+        if (!(e.key in keys)) return;
+        e.preventDefault();
+        select((keys[e.key] + tabs.length) % tabs.length, true);
+      });
+    });
+
+    select(Math.max(0, tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')));
+  });
+</script>
+
+<style>
+  .journey {
+    --progress: 0;
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  /* The track: numbered dots on a line, filled up to the selected stage */
+  .journey__track {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--count), 1fr);
+    margin-bottom: var(--space-6);
+  }
+
+  .journey__track[hidden] {
+    display: none;
+  }
+
+  .journey__track::before,
+  .journey__track::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--tap-target) / 2 - 2px);
+    left: calc(50% / var(--count));
+    height: 4px;
+    border-radius: var(--radius-pill);
+  }
+
+  .journey__track::before {
+    right: calc(50% / var(--count));
+    background: var(--color-border);
+  }
+
+  .journey__track::after {
+    width: calc((100% - 100% / var(--count)) * var(--progress) / (var(--count) - 1));
+    background: var(--case-accent-1);
+    transition: width var(--duration-fast) var(--ease-out);
+  }
+
+  .journey__step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--space-1);
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: var(--text-small);
+    line-height: var(--leading-heading);
+    text-align: center;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .journey__dot {
+    display: grid;
+    place-items: center;
+    width: var(--tap-target);
+    height: var(--tap-target);
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-bg);
+    font-weight: var(--weight-medium);
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .journey__step:hover .journey__dot {
+    border-color: var(--case-accent-1);
+  }
+
+  .journey__step[data-done] .journey__dot {
+    border-color: var(--case-accent-1);
+    background: var(--case-accent-1);
+    color: var(--case-surface);
+  }
+
+  .journey__step[aria-selected='true'] .journey__dot {
+    border-color: var(--case-surface);
+    background: var(--case-surface);
+    color: var(--case-accent-1);
+    box-shadow: 0 0 0 4px var(--case-accent-1);
+  }
+
+  .journey__step[aria-selected='true'] .journey__name {
+    font-weight: var(--weight-bold);
+    color: var(--color-text);
+  }
+
+  .journey__focus {
+    padding: 0.15em 0.6em;
+    border-radius: var(--radius-pill);
+    background: var(--case-accent-1);
+    font-size: 0.75rem;
+    font-weight: var(--weight-medium);
+    color: #000;
+    white-space: nowrap;
+  }
+
+  /* One stage: a dark purple card */
+  .journey__stage {
+    padding: var(--space-6);
+    border-radius: 1rem;
+    background: var(--case-surface);
+    color: var(--case-muted);
+  }
+
+  .journey__stage + .journey__stage {
+    margin-top: var(--space-4);
+  }
+
+  .journey__stage:focus-visible {
+    outline-offset: var(--space-1);
+  }
+
+  .journey__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    padding-bottom: var(--space-5);
+    border-bottom: var(--border-width) solid var(--case-border);
+  }
+
+  .journey__count {
+    flex-basis: 100%;
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-subtle, var(--case-muted));
+  }
+
+  .journey .journey__title {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-heading);
+    color: var(--case-text);
+  }
+
+  .journey__emotions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .journey__emotions li {
+    padding: 0.2em 0.75em;
+    border: var(--border-width) solid var(--case-accent-1);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    color: var(--case-accent-1);
+  }
+
+  .journey__grid {
+    display: grid;
+    gap: var(--space-5);
+    padding-top: var(--space-5);
+  }
+
+  .journey__block h5 {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-subtle, var(--case-muted));
+  }
+
+  .journey__block ul {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: var(--space-5);
+  }
+
+  .journey__block li::marker {
+    color: var(--case-accent-1);
+  }
+
+  /* Design opportunities are the takeaway, set as a bright purple card */
+  .journey__block--opportunity {
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--case-accent-1);
+    color: #000;
+  }
+
+  .journey__block--opportunity h5 {
+    color: #000;
+  }
+
+  .journey__block--opportunity li::marker {
+    color: #000;
+  }
+
+  @media (min-width: 48rem) {
+    .journey__step {
+      font-size: var(--text-body);
+    }
+
+    .journey__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .journey__block--opportunity {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .journey__stage {
+      padding: var(--space-7);
+    }
+
+    .journey__grid {
+      grid-template-columns: 1fr 1fr 1.3fr;
+      gap: var(--space-6);
+    }
+
+    .journey__block--opportunity {
+      grid-column: auto;
+    }
+  }
+</style>

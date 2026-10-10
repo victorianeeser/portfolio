@@ -1,0 +1,219 @@
+---
+// Rebound user persona, rebuilt from the Figma "User Persona" slide: the photo beside the
+// persona's name, facts and story, with goals, frustrations and quotes below.
+// Place inside a dark Panel. In `bio`, `goals` and `frustrations`, wrap words in
+// **double asterisks** to set them in bold white, as in the slide.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  name: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  /** Which part of the photo stays in the frame, e.g. "40% 50%" */
+  imageFocus?: string;
+  facts: { label: string; value: string }[];
+  bio: string;
+  goals: string[];
+  frustrations: string[];
+  quotes: string[];
+}
+
+const { name, image, imageAlt, imageFocus = 'center', facts, bio, goals, frustrations, quotes } = Astro.props;
+
+// Turn **highlight** into <strong>; everything else is escaped
+const escape = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+---
+
+<div class="rb-persona">
+  <Image
+    src={image}
+    alt={imageAlt}
+    class="rb-persona__photo"
+    style={`object-position: ${imageFocus}`}
+    widths={[600, 1000, 1400]}
+    sizes="(min-width: 64rem) 480px, 100vw"
+  />
+
+  <div class="rb-persona__intro">
+    <h3 class="rb-persona__name">{name}</h3>
+
+    <section class="rb-persona__card">
+      <dl class="rb-persona__facts">
+        {
+          facts.map(({ label, value }) => (
+            <div>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p set:html={rich(bio)} />
+    </section>
+  </div>
+
+    <div class="rb-persona__pair">
+      <section class="rb-persona__card">
+        <h4>Goals</h4>
+        <ul>{goals.map((g) => <li set:html={rich(g)} />)}</ul>
+      </section>
+      <section class="rb-persona__card">
+        <h4>Frustrations</h4>
+        <ul>{frustrations.map((f) => <li set:html={rich(f)} />)}</ul>
+      </section>
+    </div>
+
+    <section class="rb-persona__card">
+      <h4>Quotes</h4>
+      <ul class="rb-persona__quotes" role="list">
+        {
+          quotes.map((q) => (
+            <li>
+              <blockquote>{q}</blockquote>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+</div>
+
+<style>
+  .rb-persona {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  /* Phones: a wide crop on top. Desktop: as tall as the intro beside it. */
+  .rb-persona :global(.rb-persona__photo) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: 1.5rem;
+    object-fit: cover;
+  }
+
+  .rb-persona__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .rb-persona .rb-persona__name {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-display);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-display);
+    line-height: var(--leading-tight);
+    color: var(--case-accent-1);
+  }
+
+  .rb-persona__card {
+    padding: var(--space-6);
+    border-radius: 1rem;
+    background: var(--case-surface);
+    color: var(--case-muted);
+  }
+
+  .rb-persona .rb-persona__card h4 {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-bold);
+    color: var(--case-accent-1);
+  }
+
+  .rb-persona__card :global(strong) {
+    font-weight: var(--weight-bold);
+    color: var(--case-text);
+  }
+
+  .rb-persona__facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin: 0 0 var(--space-5);
+    padding-bottom: var(--space-5);
+    border-bottom: var(--border-width) solid var(--case-border);
+  }
+
+  .rb-persona__facts dt {
+    font-size: var(--text-small);
+    font-weight: var(--weight-bold);
+    color: var(--case-accent-1);
+  }
+
+  .rb-persona__facts dd {
+    margin: 0;
+    color: var(--case-text);
+  }
+
+  .rb-persona__card ul:not([role]) {
+    display: grid;
+    gap: var(--space-3);
+    padding-left: var(--space-5);
+  }
+
+  .rb-persona__card li::marker {
+    color: var(--case-accent-1);
+  }
+
+  .rb-persona__pair {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .rb-persona__quotes {
+    display: grid;
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Body-size quotes, not the panel's large statement style */
+  .rb-persona__quotes blockquote {
+    max-width: none;
+    margin: 0;
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-body);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--case-accent-1);
+    color: var(--case-text);
+  }
+
+  @media (min-width: 48rem) {
+    .rb-persona__facts {
+      grid-template-columns: repeat(4, auto);
+      justify-content: start;
+      column-gap: var(--space-6);
+    }
+
+    .rb-persona__pair,
+    .rb-persona__quotes {
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .rb-persona {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      column-gap: var(--space-5);
+    }
+
+    .rb-persona :global(.rb-persona__photo) {
+      height: 100%;
+      min-height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .rb-persona__pair,
+    .rb-persona > .rb-persona__card {
+      grid-column: 1 / -1;
+    }
+
+    .rb-persona__quotes {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
