@@ -1,0 +1,154 @@
+---
+// The solution: Nova, an AI guide, over the slide's ocean photo with a navy wash, and the
+// three ways Nova helps as glass cards. Full width, like a panel.
+import { Image } from 'astro:assets';
+import ocean from '../../../assets/projects/oura/solution-ocean.png';
+import OuraStar from './OuraStar.astro';
+
+interface Way {
+  title: string;
+  points: string[];
+}
+
+interface Props {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  intro: string;
+  ways: Way[];
+}
+
+const { id, eyebrow, title, intro, ways } = Astro.props;
+---
+
+<section class="oura-solution full-bleed" id={id}>
+  <Image src={ocean} alt="" class="oura-solution__bg" widths={[1024]} sizes="100vw" />
+  <div class="oura-solution__inner">
+    <p class="oura-solution__eyebrow">{eyebrow}</p>
+    <h2 class="oura-solution__title">{title}</h2>
+    <p class="oura-solution__intro"><OuraStar size="1.25rem" /><span set:html={intro} /></p>
+
+    <ol class="oura-solution__ways" role="list">
+      {
+        ways.map(({ title: t, points }, i) => (
+          <li class="oura-solution__card">
+            <span class="oura-solution__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{t}</h3>
+            <ul>{points.map((p) => <li>{p}</li>)}</ul>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .oura-solution {
+    position: relative;
+    grid-column: full;
+    overflow: hidden;
+    margin-block: var(--space-8);
+    background: #2f4a73;
+    color: #fff;
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  /* The ocean photo under a navy wash (darker than the slide, so white text passes AA) */
+  .oura-solution :global(.oura-solution__bg) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    object-fit: cover;
+  }
+
+  .oura-solution::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(47 74 115 / 0.78);
+  }
+
+  .oura-solution__inner {
+    position: relative;
+    z-index: 1;
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding: var(--space-8) var(--gutter);
+  }
+
+  .oura-solution__eyebrow {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-caps);
+    color: #d5deeb;
+  }
+
+  .oura-solution__title {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    color: #fff;
+  }
+
+  .oura-solution__intro {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    max-width: var(--container-narrow);
+    margin-top: var(--space-4);
+    font-size: var(--text-h3);
+  }
+
+  .oura-solution__intro :global(strong) {
+    color: #fff;
+  }
+
+  .oura-solution__intro :global(.oura-star) {
+    position: relative;
+    top: 0.15em;
+  }
+
+  .oura-solution__ways {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-7) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .oura-solution__card {
+    padding: var(--space-6);
+    border: var(--border-width) solid rgb(255 255 255 / 0.25);
+    border-radius: 1rem;
+    background: rgb(36 58 92 / 0.7);
+    backdrop-filter: blur(8px);
+  }
+
+  .oura-solution__num {
+    font-size: var(--text-small);
+    font-weight: var(--weight-bold);
+    color: #b9cdea;
+  }
+
+  .oura-solution__card h3 {
+    margin-top: var(--space-2);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    color: #fff;
+  }
+
+  .oura-solution__card ul {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding-left: var(--space-5);
+    color: #e6ecf5;
+  }
+
+  @media (min-width: 48rem) {
+    .oura-solution__ways {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

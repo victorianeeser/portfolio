@@ -39,8 +39,10 @@
   --oura-quiet: #56657c;
 }
 
+/* Light sections use the cream from the analysis slides (navy text 8.1:1) */
 .theme-oura [data-tone='light'] {
-  --case-bg: var(--oura-tint);
+  --case-bg: #f5f3ef;
+  --case-title-accent: #3d5f94;
   --case-surface: var(--color-bg);
   --case-border: var(--color-border);
   --case-text: #2f4a73;

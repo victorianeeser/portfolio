@@ -1,0 +1,159 @@
+---
+// Current vs. redesigned nav bar. The current bar is a screenshot from the app; the
+// redesigned bar is rebuilt as a working tab bar with the Figma icons (tap a tab to select
+// it), so the change reads as an interaction, not just a picture.
+import { Image } from 'astro:assets';
+import current from '../../../assets/projects/oura/nav-current.jpg';
+import today from '../../../assets/projects/oura/nav-today.svg?raw';
+import readiness from '../../../assets/projects/oura/nav-readiness.svg?raw';
+import sleep from '../../../assets/projects/oura/nav-sleep.svg?raw';
+import activity from '../../../assets/projects/oura/nav-activity.svg?raw';
+import myHealth from '../../../assets/projects/oura/nav-my-health.svg?raw';
+
+// Recolor the exported icons with the current text color, so the selected state can change it
+const tint = (svg: string) =>
+  svg
+    .replace(/(fill|stroke)="(white|#616161)"/g, '$1="currentColor"')
+    .replace(/ style="[^"]*"/, '')
+    .replace(/ preserveAspectRatio="none"/, '');
+
+const tabs = [
+  { label: 'Today', icon: tint(today) },
+  { label: 'Readiness', icon: tint(readiness) },
+  { label: 'Sleep', icon: tint(sleep) },
+  { label: 'Activity', icon: tint(activity) },
+  { label: 'My Health', icon: tint(myHealth) },
+];
+---
+
+<div class="navs case-wide">
+  <section class="navs__item">
+    <h3 class="navs__title">Current nav bar</h3>
+    <Image src={current} alt="The current Oura nav bar with three tabs: Today, Vitals and My Health" class="navs__shot" widths={[600, 1170]} sizes="(min-width: 48rem) 520px, 100vw" />
+    <p>The current bar has <strong>Today (home page), Vitals and My Health.</strong> Vitals just repeats the information on the Today page.</p>
+    <p>To see your stats, you go <strong>Vitals › tap Sleep › Sleep vitals open.</strong></p>
+  </section>
+
+  <section class="navs__item">
+    <h3 class="navs__title">Redesigned nav bar</h3>
+    <div class="navs__bar" role="tablist" aria-label="Redesigned nav bar, try it">
+      {
+        tabs.map(({ label, icon }, i) => (
+          <button type="button" role="tab" class="navs__tab" aria-selected={String(i === 1)}>
+            <span class="navs__icon" set:html={icon} />
+            {label}
+          </button>
+        ))
+      }
+    </div>
+    <p>The redesigned bar cuts the steps it takes to reach the three most important things: <strong>readiness, sleep and activity.</strong></p>
+    <p><strong>You now see your stats in one step</strong>, by tapping the section you want.</p>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.navs__bar').forEach((bar) => {
+    const tabs = [...bar.querySelectorAll<HTMLButtonElement>('.navs__tab')];
+    tabs.forEach((tab) =>
+      tab.addEventListener('click', () => tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)))),
+    );
+  });
+</script>
+
+<style>
+  .navs {
+    display: grid;
+    gap: var(--space-7);
+    margin-block: var(--space-7) var(--space-6);
+    font-family: var(--case-font, var(--font-sans));
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  .navs__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .navs__title {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .navs :global(.navs__shot) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 504 / 236;
+    margin-bottom: var(--space-3);
+    border-radius: 0.75rem;
+    object-fit: cover;
+    object-position: bottom;
+  }
+
+  /* The redesigned bar, at phone size, on black like the app */
+  .navs__bar {
+    display: flex;
+    width: min(100%, 26rem);
+    margin-bottom: var(--space-3);
+    padding: var(--space-2) var(--space-1) var(--space-3);
+    border-radius: 0.75rem;
+    background: #000;
+  }
+
+  .navs__tab {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--tap-target);
+    padding: var(--space-1) 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 0.6875rem;
+    color: #8a8a8a;
+    cursor: pointer;
+  }
+
+  .navs__tab:hover {
+    color: #c4c4c4;
+  }
+
+  .navs__tab[aria-selected='true'] {
+    color: #fff;
+  }
+
+  .navs__icon {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .navs__icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .navs strong {
+    color: inherit;
+  }
+
+  .navs p {
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 48rem) {
+    .navs {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

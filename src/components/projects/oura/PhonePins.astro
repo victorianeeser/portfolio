@@ -1,0 +1,212 @@
+---
+// App screens in a phone with numbered pins on the parts being discussed, beside a
+// numbered list of notes. Replaces the slides' connector lines, which don't survive
+// narrow screens. Pins are positioned as percentages of the screen (x from the left,
+// y from the top). Wrap words in **double asterisks** to bold them in a note.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import frame from '../../../assets/projects/oura/phone-frame.png';
+
+interface Phone {
+  src: ImageMetadata;
+  alt: string;
+  label?: string; // e.g. "Before"
+  pins?: { x: number; y: number }[];
+}
+
+interface Note {
+  title?: string;
+  text: string;
+}
+
+interface Props {
+  phones: Phone[];
+  notes: Note[];
+}
+
+const { phones, notes } = Astro.props;
+
+const escape = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+---
+
+<div class="pins case-wide" data-count={phones.length}>
+  <div class="pins__phones">
+    {
+      phones.map(({ src, alt, label, pins = [] }) => (
+        <figure class="pins__phone">
+          <div class="pins__device">
+            <Image src={frame} alt="" class="pins__frame" widths={[400, 800]} sizes="(min-width: 64rem) 300px, 45vw" />
+            <Image src={src} alt={alt} class="pins__screen" sizes="(min-width: 64rem) 270px, 40vw" />
+            {pins.map(({ x, y }, i) => (
+              <span class="pins__pin" style={`left: ${5.27 + (x * 89.65) / 100}%; top: ${2.08 + (y * 95.87) / 100}%`} aria-hidden="true">
+                {i + 1}
+              </span>
+            ))}
+          </div>
+          {label && <figcaption class="pins__label">{label}</figcaption>}
+        </figure>
+      ))
+    }
+  </div>
+
+  <ol class="pins__notes" role="list">
+    {
+      notes.map(({ title, text }, i) => (
+        <li>
+          <span class="pins__num" aria-hidden="true">{i + 1}</span>
+          <div>
+            {title && <h4>{title}</h4>}
+            <p set:html={rich(text)} />
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .pins {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    margin-block: var(--space-6);
+    font-family: var(--case-font, var(--font-sans));
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  .pins__phones {
+    display: grid;
+    grid-template-columns: repeat(var(--phones, 1), minmax(0, 1fr));
+    gap: var(--space-5);
+    justify-self: center;
+    width: min(100%, 18rem);
+  }
+
+  .pins[data-count='2'] .pins__phones {
+    --phones: 2;
+    width: min(100%, 34rem);
+  }
+
+  .pins__phone {
+    margin: 0;
+  }
+
+  /* The frame image is the phone's size (1710×3460); the screen sits in its bezel, on top */
+  .pins__device {
+    position: relative;
+    aspect-ratio: 1710 / 3460;
+  }
+
+  .pins__device :global(img) {
+    position: absolute;
+    max-width: none;
+  }
+
+  .pins__device :global(.pins__frame) {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .pins__device :global(.pins__screen) {
+    left: 5.27%;
+    top: 2.08%;
+    width: 89.65%;
+    height: 95.87%;
+    border-radius: 12% / 5.6%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* Smaller on phones, where the screens are small */
+  .pins__pin {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--color-bg);
+    border-radius: 50%;
+    background: var(--case-heading-1, #2f4a73);
+    font-size: 0.6875rem;
+    font-weight: var(--weight-bold);
+    color: var(--color-bg);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 4px rgb(47 74 115 / 0.25);
+  }
+
+  .pins__label {
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .pins__notes {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pins__notes li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    align-items: start;
+  }
+
+  .pins__num {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--case-heading-1, #2f4a73);
+    font-size: 0.8125rem;
+    font-weight: var(--weight-bold);
+    color: var(--color-bg);
+  }
+
+  .pins .pins__notes h4 {
+    margin-bottom: var(--space-1);
+    font-size: var(--text-body);
+    font-weight: var(--weight-bold);
+    color: inherit;
+  }
+
+  .pins__notes :global(strong) {
+    color: inherit;
+  }
+
+  .pins__notes p {
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 64rem) {
+    .pins__pin {
+      width: 1.75rem;
+      height: 1.75rem;
+      font-size: 0.8125rem;
+    }
+
+    .pins {
+      grid-template-columns: auto 1fr;
+      gap: var(--space-8);
+    }
+
+    .pins__phones {
+      width: 18rem;
+    }
+
+    .pins[data-count='2'] .pins__phones {
+      width: 34rem;
+    }
+  }
+</style>

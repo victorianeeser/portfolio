@@ -23,12 +23,30 @@ import Panel from '../../components/case/Panel.astro';
 import KeyFeatures from '../../components/projects/oura/KeyFeatures.astro';
 import InterviewTabs from '../../components/projects/oura/InterviewTabs.astro';
 import HeuristicCards from '../../components/projects/oura/HeuristicCards.astro';
+import PhonePins from '../../components/projects/oura/PhonePins.astro';
+import NavCompare from '../../components/projects/oura/NavCompare.astro';
+import ProblemScreens from '../../components/projects/oura/ProblemScreens.astro';
+import SolutionBand from '../../components/projects/oura/SolutionBand.astro';
+import analysisReadiness from '../../assets/projects/oura/analysis-readiness.png';
+import refineBefore from '../../assets/projects/oura/refine-before.png';
+import refineAfter from '../../assets/projects/oura/refine-after.png';
+import problem1 from '../../assets/projects/oura/problem-1.png';
+import problem2 from '../../assets/projects/oura/problem-2.png';
+import problem3 from '../../assets/projects/oura/problem-3.png';
+import problem4 from '../../assets/projects/oura/problem-4.png';
+import problem5 from '../../assets/projects/oura/problem-5.png';
+import problem6 from '../../assets/projects/oura/problem-6.png';
+import problem7 from '../../assets/projects/oura/problem-7.png';
 
 <SectionNav
   items={[
     { label: 'Overview', href: '#overview' },
     { label: 'Interviews', href: '#interviews' },
     { label: 'Heuristic Evaluation', href: '#heuristics' },
+    { label: 'Analysis', href: '#analysis' },
+    { label: 'Refinement', href: '#refinement' },
+    { label: 'Problem', href: '#problem' },
+    { label: 'Solution', href: '#solution' },
   ]}
 />
 
@@ -224,6 +242,114 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
         'Users can learn the app, but some features are tucked away and easy to miss.',
         'There’s **no FAQ or help assistant**, which is why an AI guide would help.',
       ],
+    },
+  ]}
+/>
+
+<Panel id="analysis" level={2} tone="light" eyebrow="Current app analysis" title="Inside the Readiness Screen" highlight="Readiness Screen">
+  <PhonePins
+    phones={[
+      {
+        src: analysisReadiness,
+        alt: 'The current Oura Readiness screen: four metric cards, then the Readiness Score of 76, then a long list of readiness contributors',
+        pins: [
+          { x: 66, y: 13 },
+          { x: 60, y: 37 },
+          { x: 60, y: 69 },
+          { x: 50, y: 92 },
+        ],
+      },
+    ]}
+    notes={[
+      {
+        title: 'A calendar only on “Today”',
+        text: 'The calendar sits next to “Today,” and it’s the only place in the app you can reach it. **It would make more sense in the top right, next to the export button.**',
+      },
+      {
+        title: 'The score is buried',
+        text: 'The readiness score is the first thing people look for, but it sits four boxes down and blends in. **Should it be emphasized, and come first?**',
+      },
+      {
+        title: 'Low-contrast contributors',
+        text: 'The navy and dark navy are too close for older users to tell sections apart. **Better contrast would improve readability and the overall experience.**',
+      },
+      {
+        title: 'Tiny, crowded tabs',
+        text: 'The bottom tabs are small and close together, so it’s hard to pick a page. **They need to be bigger and spread out.** When I interviewed users, 4 of 5 preferred reaching these from the nav bar instead of going through Vitals.',
+      },
+    ]}
+  />
+
+  <NavCompare />
+</Panel>
+
+<Panel id="refinement" level={2} tone="light" eyebrow="Refinement" title="Readiness, Sleep & Activity Refinement" highlight="Refinement">
+  <PhonePins
+    phones={[
+      { src: refineBefore, alt: 'Before: the current Readiness screen with the score below four metric cards', label: 'Before' },
+      {
+        src: refineAfter,
+        alt: 'After: the redesigned Readiness screen with the score card and Nova Insights at the top, labeled metrics, two-column contributors and a five-tab nav bar',
+        label: 'After',
+        pins: [
+          { x: 84, y: 6 },
+          { x: 85, y: 22 },
+          { x: 88, y: 41 },
+          { x: 88, y: 55 },
+          { x: 88, y: 69 },
+          { x: 88, y: 82 },
+        ],
+      },
+    ]}
+    notes={[
+      { text: 'The **calendar moves to the top right**, an easier spot that stays the same from screen to screen.' },
+      { text: 'Your score is what people look for first, so **the score card sits at the top of each section**, in a lighter blue that stands out.' },
+      { text: 'Tap anywhere on the card, or on the text and arrow, to see **Nova’s readiness breakdown.**' },
+      { text: 'The metrics section, unlabeled before, now has a **label.**' },
+      { text: 'Contributors are in **two columns**, so they’re organized more efficiently.' },
+      { text: '**Stronger contrast:** light navy on dark navy becomes a lighter blue on black, so sections are easy to tell apart.' },
+    ]}
+  />
+</Panel>
+
+<p id="problem" class="eyebrow collection-label">Problem</p>
+
+<SectionTitle>Data Without Direction</SectionTitle>
+
+<ProblemScreens
+  points={[
+    'Oura has a lot of information.',
+    'It gives you all of the statistics, but doesn’t tell you what to do about them.',
+    'Many users feel **overwhelmed** and don’t know where to start.',
+  ]}
+  screens={[
+    { src: problem1, alt: 'Readiness screen with metric cards, the score and a list of contributors' },
+    { src: problem2, alt: 'Readiness charts for resting heart rate and average HRV' },
+    { src: problem3, alt: 'Resting heart rate detail with a chart, tags and community discoveries' },
+    { src: problem4, alt: 'Activity screen with training frequency, daily movement chart and activities' },
+    { src: problem5, alt: 'Daytime stress screen with a summary and a recent days chart' },
+    { src: problem6, alt: 'Heart rate and stress screen with a chart and expandable sections' },
+    { src: problem7, alt: 'Daytime stress chart with toggles for daily movement and tags' },
+  ]}
+/>
+
+<SolutionBand
+  id="solution"
+  eyebrow="Solution"
+  title="App Redesign Solution"
+  intro="<strong>Nova</strong>, your AI guide, helps people in three ways."
+  ways={[
+    {
+      title: 'AI Chat',
+      points: ['Ask Nova questions in the app instead of doing your own research.', 'Ask about your stats, trends, or anything else.'],
+    },
+    {
+      title: 'Daily insights',
+      points: ['A brief overview on the home screen, without being overwhelming.'],
+    },
+    {
+      title: 'Score breakdown',
+      points: ['A deeper look at your readiness, sleep and activity, what to pay attention to, and a personalized plan for today.'],
     },
   ]}
 />
