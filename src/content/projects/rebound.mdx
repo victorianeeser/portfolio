@@ -124,22 +124,20 @@ A physical therapy app that helps teenage athletes stay on top of their rehab, t
       { label: 'Age', value: '16' },
       { label: 'Grade', value: '11th (Junior)' },
       { label: 'Occupation', value: 'Student athlete' },
-      { label: 'Injury', value: 'Right ACL tear from basketball' },
+      { label: 'Injury', value: 'Torn right ACL' },
     ]}
-    bio="Annie is a varsity basketball player who tore her ACL during a game. Surgery sidelined her for the season, and now she’s stuck at home juggling schoolwork, FOMO from friends, and early-stage physical therapy. She relies heavily on her phone for guidance, support, and staying connected. **She wants to recover fast, but is feeling frustrated by the slow process.**"
+    bio="A varsity basketball player, Annie tore her ACL mid-game. After surgery she’s home juggling school, FOMO and physical therapy. **She wants to recover fast, but the slow process frustrates her.**"
     goals={[
-      'Understand exactly **where she is in the rehab** process through clear, trackable milestones and progress indicators.',
-      '**Stay connected to teammates and coaches** during recovery to reduce feelings of isolation.',
-      '**Gain emotional support and motivation** throughout rehabilitation, especially on low-confidence days.',
+      '**Know where she is** in rehab, with clear milestones.',
+      '**Stay connected** to teammates and coaches.',
+      '**Get support and motivation** on low-confidence days.',
     ]}
     frustrations={[
-      '**Injuries lead to frustration,** fear of falling behind peers, social isolation, and emotional distress.',
-      '**Poor communication between coaches and healthcare providers;** athletes often act as the messenger.',
-      'Unsure if progress is **“good enough.”**',
-      '**Fear of reinjury,** lack of confidence, unclear return-to-play criteria.',
+      '**Fear of falling behind** and feeling isolated.',
+      '**Acting as the messenger** between coaches and providers.',
+      '**Unsure if progress is “good enough,”** and afraid of reinjury.',
     ]}
     quotes={[
-      '“For me…it is difficult to know to whom I should turn. I have no experience of getting help for my injuries and rehabilitation.”',
       '“Having a plan laid out takes away a lot of the stress. I don’t want to figure it out on my own.”',
       '“I want to be given a clear plan that tells me how I’m doing and that the rehab is working.”',
     ]}
@@ -157,38 +155,38 @@ Annie’s recovery runs through five stages. We focused the design on mid rehab,
   stages={[
     {
       name: 'Injury & Diagnosis',
-      experience: 'Annie gets injured during a game. She visits a doctor, receives an MRI, and is told she needs surgery and months of rehab.',
-      painPoints: ['Shock and confusion about next steps', 'Limited understanding of the timeline', 'Frustration about missing the season'],
+      experience: 'Hurt in a game, Annie gets an MRI and learns she needs surgery and months of rehab.',
+      painPoints: ['Confused about next steps', 'Unclear recovery timeline', 'Missing the season'],
       emotions: ['Overwhelmed', 'Anxious', 'Upset'],
-      opportunities: ['Clear, interactive education about the injury and recovery timeline', 'A digital tracker that visualizes phases and milestones in recovery', 'Emotional support onboarding, e.g. messages from peers who’ve been through similar injuries'],
+      opportunities: ['Interactive injury and timeline education', 'A tracker for phases and milestones', 'Support from peers who’ve been there'],
     },
     {
       name: 'Surgery & Early Recovery',
-      experience: 'Surgery completed. Annie starts physical therapy with limited mobility. Daily pain and stiffness. Mostly at home or using crutches at school.',
-      painPoints: ['Pain and boredom', 'Frustration with slow progress', 'Feeling disconnected from team and social life'],
+      experience: 'After surgery, Annie starts PT with limited mobility, daily pain and crutches at school.',
+      painPoints: ['Pain and boredom', 'Slow progress', 'Cut off from team and friends'],
       emotions: ['Discouraged', 'Isolated', 'Frustrated'],
-      opportunities: ['Gamified home exercise reminders', 'Tools to celebrate small wins, e.g. first steps and knee-bending milestones', 'Coach updates or team shoutouts for support'],
+      opportunities: ['Gamified exercise reminders', 'Celebrating small wins', 'Shoutouts from coach and team'],
     },
     {
       name: 'Mid Rehab',
-      experience: 'Annie attends PT 2–3 times a week and does home exercises. She tracks her progress manually, on paper.',
-      painPoints: ['Inconsistent motivation', 'Repetitive exercises feel dull', 'Unsure if progress is “good enough”', 'Hard to schedule or remember routines'],
+      experience: 'Annie goes to PT 2–3 times a week, does home exercises, and tracks her progress on paper.',
+      painPoints: ['Motivation comes and goes', 'Repetitive exercises feel dull', 'Unsure if progress is “good enough”'],
       emotions: ['Unmotivated', 'Restless', 'Doubtful'],
-      opportunities: ['A mobile app with visual progress graphs, compared against personalized recovery goals', 'Motivational messages from her PT or teammates', 'Smart reminders for home rehab, with form feedback videos'],
+      opportunities: ['Progress graphs against personal goals', 'Motivating messages from PT and teammates', 'Smart reminders with form feedback videos'],
     },
     {
       name: 'Late Rehab',
-      experience: 'Annie’s mobility improves. She begins light running and agility drills under PT supervision. Eager to return but afraid of reinjury.',
-      painPoints: ['Fear of reinjury', 'Lack of confidence', 'Unclear return-to-play criteria'],
+      experience: 'Annie starts light running and agility drills, eager to return but afraid of reinjury.',
+      painPoints: ['Fear of reinjury', 'Low confidence', 'Unclear return-to-play criteria'],
       emotions: ['Nervous', 'Hopeful'],
-      opportunities: ['Virtual confidence training and mental resilience tools', 'Progress dashboards with readiness benchmarks (strength %, flexibility)', 'Simulated team drills or remote feedback from coaches'],
+      opportunities: ['Confidence and resilience tools', 'Readiness benchmarks like strength %', 'Remote drills and coach feedback'],
     },
     {
       name: 'Return to Sport',
-      experience: 'Annie is cleared to return but still feels cautious in games. Monitored by her PT and coach, she rebuilds trust in her body and performance.',
-      painPoints: ['Anxiety during performance', 'Pressure to meet expectations', 'Lingering pain or stiffness'],
+      experience: 'Cleared to play, Annie is still cautious in games while her PT and coach monitor her.',
+      painPoints: ['Performance anxiety', 'Pressure to meet expectations', 'Lingering pain or stiffness'],
       emotions: ['Proud', 'Apprehensive'],
-      opportunities: ['A return-to-play checklist with feedback from PT and coach', 'A peer network or online community of recovering athletes', 'An ongoing injury prevention and tracking program'],
+      opportunities: ['A return-to-play checklist', 'A community of recovering athletes', 'Ongoing injury prevention tracking'],
     },
   ]}
 />

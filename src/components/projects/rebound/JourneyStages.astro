@@ -3,7 +3,9 @@
 // The stages sit on a progress track like the app's own stage bar; choosing one shows its
 // experience, pain points, emotions and design opportunities. The `focus` stage (the one
 // the design targets) is selected first and marked on the track.
-// Without JavaScript every stage shows, one after another.
+// Keep each stage's text short so the track and the card fit on one screen together.
+// Without JavaScript every stage shows, one after another. With it, the stages share one
+// spot sized to the tallest, so the page doesn't shift when switching.
 interface Stage {
   name: string;
   experience: string;
@@ -45,6 +47,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     }
   </div>
 
+  <div class="journey__stages">
   {
     stages.map(({ name, experience, painPoints, emotions, opportunities }, i) => (
       <section
@@ -82,6 +85,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       </section>
     ))
   }
+  </div>
 </div>
 
 <script>
@@ -90,6 +94,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const tabs = [...track.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
     const panels = [...journey.querySelectorAll<HTMLElement>('.journey__stage')];
     track.hidden = false;
+    journey.classList.add('is-ready');
 
     const select = (index: number, focusTab = false) => {
       tabs.forEach((tab, i) => {
@@ -98,7 +103,10 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         tab.tabIndex = on ? 0 : -1;
         tab.toggleAttribute('data-done', i < index);
       });
-      panels.forEach((panel, i) => (panel.hidden = i !== index));
+      panels.forEach((panel, i) => {
+        panel.toggleAttribute('data-active', i === index);
+        panel.inert = i !== index;
+      });
       journey.style.setProperty('--progress', String(index));
       if (focusTab) tabs[index].focus();
     };
@@ -129,7 +137,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     position: relative;
     display: grid;
     grid-template-columns: repeat(var(--count), 1fr);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
   }
 
   .journey__track[hidden] {
@@ -221,15 +229,30 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     white-space: nowrap;
   }
 
+  /* With JavaScript, all stages stack in one grid cell (as tall as the tallest) and only
+     the selected one is visible */
+  .is-ready .journey__stages {
+    display: grid;
+  }
+
+  .is-ready .journey__stage {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+
+  .is-ready .journey__stage[data-active] {
+    visibility: visible;
+  }
+
   /* One stage: a dark purple card */
   .journey__stage {
-    padding: var(--space-6);
+    padding: var(--space-5) var(--space-4);
     border-radius: 1rem;
     background: var(--case-surface);
     color: var(--case-muted);
   }
 
-  .journey__stage + .journey__stage {
+  .journey:not(.is-ready) .journey__stage + .journey__stage {
     margin-top: var(--space-4);
   }
 
@@ -242,11 +265,13 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     flex-wrap: wrap;
     align-items: baseline;
     gap: var(--space-2) var(--space-4);
-    padding-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
     border-bottom: var(--border-width) solid var(--case-border);
   }
 
+  /* Phones: the track already shows the stage number, so the count is hidden for space */
   .journey__count {
+    display: none;
     flex-basis: 100%;
     font-size: var(--text-small);
     letter-spacing: var(--tracking-caps);
@@ -255,7 +280,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   }
 
   .journey .journey__title {
-    font-size: var(--text-h1);
+    font-size: var(--text-h2);
     font-weight: var(--weight-medium);
     line-height: var(--leading-heading);
     color: var(--case-text);
@@ -279,13 +304,14 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
   .journey__grid {
     display: grid;
-    gap: var(--space-5);
-    padding-top: var(--space-5);
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+    font-size: var(--text-small);
   }
 
   .journey__block h5 {
-    margin-bottom: var(--space-3);
-    font-size: var(--text-small);
+    margin-bottom: var(--space-2);
+    font-size: 0.75rem;
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
@@ -294,7 +320,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
   .journey__block ul {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-1);
     padding-left: var(--space-5);
   }
 
@@ -304,7 +330,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
   /* Design opportunities are the takeaway, set as a bright purple card */
   .journey__block--opportunity {
-    padding: var(--space-5);
+    padding: var(--space-4);
     border-radius: var(--radius-md);
     background: var(--case-accent-1);
     color: #000;
@@ -318,32 +344,20 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     color: #000;
   }
 
+  /* Wider screens: experience, pain points and opportunities side by side */
   @media (min-width: 48rem) {
-    .journey__step {
-      font-size: var(--text-body);
-    }
-
-    .journey__grid {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .journey__block--opportunity {
-      grid-column: 1 / -1;
-    }
-  }
-
-  @media (min-width: 64rem) {
     .journey__stage {
-      padding: var(--space-7);
+      padding: var(--space-6);
+    }
+
+    .journey__count {
+      display: block;
     }
 
     .journey__grid {
-      grid-template-columns: 1fr 1fr 1.3fr;
-      gap: var(--space-6);
-    }
-
-    .journey__block--opportunity {
-      grid-column: auto;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: var(--space-5);
+      font-size: var(--text-body);
     }
   }
 </style>
