@@ -1,0 +1,231 @@
+---
+// Heuristic evaluation as a horizontal row of numbered cards, in order, that people can
+// swipe or scroll, with previous/next buttons (same pattern as SwipeCards). Each card
+// shows the heuristic, the question it asks, an everyday example and what I found in the
+// current app. Wrap words in **double asterisks** to bold them.
+interface Heuristic {
+  title: string;
+  question: string;
+  example: string;
+  findings: string[];
+}
+
+interface Props {
+  items: Heuristic[];
+  label?: string;
+}
+
+const { items, label = 'Heuristics' } = Astro.props;
+const id = 'heuristics';
+
+const escape = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+---
+
+<section class="heur case-wide" aria-labelledby={`${id}-label`}>
+  <div class="heur__top">
+    <h3 id={`${id}-label`} class="visually-hidden">{label}</h3>
+    <p class="heur__count" aria-hidden="true"><span class="heur__current">1</span> / {items.length}</p>
+    <div class="heur__controls" hidden>
+      <button type="button" class="heur__btn" data-dir="-1" aria-controls={id} aria-label="Previous heuristic">←</button>
+      <button type="button" class="heur__btn" data-dir="1" aria-controls={id} aria-label="Next heuristic">→</button>
+    </div>
+  </div>
+
+  <ol id={id} class="heur__track" role="list" tabindex="0" aria-label={`${label}, scrollable`}>
+    {
+      items.map(({ title, question, example, findings }, i) => (
+        <li class="heur__card">
+          <span class="heur__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h4 class="heur__title">{title}</h4>
+          <p class="heur__question">{question}</p>
+          <p class="heur__example">e.g. {example}</p>
+          <div class="heur__findings">
+            <h5>In the Oura app</h5>
+            <ul>
+              {findings.map((f) => (
+                <li set:html={rich(f)} />
+              ))}
+            </ul>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.heur').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('.heur__track')!;
+    const controls = root.querySelector<HTMLElement>('.heur__controls')!;
+    const current = root.querySelector<HTMLElement>('.heur__current')!;
+    const [prev, next] = root.querySelectorAll<HTMLButtonElement>('.heur__btn');
+    controls.hidden = false;
+
+    const step = () => {
+      const card = track.querySelector<HTMLElement>('.heur__card');
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return card ? card.offsetWidth + gap : track.clientWidth;
+    };
+    const sync = () => {
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+      current.textContent = String(Math.round(track.scrollLeft / step()) + 1);
+    };
+
+    [prev, next].forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        track.scrollBy({ left: Number(btn.dataset.dir) * step(), behavior: reduce ? 'auto' : 'smooth' });
+      }),
+    );
+    track.addEventListener('scroll', sync, { passive: true });
+    addEventListener('resize', sync);
+    sync();
+  });
+</script>
+
+<style>
+  .heur {
+    --card-width: 85%;
+    margin-block: var(--space-6);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .heur__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .heur__count {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  .heur__controls {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .heur__controls[hidden] {
+    display: none;
+  }
+
+  .heur__btn {
+    width: var(--tap-target);
+    height: var(--tap-target);
+    border: var(--border-width) solid var(--case-heading-1, var(--color-text));
+    border-radius: var(--radius-pill);
+    background: var(--color-bg);
+    color: var(--case-heading-1, var(--color-text));
+    font-size: var(--text-body);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .heur__btn:hover:not(:disabled) {
+    background: var(--case-heading-1, var(--color-text));
+    color: var(--color-bg);
+  }
+
+  .heur__btn:disabled {
+    border-color: var(--color-border);
+    color: var(--color-text-tertiary);
+    cursor: default;
+  }
+
+  /* Cards share one row height, so they always match */
+  .heur__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--card-width);
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0 0 var(--space-3);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    list-style: none;
+  }
+
+  .heur__track:focus-visible {
+    outline-offset: var(--space-1);
+  }
+
+  .heur__card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-6);
+    border-radius: 1rem;
+    background: var(--oura-tint, var(--color-surface));
+    color: var(--case-heading-1, var(--color-text));
+    scroll-snap-align: start;
+  }
+
+  .heur__num {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    opacity: 0.35;
+  }
+
+  .heur .heur__title {
+    margin-top: var(--space-4);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-bold);
+    color: inherit;
+  }
+
+  .heur__question {
+    margin-top: var(--space-2);
+  }
+
+  .heur__example {
+    margin-top: var(--space-2);
+    font-size: var(--text-small);
+    font-style: italic;
+    color: var(--oura-quiet, var(--color-text-secondary));
+  }
+
+  /* What I found, set apart from the heuristic's definition */
+  .heur__findings {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: var(--border-width) solid rgb(47 74 115 / 0.2);
+  }
+
+  .heur__findings h5 {
+    margin-bottom: var(--space-2);
+    font-size: 0.75rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+  }
+
+  .heur__findings ul {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: var(--space-4);
+    font-size: var(--text-small);
+  }
+
+  @media (min-width: 48rem) {
+    .heur {
+      --card-width: calc((100% - var(--space-4) * 2) / 2.5);
+    }
+  }
+
+  @media (min-width: 75rem) {
+    .heur {
+      --card-width: calc((100% - var(--space-4) * 3) / 3.3);
+    }
+  }
+</style>

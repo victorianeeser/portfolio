@@ -41,7 +41,7 @@ const projects = defineCollection({
       cover: media, // card thumbnail
       hero: media.optional(), // case study hero image
       // A custom-built hero section instead of an image (see src/pages/work/[slug].astro)
-      heroComponent: z.enum(['courtsync', 'rebound']).optional(),
+      heroComponent: z.enum(['courtsync', 'rebound', 'oura']).optional(),
       gallery: z.array(media).default([]),
     });
   },

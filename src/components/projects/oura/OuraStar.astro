@@ -1,0 +1,20 @@
+---
+// The four-point star used as a bullet throughout the Oura slides. The path is the star
+// vector from the Figma file, filled with the current text color so one shape works on
+// navy and on white.
+interface Props {
+  size?: string;
+}
+
+const { size = '1em' } = Astro.props;
+---
+
+<svg class="oura-star" viewBox="0 0 27.115 27.115" width={size} height={size} fill="currentColor" aria-hidden="true">
+  <path d="M12.6196 2.5345C12.9418 1.66388 14.1732 1.66389 14.4953 2.53451L17.0597 9.4645C17.161 9.73822 17.3768 9.95403 17.6505 10.0553L24.5805 12.6196C25.4511 12.9418 25.4511 14.1732 24.5805 14.4953L17.6505 17.0597C17.3768 17.161 17.161 17.3768 17.0597 17.6505L14.4953 24.5805C14.1732 25.4511 12.9418 25.4511 12.6196 24.5805L10.0553 17.6505C9.95403 17.3768 9.73822 17.161 9.4645 17.0597L2.5345 14.4953C1.66388 14.1732 1.66389 12.9418 2.53451 12.6196L9.4645 10.0553C9.73822 9.95403 9.95403 9.73822 10.0553 9.4645L12.6196 2.5345Z" />
+</svg>
+
+<style>
+  .oura-star {
+    flex: none;
+  }
+</style>

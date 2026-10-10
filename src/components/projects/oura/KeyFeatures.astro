@@ -1,0 +1,63 @@
+---
+// Oura's key features as a row of light blue cards, each led by the slides' star.
+import OuraStar from './OuraStar.astro';
+
+interface Feature {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  items: Feature[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="oura-features case-wide" role="list">
+  {
+    items.map(({ title, text }) => (
+      <li class="oura-features__card">
+        <OuraStar size="1.5rem" />
+        <h4>{title}</h4>
+        <p>{text}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .oura-features {
+    display: grid;
+    gap: var(--space-4);
+    margin-block: var(--space-6);
+    padding: 0;
+    list-style: none;
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .oura-features__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border-radius: 1rem;
+    background: var(--oura-tint, var(--color-surface));
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  .oura-features h4 {
+    margin-top: var(--space-2);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  @media (min-width: 48rem) {
+    .oura-features {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

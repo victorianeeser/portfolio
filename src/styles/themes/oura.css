@@ -1,0 +1,52 @@
+/*
+ * Oura project theme, applied via `theme: oura`.
+ * Values come from the Oura redesign slides in Figma: navy (#2F4A73) and white.
+ *
+ * Navy reads well on white (8.9:1), so it carries headings and text on light sections.
+ * On navy, text is white, and highlights use a pale blue (#B9CDEA, 5.5:1).
+ * Body copy uses the portfolio's own font.
+ */
+.theme-oura,
+.theme-oura [data-tone='dark'] {
+  --case-font: var(--font-sans);
+  --case-bg: #2f4a73;
+  --case-surface: #243a5c;
+  --case-surface-2: #3a5683;
+  --case-border: #46628e;
+  --case-text: #ffffff;
+  --case-muted: #d5deeb;
+  --case-subtle: #b9cdea;
+
+  --case-accent-1: #b9cdea;
+  /* The pull quote sits on white, where it reads the accent-2 slot directly */
+  --case-accent-2: #2f4a73;
+  --case-accent-3: #b9cdea;
+  --case-accent-1-text: #b9cdea;
+  --case-accent-2-text: #b9cdea;
+  --case-accent-3-text: #b9cdea;
+
+  --case-title-accent: var(--case-accent-1);
+  --case-glow: radial-gradient(60% 80% at 100% 0%, rgb(185 205 234 / 0.16), transparent 70%);
+
+  /* Section headings and markers on white */
+  --case-heading-1: #2f4a73;
+  --case-heading-2: #2f4a73;
+  --case-heading-3: #2f4a73;
+
+  /* Light blue tint for cards on white */
+  --oura-tint: #eef3fa;
+  /* Secondary text on white (examples, captions): 5.6:1 */
+  --oura-quiet: #56657c;
+}
+
+.theme-oura [data-tone='light'] {
+  --case-bg: var(--oura-tint);
+  --case-surface: var(--color-bg);
+  --case-border: var(--color-border);
+  --case-text: #2f4a73;
+  --case-muted: var(--color-text-secondary);
+  --case-accent-1-text: #2f4a73;
+  --case-accent-2-text: #2f4a73;
+  --case-accent-3-text: #2f4a73;
+  --case-glow: none;
+}

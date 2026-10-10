@@ -1,0 +1,297 @@
+---
+// Current-app interviews: one tab per person. Each tab shows who they are, their thoughts
+// and confusing points beside the interview questions and answers. Place inside a dark
+// Panel. Without JavaScript every interview shows, one after another; with it, they
+// share one spot sized to the longest, so the page doesn't shift when switching.
+import OuraStar from './OuraStar.astro';
+
+interface Person {
+  name: string;
+  facts: string[];
+  thoughts: string[];
+  confusing: string[];
+  qa: { q: string; a: string }[];
+}
+
+interface Props {
+  people: Person[];
+}
+
+const { people } = Astro.props;
+const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+---
+
+<div class="interviews">
+  <div class="interviews__tabs" role="tablist" aria-label="Interviews" hidden>
+    {
+      people.map(({ name }, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`tab-${slug(name)}`}
+          class="interviews__tab"
+          aria-selected={String(i === 0)}
+          aria-controls={slug(name)}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          <OuraStar size="0.875rem" />
+          {name}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="interviews__panels">
+    {
+      people.map(({ name, facts, thoughts, confusing, qa }, i) => (
+        <section
+          id={slug(name)}
+          class="interviews__panel"
+          role="tabpanel"
+          aria-labelledby={`tab-${slug(name)}`}
+          data-active={i === 0 ? '' : undefined}
+        >
+          <div class="interviews__about">
+            <header class="interviews__head">
+              <span class="interviews__avatar" aria-hidden="true">{name[0]}</span>
+              <div>
+                <h4 class="interviews__name">{name}</h4>
+                <ul class="interviews__facts" aria-label="About">
+                  {facts.map((f) => <li>{f}</li>)}
+                </ul>
+              </div>
+            </header>
+
+            <div class="interviews__block">
+              <h5>Thoughts</h5>
+              <ul>{thoughts.map((t) => <li>{t}</li>)}</ul>
+            </div>
+            <div class="interviews__block">
+              <h5>Confusing points</h5>
+              <ul>{confusing.map((c) => <li>{c}</li>)}</ul>
+            </div>
+          </div>
+
+          <dl class="interviews__qa">
+            {qa.map(({ q, a }) => (
+              <div>
+                <dt>{q}</dt>
+                <dd>{a}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.interviews').forEach((root) => {
+    const list = root.querySelector<HTMLElement>('.interviews__tabs')!;
+    const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('.interviews__panel')];
+    list.hidden = false;
+    root.classList.add('is-ready');
+
+    const select = (index: number, focusTab = false) => {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+      });
+      panels.forEach((panel, i) => {
+        panel.toggleAttribute('data-active', i === index);
+        panel.inert = i !== index;
+      });
+      if (focusTab) tabs[index].focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        const keys: Record<string, number> = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+        if (!(e.key in keys)) return;
+        e.preventDefault();
+        select((keys[e.key] + tabs.length) % tabs.length, true);
+      });
+    });
+
+    select(0);
+  });
+</script>
+
+<style>
+  .interviews__tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-bottom: var(--space-5);
+    padding: var(--space-1);
+    border-radius: var(--radius-pill);
+    background: var(--case-surface);
+  }
+
+  .interviews__tabs[hidden] {
+    display: none;
+  }
+
+  .interviews__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-target);
+    padding: 0 var(--space-5);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: none;
+    font: inherit;
+    font-weight: var(--weight-medium);
+    color: var(--case-muted);
+    cursor: pointer;
+  }
+
+  /* Only the selected tab shows the slide's star */
+  .interviews__tab :global(.oura-star) {
+    opacity: 0;
+  }
+
+  .interviews__tab:hover {
+    color: var(--case-text);
+  }
+
+  .interviews__tab[aria-selected='true'] {
+    background: var(--case-text);
+    color: var(--case-bg);
+  }
+
+  .interviews__tab[aria-selected='true'] :global(.oura-star) {
+    opacity: 1;
+  }
+
+  .is-ready .interviews__panels {
+    display: grid;
+  }
+
+  .is-ready .interviews__panel {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+
+  .is-ready .interviews__panel[data-active] {
+    visibility: visible;
+  }
+
+  .interviews__panel + .interviews__panel {
+    margin-top: var(--space-6);
+  }
+
+  .is-ready .interviews__panel + .interviews__panel {
+    margin-top: 0;
+  }
+
+  .interviews__panel {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .interviews__about,
+  .interviews__qa {
+    padding: var(--space-6);
+    border-radius: 1rem;
+    background: var(--case-surface);
+  }
+
+  .interviews__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding-bottom: var(--space-5);
+    border-bottom: var(--border-width) solid var(--case-border);
+  }
+
+  .interviews__avatar {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--case-accent-1);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    color: var(--case-bg);
+  }
+
+  .interviews .interviews__name {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    color: var(--case-text);
+  }
+
+  .interviews__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .interviews__facts li {
+    padding: 0.15em 0.7em;
+    border: var(--border-width) solid var(--case-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    color: var(--case-muted);
+  }
+
+  .interviews__block {
+    margin-top: var(--space-5);
+  }
+
+  .interviews__block h5 {
+    margin-bottom: var(--space-2);
+    font-size: 0.75rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-subtle);
+  }
+
+  .interviews__block ul {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: var(--space-5);
+    color: var(--case-text);
+  }
+
+  .interviews__block li::marker {
+    color: var(--case-accent-1);
+  }
+
+  .interviews__qa {
+    display: grid;
+    align-content: start;
+    gap: var(--space-5);
+    margin: 0;
+  }
+
+  .interviews__qa dt {
+    font-weight: var(--weight-bold);
+    color: var(--case-accent-1);
+  }
+
+  .interviews__qa dd {
+    margin: var(--space-1) 0 0;
+    color: var(--case-text);
+  }
+
+  .interviews__qa dd::before { content: '“'; }
+  .interviews__qa dd::after { content: '”'; }
+
+  @media (min-width: 64rem) {
+    .interviews__panel {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

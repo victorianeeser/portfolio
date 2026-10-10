@@ -1,0 +1,232 @@
+---
+title: "Oura Redesign"
+summary: "A redesign of the Oura app that helps people understand their sleep, readiness and activity data, and know what to do next."
+role: "UX/UI Designer"
+timeline: "2025"
+tools: ["Figma"]
+team: "Solo"
+tags: ["UX", "UI"]
+order: 6
+featured: true
+theme: oura
+# figma: "https://www.figma.com/design/K9bLB1aEsBCqUxakios3DE"
+cover:
+  label: "Oura Redesign: cover"
+  alt: "Three score rings for sleep, readiness and activity on navy"
+  src: "../../assets/projects/oura/cover.jpg"
+heroComponent: oura
+---
+
+import SectionNav from '../../components/case/SectionNav.astro';
+import SectionTitle from '../../components/case/SectionTitle.astro';
+import Panel from '../../components/case/Panel.astro';
+import KeyFeatures from '../../components/projects/oura/KeyFeatures.astro';
+import InterviewTabs from '../../components/projects/oura/InterviewTabs.astro';
+import HeuristicCards from '../../components/projects/oura/HeuristicCards.astro';
+
+<SectionNav
+  items={[
+    { label: 'Overview', href: '#overview' },
+    { label: 'Interviews', href: '#interviews' },
+    { label: 'Heuristic Evaluation', href: '#heuristics' },
+  ]}
+/>
+
+<p id="overview" class="eyebrow collection-label">Overview</p>
+
+<SectionTitle>What Is Oura?</SectionTitle>
+
+Oura is a smart ring and wellness app that helps users understand their sleep, readiness, and activity levels through detailed biometric tracking.
+
+<KeyFeatures
+  items={[
+    { title: 'Sleep', text: 'Tracks sleep quality, including stages, time in bed, and efficiency.' },
+    { title: 'Readiness', text: 'Measures readiness, combining metrics like resting heart rate, HRV, and body temperature.' },
+    { title: 'Activity', text: 'Monitors activity, including steps, calories burned, and recovery.' },
+  ]}
+/>
+
+<Panel
+  id="interviews"
+  level={2}
+  eyebrow="Research"
+  title="Current App Interviews"
+  highlight="Interviews"
+  intro="I interviewed three people about how they use Oura and other wellness trackers. All three liked the app, but found it hard to turn the data into action."
+>
+  <InterviewTabs
+    people={[
+      {
+        name: 'Ellie',
+        facts: ['College student', 'Loves to work out', 'Uses an Apple Watch'],
+        thoughts: ['Likes how clean and simple it is, but it takes a lot of time to understand.'],
+        confusing: [
+          'In the Readiness, Sleep and Activity tabs, the calendar only appears next to “Today.” It would be easier to find as an icon in the same spot, top right, on every tab.',
+        ],
+        qa: [
+          {
+            q: 'What could make the app more helpful to you as someone who works out?',
+            a: 'If it could just say, “Hey, you slept less than usual, maybe go to bed earlier tonight.” Like, just talk to me in normal language. It’s too data-heavy sometimes.',
+          },
+          {
+            q: 'How would you feel about AI helping you interpret data?',
+            a: 'That would actually be cool. Like a little coach that checks in and gives encouragement or suggestions based on how I’m doing. This is something that I feel like would be super good because I don’t know what certain things mean.',
+          },
+        ],
+      },
+      {
+        name: 'Stacy',
+        facts: ['Busy hairstylist', 'Uses Oura', 'Mom, 50'],
+        thoughts: ['Likes the overall app, but there is so much data that she doesn’t know how to understand it.'],
+        confusing: [
+          'Doesn’t know what all of the data means, but likes the visual breakdowns in red, peach and bright blue.',
+          'The information button on a category doesn’t tell her everything she needs to know.',
+        ],
+        qa: [
+          {
+            q: 'What do you like most about the Oura app?',
+            a: 'I love how detailed the sleep tracking is. I check my readiness and sleep score every morning. It feels accurate.',
+          },
+          {
+            q: 'What do you find challenging or frustrating?',
+            a: 'Honestly, there’s a lot of data, so sometimes it’s hard to know what matters. I see a lower readiness score, but I’m not always sure why it’s low or what to do about it.',
+          },
+          {
+            q: 'How would you improve the experience?',
+            a: 'I’d love a feature that just tells me what the numbers mean and gives me one thing to focus on. Maybe something more personalized.',
+          },
+        ],
+      },
+      {
+        name: 'Sydney',
+        facts: ['College student', 'Uses Oura'],
+        thoughts: [
+          'Uses the app to fine-tune her wellness routine.',
+          'Tracks HRV, sleep stages and recovery to guide her workouts.',
+        ],
+        confusing: [
+          'Too much raw data: “Sometimes I miss important trends because I don’t have time to interpret everything.”',
+          'No clear next steps: “The app shows me patterns, but doesn’t always tell me what to do.”',
+        ],
+        qa: [
+          {
+            q: 'What keeps you coming back to the Oura app?',
+            a: 'I’m obsessed with optimization. I use it for HRV, sleep stages, even adjusting workouts. I use it to plan rest days too.',
+          },
+          {
+            q: 'Are there any limitations or gaps?',
+            a: 'I wish there was a smarter insights layer. Like, sometimes I miss things because I don’t have time to dig into the charts.',
+          },
+          {
+            q: 'What kind of features would help you most?',
+            a: 'AI that explains trends and gives next steps would be great. Like: “Your deep sleep has been down 3 nights, maybe avoid caffeine past noon.” That’s gold.',
+          },
+        ],
+      },
+    ]}
+  />
+</Panel>
+
+<p id="heuristics" class="eyebrow collection-label">Heuristic evaluation</p>
+
+<SectionTitle>Ten Heuristics, One App</SectionTitle>
+
+I reviewed the current Oura app against Nielsen’s ten usability heuristics, to see where it already works and where people get stuck.
+
+<HeuristicCards
+  items={[
+    {
+      title: 'Visibility of status',
+      question: 'Do you know where you are in the system and where you can go next?',
+      example: 'Elevator buttons lighting up',
+      findings: [
+        'The bottom navigation bar (Home, Readiness, Sleep, Activity) gives a sense of where you are.',
+        'The Home screen gives a daily overview of your current status, helping users feel oriented.',
+        'Each section, like Sleep, has a consistent header and back button.',
+      ],
+    },
+    {
+      title: 'System vs. real world',
+      question: 'How similar are the digital and physical experiences?',
+      example: 'Shopping carts on a website vs. in a store',
+      findings: [
+        'The ring is very intuitive and needs no interaction. The app, by contrast, can feel overwhelming and data-heavy, especially for first-time users.',
+        'There’s a **disconnect between the passive ring and the active app**, where you have to navigate charts, scores and insights to get value.',
+      ],
+    },
+    {
+      title: 'User control and freedom',
+      question: 'Does the user get lost in the experience at any time?',
+      example: 'Back buttons; the ability to edit a shopping cart',
+      findings: [
+        'Deeper views, like past trends, heart rate graphs or tags, **aren’t always easy to find or return from.** You can end up buried in a chart and unsure how you got there.',
+        'Too much data without context or priority can overwhelm newer users, who see dozens of metrics without knowing which matters most today.',
+      ],
+    },
+    {
+      title: 'Consistency and standards',
+      question: 'Does the system follow patterns?',
+      example: 'Buttons in the same place; no new functionality introduced mid-experience',
+      findings: [
+        'Button placement is mostly consistent. The fixed bottom navigation bar means users always know how to return to the main areas.',
+        'The card layout for each data point (Sleep, HRV, Activity) repeats across screens, so users learn it once and apply it everywhere.',
+      ],
+    },
+    {
+      title: 'Error prevention',
+      question: 'How is the system designed to avoid mistakes?',
+      example: 'Similar features grouped together',
+      findings: [
+        'Most of the app is read-only, so **users mainly review data rather than enter it**, which greatly reduces mistakes.',
+        'Tags like “stressed,” “caffeine” and “travel” offer no suggestions or clarification, so users may choose inconsistent tags that skew long-term trends.',
+      ],
+    },
+    {
+      title: 'Recognition rather than recall',
+      question: 'Is there enough information on the surface to know where you’ll go next?',
+      example: 'Breadcrumbs, onboarding, pagination',
+      findings: [
+        'There’s no breadcrumb navigation, so users can feel lost or unsure how they ended up in a view.',
+        'There’s no “you are here” indicator, and **no way to jump between related views**, like Sleep to Readiness, without backing out completely.',
+      ],
+    },
+    {
+      title: 'Flexibility and ease of use',
+      question: 'Does the experience differ between novice and expert users?',
+      example: 'Keyboard shortcuts; shortcuts for efficiency',
+      findings: [
+        '**Yes, it differs between users.**',
+        'Novices can feel overwhelmed by terms like HRV, latency and body temperature deviation, and don’t know which score matters or what to do when Readiness is low.',
+        'Experts navigate with confidence, toggle between days, weeks and months, and know how each metric applies to them.',
+      ],
+    },
+    {
+      title: 'Aesthetics',
+      question: 'Can you strip the screen down to its main components?',
+      example: 'White space, simplicity',
+      findings: [
+        'Yes, overall. The type is very simple.',
+        '**The contrast between navy and dark navy is too subtle**, making sections hard to tell apart for older users. Stronger contrast would improve readability.',
+      ],
+    },
+    {
+      title: 'Help users find errors',
+      question: 'Are mistakes easy to identify?',
+      example: 'Toast notifications, red Xs vs. green checkmarks',
+      findings: [
+        'Green checkmarks and blue-highlighted buttons signal positive actions, like “Sync complete.”',
+        'Red appears in some areas, like low Readiness or sleep quality, but as a cue for low scores rather than error states.',
+      ],
+    },
+    {
+      title: 'Help and documentation',
+      question: 'Can users learn how to navigate the experience if needed?',
+      example: 'FAQs, a help assistant, contact info',
+      findings: [
+        'Yes, users can learn and navigate the experience.',
+        'It takes a while to learn all the features, because some are tucked away.',
+        'There’s **no real FAQ or help assistant**, which is why an AI guide would be so helpful.',
+      ],
+    },
+  ]}
+/>

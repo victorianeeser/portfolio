@@ -1,0 +1,141 @@
+---
+// Oura title section: a navy band with the project's closing statement from the intro
+// slide and three score rings for the app's main areas (sleep, readiness, activity).
+// The rings are drawn as SVG, so they stay sharp at any size.
+const rings = [
+  { label: 'Sleep', r: 46, fill: 0.82 },
+  { label: 'Readiness', r: 36, fill: 0.68 },
+  { label: 'Activity', r: 26, fill: 0.54 },
+];
+const circ = (r: number) => 2 * Math.PI * r;
+---
+
+<div class="oura-hero">
+  <div class="oura-hero__text">
+    <p class="oura-hero__eyebrow">App redesign · 2025</p>
+    <p class="oura-hero__statement">
+      Oura empowers users to make informed decisions about their wellness, <span>every day.</span>
+    </p>
+  </div>
+
+  <figure class="oura-hero__rings" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+      {
+        rings.map(({ r, fill }) => (
+          <g>
+            <circle cx="50" cy="50" r={r} class="oura-hero__track" />
+            <circle
+              cx="50"
+              cy="50"
+              r={r}
+              class="oura-hero__arc"
+              stroke-dasharray={`${circ(r) * fill} ${circ(r)}`}
+              transform="rotate(-90 50 50)"
+            />
+          </g>
+        ))
+      }
+    </svg>
+    <figcaption class="oura-hero__legend">
+      {rings.map(({ label }) => <span>{label}</span>)}
+    </figcaption>
+  </figure>
+</div>
+
+<style>
+  .oura-hero {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    padding: var(--space-8) var(--space-6);
+    border-radius: var(--radius-md);
+    background: var(--case-glow, none), var(--case-bg, #2f4a73);
+    color: var(--case-text, #fff);
+    font-family: var(--case-font, var(--font-sans));
+  }
+
+  .oura-hero__eyebrow {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-subtle, #b9cdea);
+  }
+
+  .oura-hero__statement {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .oura-hero__statement span {
+    color: var(--case-accent-1, #b9cdea);
+  }
+
+  .oura-hero__rings {
+    justify-self: center;
+    width: min(100%, 18rem);
+    margin: 0;
+  }
+
+  .oura-hero__rings svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .oura-hero__track,
+  .oura-hero__arc {
+    fill: none;
+    stroke-width: 7;
+  }
+
+  .oura-hero__track {
+    stroke: var(--case-surface, #243a5c);
+  }
+
+  .oura-hero__arc {
+    stroke: var(--case-accent-1, #b9cdea);
+    stroke-linecap: round;
+  }
+
+  .oura-hero g:nth-child(2) .oura-hero__arc { stroke: #fff; }
+  .oura-hero g:nth-child(3) .oura-hero__arc { stroke: #7f9fcf; }
+
+  .oura-hero__legend {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+    font-size: var(--text-small);
+    color: var(--case-muted, #d5deeb);
+  }
+
+  .oura-hero__legend span::before {
+    content: '';
+    display: inline-block;
+    width: 0.6em;
+    height: 0.6em;
+    margin-right: 0.4em;
+    border-radius: 50%;
+    background: var(--case-accent-1, #b9cdea);
+  }
+
+  .oura-hero__legend span:nth-child(2)::before { background: #fff; }
+  .oura-hero__legend span:nth-child(3)::before { background: #7f9fcf; }
+
+  @media (min-width: 48rem) {
+    .oura-hero {
+      grid-template-columns: 1.5fr 1fr;
+      gap: var(--space-8);
+      padding: var(--space-9) var(--space-8);
+    }
+
+    .oura-hero__statement {
+      max-width: 22ch;
+    }
+  }
+</style>
