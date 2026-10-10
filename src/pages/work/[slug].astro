@@ -244,6 +244,35 @@ const meta = [
     margin-top: var(--space-2);
   }
 
+  /* A centered statement section, e.g. a solution between two dark bands:
+     label, title and a short paragraph */
+  .case-body > :global(.case-centered) {
+    grid-column: wide;
+    max-width: var(--container-slide);
+    margin-inline: auto;
+    padding-block: var(--space-6);
+    text-align: center;
+  }
+
+  .case-body > :global(.case-centered) > :global(.eyebrow) {
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  .case-body > :global(.case-centered) > :global(* + *) {
+    margin-top: var(--space-3);
+  }
+
+  .case-body > :global(.case-centered) > :global(p:last-child) {
+    margin-top: var(--space-4);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .case-body > :global(.case-centered) > :global(p:last-child) {
+      font-size: var(--text-h3);
+    }
+  }
+
   .case-links {
     display: flex;
     flex-wrap: wrap;

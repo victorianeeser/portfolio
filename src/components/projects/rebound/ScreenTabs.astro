@@ -53,7 +53,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         >
           <h4 class="screen-tabs__heading">{name}</h4>
           {text && <p class="screen-tabs__text">{text}</p>}
-          <ul class="screen-tabs__row" role="list" tabindex="0" aria-label={`${name} screens`} style={`--count: ${screens.length}`}>
+          <ul class="screen-tabs__row" role="list" tabindex="0" aria-label={`${name} screens`} style={`--count: ${screens.length}; --ratio: ${screens[0].src.width} / ${screens[0].src.height}`}>
             {screens.map(({ src, alt }) => (
               <li>
                 <Image src={src} alt={alt} sizes="(min-width: 48rem) 200px, 42vw" />
@@ -225,12 +225,16 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     scroll-snap-align: start;
   }
 
+  /* Every screen in a group takes the first screen's shape, so they line up even when
+     the exports differ by a few pixels */
   .screen-tabs__row :global(img) {
     display: block;
     width: 100%;
     height: auto;
+    aspect-ratio: var(--ratio);
     border-radius: 0.75rem;
-    box-shadow: 0 0 0 1px var(--case-border);
+    object-fit: cover;
+    object-position: top;
   }
 
   @media (min-width: 48rem) {
