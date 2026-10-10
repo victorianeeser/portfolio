@@ -17,7 +17,8 @@ import OuraHero from '../../components/projects/oura/OuraHero.astro';
 const heroComponents = { courtsync: CourtSyncHero, rebound: ReboundHero, oura: OuraHero };
 
 export async function getStaticPaths() {
-  const projects = await getProjects();
+  // Coming-soon projects show as cards only, with no page yet
+  const projects = (await getProjects()).filter((p) => !p.data.comingSoon);
   return projects.map((project, i) => ({
     params: { slug: project.id },
     // Loop back to the first project after the last

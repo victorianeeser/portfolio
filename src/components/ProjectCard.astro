@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { project, headingLevel: Heading = 'h3' } = Astro.props;
-const { title, role, tags, cover, theme } = project.data;
+const { title, role, tags, cover, theme, comingSoon } = project.data;
 
 // Each project's brand color for the title and tags on hover
 const hoverColors: Record<string, string> = {
@@ -22,11 +22,12 @@ const hoverColors: Record<string, string> = {
 const hover = theme ? hoverColors[theme] : undefined;
 ---
 
-<article class="card" style={hover ? `--card-hover: ${hover}` : undefined}>
+<article class:list={['card', comingSoon && 'card--soon']} style={hover && !comingSoon ? `--card-hover: ${hover}` : undefined}>
   <ImageSlot {...cover} ratio="thumb" />
   <div class="card__body">
     <Heading class="card__title">
-      <a href={`/work/${project.id}/`} class="card__link">{title}</a>
+      {comingSoon ? title : <a href={`/work/${project.id}/`} class="card__link">{title}</a>}
+      {comingSoon && <span class="card__soon">Coming soon</span>}
     </Heading>
     <p class="meta">{role}</p>
     <ul class="tag-list" aria-label="Tags">
@@ -106,5 +107,26 @@ const hover = theme ? hoverColors[theme] : undefined;
 
   .tag-list {
     margin-top: var(--space-2);
+  }
+
+  /* Coming soon: a plain card with no link and no hover */
+  .card--soon .card__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .card__soon {
+    padding: 0.15em 0.6em;
+    border: var(--border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-regular);
+    color: var(--color-text-secondary);
+  }
+
+  .card--soon:hover :global(.slot)::after {
+    opacity: 0;
   }
 </style>

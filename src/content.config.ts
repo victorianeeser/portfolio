@@ -35,6 +35,7 @@ const projects = defineCollection({
       order: z.number(), // lower = earlier in lists
       featured: z.boolean().default(false), // show on the home page
       draft: z.boolean().default(false), // hide from the site entirely
+      comingSoon: z.boolean().default(false), // show the card, but no case study page or link yet
       figma: z.string().url().optional(), // link to the Figma file the visuals come from
       theme: z.string().optional(), // project theme for custom sections, see src/styles/themes/
       links: z.array(z.object({ label: z.string(), url: z.string().url() })).default([]),
