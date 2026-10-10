@@ -1,0 +1,116 @@
+---
+// Usability testing tasks as a row of cards: the task, whether testers completed it, and
+// the follow-up questions they rated. Place inside a dark Panel.
+import OuraStar from './OuraStar.astro';
+
+interface Task {
+  task: string;
+  result: string;
+  questions: string[];
+}
+
+interface Props {
+  items: Task[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="tasks" role="list">
+  {
+    items.map(({ task, result, questions }, i) => (
+      <li class="tasks__card">
+        <p class="tasks__num">
+          <OuraStar size="0.875rem" />
+          Task {i + 1}
+        </p>
+        <h4 class="tasks__title">{task}</h4>
+        <p class="tasks__result">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m5 12.5 4.5 4.5L19 7.5" />
+          </svg>
+          {result}
+        </p>
+        <ul class="tasks__questions">
+          {questions.map((q) => <li>{q}</li>)}
+        </ul>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .tasks {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tasks__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: var(--border-width) solid rgb(255 255 255 / 0.15);
+    border-radius: 1rem;
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  .tasks__num {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #6fcbff;
+  }
+
+  .tasks .tasks__title {
+    font-size: var(--text-body);
+    font-weight: var(--weight-bold);
+    line-height: 1.4;
+    color: #fff;
+  }
+
+  /* Completion badge in the slide's light blue (6.4:1 on navy) */
+  .tasks__result {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: fit-content;
+    padding: 0.2em 0.75em;
+    border-radius: var(--radius-pill);
+    background: rgb(111 203 255 / 0.15);
+    font-size: var(--text-small);
+    font-weight: var(--weight-bold);
+    color: #6fcbff;
+  }
+
+  .tasks__questions {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding: var(--space-3) 0 0;
+    border-top: var(--border-width) solid rgb(255 255 255 / 0.15);
+    font-size: var(--text-small);
+    line-height: 1.5;
+    list-style: none;
+    color: #dbe4f0;
+  }
+
+  @media (min-width: 48rem) {
+    .tasks {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .tasks {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

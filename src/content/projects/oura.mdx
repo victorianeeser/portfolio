@@ -27,6 +27,11 @@ import PhonePins from '../../components/projects/oura/PhonePins.astro';
 import NavCompare from '../../components/projects/oura/NavCompare.astro';
 import ProblemScreens from '../../components/projects/oura/ProblemScreens.astro';
 import SolutionBand from '../../components/projects/oura/SolutionBand.astro';
+import UserFlow from '../../components/projects/oura/UserFlow.astro';
+import OuraPersona from '../../components/projects/oura/OuraPersona.astro';
+import UsabilityTasks from '../../components/projects/oura/UsabilityTasks.astro';
+import TestFindings from '../../components/projects/oura/TestFindings.astro';
+import personaEllie from '../../assets/projects/oura/persona-ellie.jpg';
 import analysisReadiness from '../../assets/projects/oura/analysis-readiness.png';
 import refineBefore from '../../assets/projects/oura/refine-before.png';
 import refineAfter from '../../assets/projects/oura/refine-after.png';
@@ -47,6 +52,10 @@ import problem7 from '../../assets/projects/oura/problem-7.png';
     { label: 'Refinement', href: '#refinement' },
     { label: 'Problem', href: '#problem' },
     { label: 'Solution', href: '#solution' },
+    { label: 'User Flow', href: '#user-flow' },
+    { label: 'Persona', href: '#persona' },
+    { label: 'Usability Testing', href: '#testing' },
+    { label: 'Findings', href: '#findings' },
   ]}
 />
 
@@ -356,4 +365,107 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
       points: ['A deeper look at your readiness, sleep and activity, what to pay attention to, and a personalized plan for today.'],
     },
   ]}
+/>
+
+<p id="user-flow" class="eyebrow collection-label">User flow</p>
+
+<SectionTitle>Where Nova Fits In</SectionTitle>
+
+<UserFlow
+  caption="Nova can be used in three parts of the app."
+  start="Log in / open app"
+  branches={[
+    {
+      label: 'Today',
+      children: [
+        { label: 'Nova Chat', nova: 1 },
+        { label: 'Nova Insights', nova: 2, children: [{ label: 'Readiness' }, { label: 'Sleep' }, { label: 'Activity' }] },
+        { label: 'Readiness · Sleep · Activity' },
+      ],
+    },
+    { label: 'Readiness', children: [{ label: 'Readiness Nova breakdown', nova: 3 }, { label: 'Readiness stats' }] },
+    { label: 'Sleep', children: [{ label: 'Sleep Nova breakdown', nova: 3 }, { label: 'Sleep stats' }] },
+    { label: 'Activity', children: [{ label: 'Activity Nova breakdown', nova: 3 }, { label: 'Activity stats' }] },
+  ]}
+/>
+
+<Panel id="persona" level={2} tone="light" eyebrow="Persona" title="Designing for Ellie" highlight="Ellie">
+  <OuraPersona
+    name="Ellie Smith"
+    image={personaEllie}
+    imageAlt="A smiling young woman with long blonde hair in a denim jacket, outdoors at sunset"
+    about={['20, college student', 'Loves to work out and stay fit; wants to improve her energy, balance academics and sleep better']}
+    likes={['Quick, visual feedback on how she’s doing', '**Personalized health advice**', 'Seeing trends in her sleep and recovery', 'Feeling in control of her energy and wellness']}
+    wants={[
+      'Clear explanations of what her scores actually mean',
+      'Specific tips she can act on without digging',
+      'An AI that talks to her in normal, encouraging language',
+      'Tools to plan workouts and rest around her school schedule',
+      '**Not just the stats, but what she can do about them and how to improve.**',
+    ]}
+    traits={[
+      { from: 'Introvert', to: 'Extrovert', value: 65 },
+      { from: 'Analytical', to: 'Creative', value: 34 },
+      { from: 'Busy', to: 'Time rich', value: 16 },
+      { from: 'Messy', to: 'Organized', value: 72 },
+      { from: 'Independent', to: 'Team player', value: 36 },
+      { from: 'Passive', to: 'Active', value: 58 },
+      { from: 'Safe', to: 'Risky', value: 36 },
+    ]}
+  />
+</Panel>
+
+<Panel id="testing" level={2} eyebrow="Usability testing" title="Version 1: Four Tasks" highlight="Four Tasks" intro="Testers completed four tasks in the first version, then rated each one from 1 to 10.">
+  <UsabilityTasks
+    items={[
+      {
+        task: 'Navigate to the Home screen and find your Readiness, Sleep and Activity scores.',
+        result: 'Completed',
+        questions: ['How easy was it to find your key scores on the Home screen?', 'How clearly were the scores presented to you?'],
+      },
+      {
+        task: 'Tap the Nova card to view your personalized AI insights for Readiness, Sleep and Activity.',
+        result: 'Completed',
+        questions: ['How easy was it to find and open the Nova card?', 'How helpful did the overview insights feel?'],
+      },
+      {
+        task: 'Go to Readiness and find Nova’s breakdown, specifically for Readiness.',
+        result: 'Completed',
+        questions: ['How easy was it to act on Nova’s suggestion?', 'How likely are you to use this feature regularly?'],
+      },
+      {
+        task: 'Use the AI chat to ask Nova: “How can I improve my sleep?”',
+        result: 'Completed',
+        questions: ['How natural did the chat interaction feel?', 'How relevant were Nova’s sleep suggestions?'],
+      },
+    ]}
+  />
+</Panel>
+
+<p id="findings" class="eyebrow collection-label">Findings</p>
+
+<SectionTitle>What Testers Said</SectionTitle>
+
+<TestFindings
+  items={[
+    {
+      question: 'How easy was it to find your key scores on the Home screen?',
+      scale: '1 = Very difficult, 10 = Very easy',
+      responses: [9, 10, 10, 10, 10],
+      text: 'Users found their key scores very easily. The Home screen is intuitive here and matches what people expect.',
+    },
+    {
+      question: 'How natural did the chat interaction feel?',
+      scale: '1 = Very awkward, 10 = Very smooth',
+      responses: [10, 9, 9, 10, 10],
+      text: 'Users found the AI chat intuitive and conversational, so Nova’s tone and interaction style fit their expectations.',
+    },
+  ]}
+  keyFinding={{
+    question: 'After using Nova Insights and the breakdown, how helpful did the overview feel?',
+    scale: '1 = Not helpful at all, 10 = Extremely helpful',
+    responses: [9, 6, 7.5, 6, 7],
+    text: 'They liked the AI insights and breakdown, and they made sense, but the design could be improved to make the breakdown feel more helpful. Users wanted it more intuitive, and to know what to do based on the insights.',
+    highlight: 'design could be improved',
+  }}
 />

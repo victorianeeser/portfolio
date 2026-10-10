@@ -1,7 +1,7 @@
 ---
 // Current vs. redesigned nav bar. The current bar is a screenshot from the app; the
-// redesigned bar is rebuilt as a working tab bar with the Figma icons (tap a tab to select
-// it), so the change reads as an interaction, not just a picture.
+// redesigned bar is rebuilt from the Figma nav component (icons, labels and the dimmed
+// unselected tabs as designed), shown in the same black frame so the two compare directly.
 import { Image } from 'astro:assets';
 import current from '../../../assets/projects/oura/nav-current.jpg';
 import today from '../../../assets/projects/oura/nav-today.svg?raw';
@@ -10,19 +10,16 @@ import sleep from '../../../assets/projects/oura/nav-sleep.svg?raw';
 import activity from '../../../assets/projects/oura/nav-activity.svg?raw';
 import myHealth from '../../../assets/projects/oura/nav-my-health.svg?raw';
 
-// Recolor the exported icons with the current text color, so the selected state can change it
-const tint = (svg: string) =>
-  svg
-    .replace(/(fill|stroke)="(white|#616161)"/g, '$1="currentColor"')
-    .replace(/ style="[^"]*"/, '')
-    .replace(/ preserveAspectRatio="none"/, '');
+// The exported icons keep their own colors; only the inline sizing from Figma is removed
+const clean = (svg: string) => svg.replace(/ style="[^"]*"/, '').replace(/ preserveAspectRatio="none"/, '');
 
+// state: how the tab looks in the design. Today is selected, Readiness is at 40%, the rest are grey.
 const tabs = [
-  { label: 'Today', icon: tint(today) },
-  { label: 'Readiness', icon: tint(readiness) },
-  { label: 'Sleep', icon: tint(sleep) },
-  { label: 'Activity', icon: tint(activity) },
-  { label: 'My Health', icon: tint(myHealth) },
+  { label: 'Today', icon: clean(today), state: 'on' },
+  { label: 'Readiness', icon: clean(readiness), state: 'dim' },
+  { label: 'Sleep', icon: clean(sleep), state: 'off' },
+  { label: 'Activity', icon: clean(activity), state: 'off' },
+  { label: 'My Health', icon: clean(myHealth), state: 'off' },
 ];
 ---
 
@@ -36,32 +33,27 @@ const tabs = [
 
   <section class="navs__item">
     <h3 class="navs__title">Redesigned nav bar</h3>
-    <div class="navs__stage">
-    <div class="navs__bar" role="tablist" aria-label="Redesigned nav bar, try it">
-      {
-        tabs.map(({ label, icon }, i) => (
-          <button type="button" role="tab" class="navs__tab" aria-selected={String(i === 1)}>
-            <span class="navs__icon" set:html={icon} />
-            {label}
-          </button>
-        ))
-      }
-    </div>
-    <p class="navs__hint" aria-hidden="true">Try it: tap a tab</p>
+    <div
+      class="navs__stage"
+      role="img"
+      aria-label="The redesigned nav bar with five tabs: Today, Readiness, Sleep, Activity and My Health"
+    >
+      <div class="navs__bar">
+        {
+          tabs.map(({ label, icon, state }) => (
+            <span class="navs__tab" data-state={state}>
+              <span class="navs__icon" set:html={icon} />
+              {label}
+            </span>
+          ))
+        }
+      </div>
+      <span class="navs__home" />
     </div>
     <p>The redesigned bar cuts the steps it takes to reach the three most important things: <strong>readiness, sleep and activity.</strong></p>
     <p><strong>You now see your stats in one step</strong>, by tapping the section you want.</p>
   </section>
 </div>
-
-<script>
-  document.querySelectorAll<HTMLElement>('.navs__bar').forEach((bar) => {
-    const tabs = [...bar.querySelectorAll<HTMLButtonElement>('.navs__tab')];
-    tabs.forEach((tab) =>
-      tab.addEventListener('click', () => tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)))),
-    );
-  });
-</script>
 
 <style>
   .navs {
@@ -93,7 +85,7 @@ const tabs = [
     color: inherit;
   }
 
-  /* Both bars sit in the same size of black frame, so they compare side by side */
+  /* Both bars sit in the same size of frame, so they compare side by side */
   .navs :global(.navs__shot),
   .navs__stage {
     width: 100%;
@@ -108,29 +100,22 @@ const tabs = [
     object-position: bottom;
   }
 
+  /* The redesigned bar at the bottom of a black phone screen, like the current one */
   .navs__stage {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-3);
+    justify-content: flex-end;
     margin-bottom: var(--space-3);
-    border-radius: 0.75rem;
-    background: radial-gradient(circle at 50% 30%, #2f4a73, #0d1626 75%);
-  }
-
-  .navs .navs__hint {
-    font-size: 0.75rem;
-    color: #b9cdea;
-  }
-
-  /* The redesigned bar, at phone size, on black like the app */
-  .navs__bar {
-    display: flex;
-    width: min(90%, 26rem);
-    padding: var(--space-2) var(--space-1) var(--space-3);
+    padding-bottom: 3%;
+    overflow: hidden;
     border-radius: 0.75rem;
     background: #000;
+    container-type: inline-size;
+  }
+
+  .navs__bar {
+    display: flex;
+    padding: 0 2%;
   }
 
   .navs__tab {
@@ -138,36 +123,41 @@ const tabs = [
     flex: 1;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-1);
-    min-height: var(--tap-target);
-    padding: var(--space-1) 0;
-    border: 0;
-    background: none;
-    font: inherit;
-    font-size: 0.6875rem;
-    color: #8a8a8a;
-    cursor: pointer;
-  }
-
-  .navs__tab:hover {
-    color: #c4c4c4;
-  }
-
-  .navs__tab[aria-selected='true'] {
+    gap: 1.6cqw;
+    font-size: 3.2cqw;
+    line-height: 1.2;
     color: #fff;
+  }
+
+  .navs__tab[data-state='dim'] {
+    opacity: 0.4;
+  }
+
+  .navs__tab[data-state='off'] {
+    color: #616161;
   }
 
   .navs__icon {
     display: grid;
     place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 7cqw;
+    height: 7cqw;
   }
 
   .navs__icon :global(svg) {
     width: 100%;
     height: 100%;
     overflow: visible;
+  }
+
+  /* The phone's home indicator, as in the current-bar screenshot */
+  .navs__home {
+    align-self: center;
+    width: 36%;
+    height: 1.2cqw;
+    margin-top: 5%;
+    border-radius: var(--radius-pill);
+    background: #fff;
   }
 
   .navs strong {

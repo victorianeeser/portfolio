@@ -1,0 +1,206 @@
+---
+// Oura persona, rebuilt from the Figma "Persona" slide: a photo, About / Likes / Wants
+// cards in the slide's three colors, and a personality panel whose sliders are real
+// elements, each star placed where the slide puts it. Wrap words in **double asterisks**
+// to bold them.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import OuraStar from './OuraStar.astro';
+
+interface Props {
+  name: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  about: string[];
+  likes: string[];
+  wants: string[];
+  /** Each trait: the two ends and where the person sits between them (0–100) */
+  traits: { from: string; to: string; value: number }[];
+}
+
+const { name, image, imageAlt, about, likes, wants, traits } = Astro.props;
+
+const escape = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+const lean = (from: string, to: string, v: number) =>
+  v === 50 ? 'balanced' : `leans ${v > 50 ? to : from}`;
+---
+
+<div class="opersona case-wide">
+  <div class="opersona__photo">
+    <Image src={image} alt={imageAlt} widths={[500, 1000]} sizes="(min-width: 64rem) 330px, 100vw" />
+    <h3 class="opersona__name">{name}</h3>
+  </div>
+
+  <div class="opersona__cards">
+    {
+      [
+        { title: 'About', items: about, tone: 'sand' },
+        { title: 'Likes', items: likes, tone: 'cream' },
+        { title: 'Wants', items: wants, tone: 'sky' },
+      ].map(({ title, items, tone }) => (
+        <section class="opersona__card" data-tone={tone}>
+          <h4>{title}</h4>
+          <ul>{items.map((i) => <li set:html={rich(i)} />)}</ul>
+        </section>
+      ))
+    }
+  </div>
+
+  <section class="opersona__traits">
+    <h4>Personality</h4>
+    <ul role="list">
+      {
+        traits.map(({ from, to, value }) => (
+          <li>
+            <span class="visually-hidden">{`${from} to ${to}: ${lean(from, to, value)}`}</span>
+            <span class="opersona__ends" aria-hidden="true">
+              <span>{from}</span>
+              <span>{to}</span>
+            </span>
+            <span class="opersona__track" aria-hidden="true">
+              <span class="opersona__marker" style={`left: ${value}%`}>
+                <OuraStar size="1.5rem" />
+              </span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</div>
+
+<style>
+  .opersona {
+    display: grid;
+    gap: var(--space-4);
+    margin-block: var(--space-6);
+    font-family: var(--case-font, var(--font-sans));
+    color: #2f4a73;
+  }
+
+  .opersona__photo {
+    position: relative;
+    overflow: hidden;
+    min-height: 22rem;
+    border-radius: 1rem;
+  }
+
+  .opersona__photo :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+
+  /* The name sits on the photo, over a soft navy fade */
+  .opersona__name {
+    position: absolute;
+    inset: auto 0 0;
+    padding: var(--space-7) var(--space-5) var(--space-4);
+    background: linear-gradient(to top, rgb(26 56 100 / 0.85), transparent);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .opersona__cards {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .opersona__card {
+    padding: var(--space-5);
+    border-radius: 1rem;
+  }
+
+  .opersona__card[data-tone='sand'] { background: #e7ded3; }
+  .opersona__card[data-tone='cream'] { background: #fff; box-shadow: inset 0 0 0 1px rgb(47 74 115 / 0.12); }
+  .opersona__card[data-tone='sky'] { background: #6fcbff; }
+
+  .opersona h4 {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-regular);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .opersona__card ul {
+    display: grid;
+    gap: var(--space-1);
+    padding-left: var(--space-5);
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+
+  .opersona__card :global(strong) {
+    color: inherit;
+  }
+
+  /* Personality: a navy panel of sliders */
+  .opersona__traits {
+    padding: var(--space-6);
+    border-radius: 1rem;
+    background: #2f4a73;
+    color: #fff;
+  }
+
+  .opersona__traits ul {
+    display: grid;
+    gap: var(--space-5);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .opersona__ends {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-small);
+  }
+
+  .opersona__track {
+    position: relative;
+    display: block;
+    height: 2px;
+    background: rgb(255 255 255 / 0.8);
+  }
+
+  .opersona__marker {
+    position: absolute;
+    top: 50%;
+    display: grid;
+    color: #6fcbff;
+    transform: translate(-50%, -50%);
+  }
+
+  @media (min-width: 48rem) {
+    .opersona {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .opersona__traits {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .opersona {
+      grid-template-columns: 0.85fr 1.1fr 1.15fr;
+      align-items: stretch;
+    }
+
+    .opersona__traits {
+      grid-column: auto;
+    }
+  }
+</style>
