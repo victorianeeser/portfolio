@@ -36,6 +36,7 @@ const tabs = [
 
   <section class="navs__item">
     <h3 class="navs__title">Redesigned nav bar</h3>
+    <div class="navs__stage">
     <div class="navs__bar" role="tablist" aria-label="Redesigned nav bar, try it">
       {
         tabs.map(({ label, icon }, i) => (
@@ -45,6 +46,8 @@ const tabs = [
           </button>
         ))
       }
+    </div>
+    <p class="navs__hint" aria-hidden="true">Try it: tap a tab</p>
     </div>
     <p>The redesigned bar cuts the steps it takes to reach the three most important things: <strong>readiness, sleep and activity.</strong></p>
     <p><strong>You now see your stats in one step</strong>, by tapping the section you want.</p>
@@ -69,36 +72,62 @@ const tabs = [
     color: var(--case-heading-1, var(--color-text));
   }
 
+  /* Each bar is a white card on the cream background, matching the note cards above */
   .navs__item {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
+    padding: var(--space-5);
+    border: var(--border-width) solid rgb(47 74 115 / 0.12);
+    border-radius: 1rem;
+    background: var(--color-bg);
+    box-shadow: 0 0.25rem 1rem rgb(47 74 115 / 0.06);
   }
 
   .navs__title {
     margin-bottom: var(--space-2);
-    font-size: var(--text-h2);
+    font-size: var(--text-h3);
     font-weight: var(--weight-medium);
     letter-spacing: 0.01em;
     text-transform: uppercase;
     color: inherit;
   }
 
-  .navs :global(.navs__shot) {
+  /* Both bars sit in the same size of black frame, so they compare side by side */
+  .navs :global(.navs__shot),
+  .navs__stage {
     width: 100%;
-    height: auto;
     aspect-ratio: 504 / 236;
+  }
+
+  .navs :global(.navs__shot) {
+    height: auto;
     margin-bottom: var(--space-3);
     border-radius: 0.75rem;
     object-fit: cover;
     object-position: bottom;
   }
 
+  .navs__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-radius: 0.75rem;
+    background: radial-gradient(circle at 50% 30%, #2f4a73, #0d1626 75%);
+  }
+
+  .navs .navs__hint {
+    font-size: 0.75rem;
+    color: #b9cdea;
+  }
+
   /* The redesigned bar, at phone size, on black like the app */
   .navs__bar {
     display: flex;
-    width: min(100%, 26rem);
-    margin-bottom: var(--space-3);
+    width: min(90%, 26rem);
     padding: var(--space-2) var(--space-1) var(--space-3);
     border-radius: 0.75rem;
     background: #000;

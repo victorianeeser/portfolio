@@ -1,141 +1,175 @@
 ---
-// Oura title section: a navy band with the project's closing statement from the intro
-// slide and three score rings for the app's main areas (sleep, readiness, activity).
-// The rings are drawn as SVG, so they stay sharp at any size.
-const rings = [
-  { label: 'Sleep', r: 46, fill: 0.82 },
-  { label: 'Readiness', r: 36, fill: 0.68 },
-  { label: 'Activity', r: 26, fill: 0.54 },
-];
-const circ = (r: number) => 2 * Math.PI * r;
+// Oura title section, rebuilt from the Figma cover: the misty mountain photo, the two
+// redesigned screens on tilted phones (a 3D mockup, kept as one image), and the six
+// feature labels with their leader lines as real text.
+// Desktop uses the slide's 1920×1080 layout as percentages. On phones the labels move
+// into a list under the image, where they stay readable.
+import { Image } from 'astro:assets';
+import mist from '../../../assets/projects/oura/hero-mist.jpg';
+import phones from '../../../assets/projects/oura/hero-phones.png';
+
+// x, y: where the label text starts (left labels: where it ends); line: [start, end] x
+// of the leader line. All in slide pixels.
+const labels = [
+  { text: 'Score Quick Actions', side: 'left', x: 421.8, y: 399.8, line: [451.4, 638.5], ly: 414.8 },
+  { text: 'Daily Steps Progress', side: 'left', x: 463.7, y: 529.4, line: [493.3, 680.4], ly: 544.4 },
+  { text: 'Nova Insights, your AI guide', side: 'left', x: 503, y: 694.4, line: [532.6, 719.6], ly: 709.4 },
+  { text: 'Readiness, Sleep, & Activity Score', side: 'right', x: 1481.4, y: 232.9, line: [1263.8, 1450.9], ly: 262.9 },
+  { text: 'Daily Metrics', side: 'right', x: 1437.5, y: 443.9, line: [1220, 1407], ly: 458.9 },
+  { text: 'Readiness, Sleep, & Activity Contributors', side: 'right', x: 1391.5, y: 610.8, line: [1173.9, 1361], ly: 625.8 },
+] as const;
+
+const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(2)}%`;
 ---
 
-<div class="oura-hero">
-  <div class="oura-hero__text">
-    <p class="oura-hero__eyebrow">App redesign · 2025</p>
-    <p class="oura-hero__statement">
-      Oura empowers users to make informed decisions about their wellness, <span>every day.</span>
-    </p>
+<figure class="oura-hero">
+  <div class="oura-hero__stage">
+    <Image src={mist} alt="" class="oura-hero__bg" widths={[800, 1400, 1700]} sizes="(min-width: 75rem) 1200px, 100vw" loading="eager" />
+    <Image
+      src={phones}
+      alt="Two redesigned Oura screens on phones: the Today home screen and the Readiness screen"
+      class="oura-hero__phones"
+      sizes="(min-width: 75rem) 460px, 60vw"
+      loading="eager"
+    />
+    {
+      labels.map(({ text, side, x, y, line, ly }) => (
+        <>
+          <span class="oura-hero__line" data-side={side} style={`left: ${pct(line[0], 1920)}; width: ${pct(line[1] - line[0], 1920)}; top: ${pct(ly, 1080)}`} aria-hidden="true" />
+          <span
+            class="oura-hero__label"
+            data-side={side}
+            style={side === 'left' ? `right: ${pct(1920 - x, 1920)}; top: ${pct(y, 1080)}` : `left: ${pct(x, 1920)}; top: ${pct(y, 1080)}`}
+            aria-hidden="true"
+          >
+            {text}
+          </span>
+        </>
+      ))
+    }
   </div>
 
-  <figure class="oura-hero__rings" aria-hidden="true">
-    <svg viewBox="0 0 100 100">
-      {
-        rings.map(({ r, fill }) => (
-          <g>
-            <circle cx="50" cy="50" r={r} class="oura-hero__track" />
-            <circle
-              cx="50"
-              cy="50"
-              r={r}
-              class="oura-hero__arc"
-              stroke-dasharray={`${circ(r) * fill} ${circ(r)}`}
-              transform="rotate(-90 50 50)"
-            />
-          </g>
-        ))
-      }
-    </svg>
-    <figcaption class="oura-hero__legend">
-      {rings.map(({ label }) => <span>{label}</span>)}
-    </figcaption>
-  </figure>
-</div>
+  <figcaption class="oura-hero__legend">
+    <ul role="list">
+      {labels.map(({ text }) => <li>{text}</li>)}
+    </ul>
+  </figcaption>
+</figure>
 
 <style>
   .oura-hero {
-    display: grid;
-    gap: var(--space-7);
-    align-items: center;
-    padding: var(--space-8) var(--space-6);
-    border-radius: var(--radius-md);
-    background: var(--case-glow, none), var(--case-bg, #2f4a73);
-    color: var(--case-text, #fff);
+    display: block;
+    margin: 0;
     font-family: var(--case-font, var(--font-sans));
   }
 
-  .oura-hero__eyebrow {
-    margin-bottom: var(--space-4);
-    font-size: var(--text-small);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
-    color: var(--case-subtle, #b9cdea);
+  .oura-hero__stage {
+    position: relative;
+    container-type: inline-size;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border-radius: var(--radius-md);
+    background: #9fb6cc;
   }
 
-  .oura-hero__statement {
-    font-size: var(--text-h1);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-heading);
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
+  .oura-hero__stage :global(img) {
+    position: absolute;
+    max-width: none;
+    border-radius: 0;
   }
 
-  .oura-hero__statement span {
-    color: var(--case-accent-1, #b9cdea);
-  }
-
-  .oura-hero__rings {
-    justify-self: center;
-    width: min(100%, 18rem);
-    margin: 0;
-  }
-
-  .oura-hero__rings svg {
-    display: block;
+  .oura-hero :global(.oura-hero__bg) {
+    inset: 0;
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Phones: the mockup centered and larger; desktop: the slide's spot (31% from left, 10% down) */
+  .oura-hero :global(.oura-hero__phones) {
+    left: 50%;
+    top: 10%;
+    width: 68%;
     height: auto;
-    overflow: visible;
+    transform: translateX(-50%);
   }
 
-  .oura-hero__track,
-  .oura-hero__arc {
-    fill: none;
-    stroke-width: 7;
+  .oura-hero__line,
+  .oura-hero__label {
+    position: absolute;
+    display: none;
   }
 
-  .oura-hero__track {
-    stroke: var(--case-surface, #243a5c);
+  .oura-hero__line {
+    border-top: 1.5px solid currentColor;
   }
 
-  .oura-hero__arc {
-    stroke: var(--case-accent-1, #b9cdea);
-    stroke-linecap: round;
+  .oura-hero__label {
+    max-width: 14%;
+    font-size: 1.25cqw;
+    line-height: 1.25;
+    transform: translateY(-0.1em);
   }
 
-  .oura-hero g:nth-child(2) .oura-hero__arc { stroke: #fff; }
-  .oura-hero g:nth-child(3) .oura-hero__arc { stroke: #7f9fcf; }
+  [data-side='left'] {
+    color: #2f4a73;
+    text-align: right;
+  }
 
-  .oura-hero__legend {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-4);
-    margin-top: var(--space-5);
+  /* Left labels are wider in the slide, so they stay on one line */
+  .oura-hero__label[data-side='left'] {
+    max-width: 19%;
+  }
+
+  [data-side='right'] {
+    color: #fff;
+  }
+
+  .oura-hero__line[data-side='right'] {
+    color: rgb(255 255 255 / 0.85);
+  }
+
+  .oura-hero__legend ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2) var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
     font-size: var(--text-small);
-    color: var(--case-muted, #d5deeb);
+    color: var(--case-heading-1, #2f4a73);
   }
 
-  .oura-hero__legend span::before {
-    content: '';
-    display: inline-block;
-    width: 0.6em;
-    height: 0.6em;
-    margin-right: 0.4em;
-    border-radius: 50%;
-    background: var(--case-accent-1, #b9cdea);
+  .oura-hero__legend li::before {
+    content: '—';
+    margin-right: var(--space-2);
+    color: var(--case-heading-1, #2f4a73);
   }
-
-  .oura-hero__legend span:nth-child(2)::before { background: #fff; }
-  .oura-hero__legend span:nth-child(3)::before { background: #7f9fcf; }
 
   @media (min-width: 48rem) {
-    .oura-hero {
-      grid-template-columns: 1.5fr 1fr;
-      gap: var(--space-8);
-      padding: var(--space-9) var(--space-8);
+    .oura-hero__stage {
+      aspect-ratio: 16 / 9;
     }
 
-    .oura-hero__statement {
-      max-width: 22ch;
+    .oura-hero :global(.oura-hero__phones) {
+      left: 30.98%;
+      top: 10.07%;
+      width: 38.04%;
+      transform: none;
+    }
+
+    .oura-hero__line,
+    .oura-hero__label {
+      display: block;
+    }
+
+    /* The labels are on the image now, so the list is only for screen readers */
+    .oura-hero__legend {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
     }
   }
 </style>
