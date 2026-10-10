@@ -33,6 +33,22 @@ import wireCommunity from '../../assets/projects/rebound/wireframe-community.png
 import wireChats from '../../assets/projects/rebound/wireframe-chats.png';
 import ScreenTabs from '../../components/projects/rebound/ScreenTabs.astro';
 import TestingFindings from '../../components/projects/rebound/TestingFindings.astro';
+import ReboundConclusion from '../../components/projects/rebound/ReboundConclusion.astro';
+import finalOnboarding1 from '../../assets/projects/rebound/final/onboarding-1.png';
+import finalOnboarding2 from '../../assets/projects/rebound/final/onboarding-2.png';
+import finalOnboarding3 from '../../assets/projects/rebound/final/onboarding-3.png';
+import finalOnboarding4 from '../../assets/projects/rebound/final/onboarding-4.png';
+import finalOnboarding5 from '../../assets/projects/rebound/final/onboarding-5.png';
+import finalOnboarding6 from '../../assets/projects/rebound/final/onboarding-6.png';
+import finalOverview1 from '../../assets/projects/rebound/final/overview-1.png';
+import finalOverview2 from '../../assets/projects/rebound/final/overview-2.png';
+import finalOverview3 from '../../assets/projects/rebound/final/overview-3.png';
+import finalOverview4 from '../../assets/projects/rebound/final/overview-4.png';
+import finalMainHome from '../../assets/projects/rebound/final/main-home.png';
+import finalMainRoutine from '../../assets/projects/rebound/final/main-routine.png';
+import finalMainProgress from '../../assets/projects/rebound/final/main-progress.png';
+import finalMainCommunity from '../../assets/projects/rebound/final/main-community.png';
+import finalMainChat from '../../assets/projects/rebound/final/main-chat.png';
 import beforeOnboarding1 from '../../assets/projects/rebound/before/onboarding-1.png';
 import beforeOnboarding2 from '../../assets/projects/rebound/before/onboarding-2.png';
 import beforeOnboarding3 from '../../assets/projects/rebound/before/onboarding-3.png';
@@ -73,6 +89,8 @@ import prehab from '../../assets/projects/rebound/competitor-prehab.png';
     { label: 'Sketches', href: '#sketches' },
     { label: 'Before Testing', href: '#before-testing' },
     { label: 'User Testing', href: '#user-testing' },
+    { label: 'Final Design', href: '#final-design' },
+    { label: 'Conclusion', href: '#conclusion' },
   ]}
 />
 
@@ -339,3 +357,66 @@ Our first full design took Annie from sign-up to a daily routine, before we put 
     ]}
   />
 </Panel>
+
+<p id="final-design" class="eyebrow collection-label">Final design</p>
+
+<SectionTitle>The Final App</SectionTitle>
+
+After testing, the final app brings exercises, progress and support together, from the first sign-up screen to Annie’s daily routine.
+
+<ScreenTabs
+  label="Final app screens"
+  groups={[
+    {
+      label: 'Onboarding',
+      screens: [
+        { src: finalOnboarding1, alt: 'Welcome screen with the Rebound logo and buttons to create an account or sign in' },
+        { src: finalOnboarding2, alt: 'About You form asking for name, date of birth and other details' },
+        { src: finalOnboarding3, alt: 'Choose Your Clinic screen with a search bar and a list of physical therapy clinics' },
+        { src: finalOnboarding4, alt: 'Choose Therapist screen with a list of therapists to select' },
+        { src: finalOnboarding5, alt: 'Is this you? screen confirming the patient’s name, injury and details' },
+        { src: finalOnboarding6, alt: 'Loading screen thanking the user while their recovery plan is built' },
+      ],
+    },
+    {
+      label: 'App overview',
+      screens: [
+        { src: finalOverview1, alt: 'Tour step on the home page: explore your plan, streak and exercises' },
+        { src: finalOverview2, alt: 'Tour step on the routine page: view what exercises you will complete over time' },
+        { src: finalOverview3, alt: 'Tour step on the progress page: track recovery and see progress over time' },
+        { src: finalOverview4, alt: 'Tour step on the chat page: connect with athletes and your care team' },
+      ],
+    },
+    {
+      label: 'Main screens',
+      text: 'Scroll inside each screen to see all of it.',
+      viewport: [390, 844],
+      screens: [
+        { src: finalMainHome, alt: 'Home screen with Resume Program, a 10-day streak, Stage 1 Early Recovery, today’s agenda and an appointment calendar' },
+        { src: finalMainRoutine, alt: 'Today’s Routine screen with progress, a Start Routine button and the exercise list' },
+        { src: finalMainProgress, alt: 'Progress screen with a daily check-in, average scores, weekly pain, stiffness and mobility charts, and a journal' },
+        { src: finalMainCommunity, alt: 'Community screen with recovery groups, a feed of posts and featured articles from a surgeon and a physical therapist' },
+        { src: finalMainChat, alt: 'Chat screen with an AI companion, a surgeon, a physical therapist and a group chat' },
+      ],
+    },
+  ]}
+/>
+
+<ReboundConclusion
+  id="conclusion"
+  eyebrow="Conclusion"
+  title="Built for the Body and the Mind"
+  takeaways={[
+    { title: 'Recovery is mental too', text: 'Isolation and doubt slowed rehab as much as pain did, so support and community sit next to the exercises.' },
+    { title: 'Test before you polish', text: 'Three findings from user testing reshaped the video, check-in and progress screens.' },
+    { title: 'Progress needs to be visible', text: 'Stages, streaks and monthly views help athletes see slow gains that are easy to miss week to week.' },
+  ]}
+  nextSteps={[
+    'Test the final app with high school athletes in rehab.',
+    'Add a return-to-play checklist with feedback from the PT and coach.',
+    'Explore ongoing injury prevention after athletes return to sport.',
+  ]}
+>
+  <p>Working on this physical therapy app, we thought about not only the physical struggles of going through rehab for a sports-related injury, but the mental struggles as well.</p>
+  <p>We took this into account during every part of the process. In the end, we created an app that lets athletes complete exercises, view progress, and connect with others, all in one cohesive app.</p>
+</ReboundConclusion>

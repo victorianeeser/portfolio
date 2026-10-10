@@ -2,6 +2,8 @@
 // Groups of app screens behind tabs (e.g. Onboarding / App overview / Main screens), so a
 // long set of screens takes the space of one row. Each group's screens sit in a row; on
 // phones the row scrolls sideways. Without JavaScript every group shows, one after another.
+// A group with `viewport` (e.g. [390, 844]) shows each screen in a window of that shape that
+// scrolls up and down, for screens longer than a phone, so every screen is the same size.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
@@ -10,6 +12,8 @@ interface Group {
   /** One line about the group, shown under the tabs */
   text?: string;
   screens: { src: ImageMetadata; alt: string }[];
+  /** Phone size [width, height] for long, scrolling screens */
+  viewport?: [number, number];
 }
 
 interface Props {
@@ -19,6 +23,8 @@ interface Props {
 
 const { groups, label } = Astro.props;
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+// IDs start with the tab list's label, so two sets of tabs on one page never clash
+const id = (name: string) => `${slug(label)}-${slug(name)}`;
 ---
 
 <div class="screen-tabs case-wide">
@@ -28,10 +34,10 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         <button
           type="button"
           role="tab"
-          id={`screens-tab-${slug(name)}`}
+          id={`tab-${id(name)}`}
           class="screen-tabs__tab"
           aria-selected={String(i === 0)}
-          aria-controls={`screens-${slug(name)}`}
+          aria-controls={id(name)}
           tabindex={i === 0 ? 0 : -1}
         >
           {name}
@@ -43,22 +49,30 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
   <div class="screen-tabs__panels">
     {
-      groups.map(({ label: name, text, screens }, i) => (
+      groups.map(({ label: name, text, screens, viewport }, i) => (
         <section
-          id={`screens-${slug(name)}`}
+          id={id(name)}
           class="screen-tabs__panel"
           role="tabpanel"
-          aria-labelledby={`screens-tab-${slug(name)}`}
+          aria-labelledby={`tab-${id(name)}`}
           data-active={i === 0 ? '' : undefined}
         >
           <h4 class="screen-tabs__heading">{name}</h4>
           {text && <p class="screen-tabs__text">{text}</p>}
-          <ul class="screen-tabs__row" role="list" tabindex="0" aria-label={`${name} screens`} style={`--count: ${screens.length}; --ratio: ${screens[0].src.width} / ${screens[0].src.height}`}>
-            {screens.map(({ src, alt }) => (
-              <li>
-                <Image src={src} alt={alt} sizes="(min-width: 48rem) 200px, 42vw" />
-              </li>
-            ))}
+          <ul class="screen-tabs__row" role="list" tabindex="0" aria-label={`${name} screens`} style={`--count: ${screens.length}; --ratio: ${viewport ? viewport.join(' / ') : `${screens[0].src.width} / ${screens[0].src.height}`}`}>
+            {screens.map(({ src, alt }) =>
+              viewport ? (
+                <li>
+                  <div class="screen-tabs__viewport" tabindex="0" role="group" aria-label={`${alt}. Scrollable.`}>
+                    <Image src={src} alt={alt} sizes="(min-width: 48rem) 200px, 42vw" />
+                  </div>
+                </li>
+              ) : (
+                <li>
+                  <Image src={src} alt={alt} sizes="(min-width: 48rem) 200px, 42vw" />
+                </li>
+              ),
+            )}
           </ul>
         </section>
       ))
@@ -235,6 +249,26 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     border-radius: 0.75rem;
     object-fit: cover;
     object-position: top;
+  }
+
+  /* A phone-shaped window that scrolls through a long screen */
+  .screen-tabs__viewport {
+    aspect-ratio: var(--ratio);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 0.75rem;
+    background: #000;
+    scrollbar-width: thin;
+    scrollbar-color: var(--case-accent-1) transparent;
+  }
+
+  .screen-tabs__viewport:focus-visible {
+    outline-offset: var(--space-1);
+  }
+
+  .screen-tabs__row .screen-tabs__viewport :global(img) {
+    aspect-ratio: auto;
+    border-radius: 0;
   }
 
   @media (min-width: 48rem) {

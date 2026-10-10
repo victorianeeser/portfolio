@@ -188,11 +188,11 @@ const meta = [
   }
 
   /* A panel that ends the case study sits flush with the section below */
-  .case-body:has(> :global(.panel:last-child)) {
+  .case-body:has(> :global(:is(.panel, .full-bleed):last-child)) {
     padding-bottom: 0;
   }
 
-  .case-body > :global(.panel:last-child) {
+  .case-body > :global(:is(.panel, .full-bleed):last-child) {
     margin-bottom: 0;
   }
 
