@@ -51,35 +51,35 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
           aria-labelledby={`tab-${slug(name)}`}
           data-active={i === 0 ? '' : undefined}
         >
-          <div class="interviews__about">
-            <header class="interviews__head">
-              <span class="interviews__avatar" aria-hidden="true">{name[0]}</span>
-              <div>
-                <h4 class="interviews__name">{name}</h4>
-                <ul class="interviews__facts" aria-label="About">
-                  {facts.map((f) => <li>{f}</li>)}
-                </ul>
-              </div>
-            </header>
+          <header class="interviews__head">
+            <span class="interviews__avatar" aria-hidden="true">{name[0]}</span>
+            <h4 class="interviews__name">{name}</h4>
+            <ul class="interviews__facts" aria-label="About">
+              {facts.map((f) => <li>{f}</li>)}
+            </ul>
+          </header>
 
-            <div class="interviews__block">
-              <h5>Thoughts</h5>
-              <ul>{thoughts.map((t) => <li>{t}</li>)}</ul>
+          <div class="interviews__body">
+            <div class="interviews__about">
+              <div class="interviews__block">
+                <h5>Thoughts</h5>
+                <ul>{thoughts.map((t) => <li>{t}</li>)}</ul>
+              </div>
+              <div class="interviews__block">
+                <h5>Confusing points</h5>
+                <ul>{confusing.map((c) => <li>{c}</li>)}</ul>
+              </div>
             </div>
-            <div class="interviews__block">
-              <h5>Confusing points</h5>
-              <ul>{confusing.map((c) => <li>{c}</li>)}</ul>
-            </div>
+
+            <dl class="interviews__qa">
+              {qa.map(({ q, a }) => (
+                <div>
+                  <dt>{q}</dt>
+                  <dd>{a}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-
-          <dl class="interviews__qa">
-            {qa.map(({ q, a }) => (
-              <div>
-                <dt>{q}</dt>
-                <dd>{a}</dd>
-              </div>
-            ))}
-          </dl>
         </section>
       ))
     }
@@ -121,11 +121,16 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
 </script>
 
 <style>
+  /* Tighter than the panel's usual gap, so a whole interview fits on screen */
+  div.interviews {
+    margin-top: var(--space-5);
+  }
+
   .interviews__tabs {
     display: inline-flex;
     flex-wrap: wrap;
     gap: var(--space-1);
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-4);
     padding: var(--space-1);
     border-radius: var(--radius-pill);
     background: var(--case-surface);
@@ -140,7 +145,7 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
     align-items: center;
     gap: var(--space-2);
     min-height: var(--tap-target);
-    padding: 0 var(--space-5);
+    padding: 0 var(--space-4);
     border: 0;
     border-radius: var(--radius-pill);
     background: none;
@@ -189,23 +194,22 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
     margin-top: 0;
   }
 
+  /* One card per person: who they are across the top, then their notes beside their
+     answers. Text is small so a whole interview fits on one screen. */
   .interviews__panel {
-    display: grid;
-    gap: var(--space-4);
-  }
-
-  .interviews__about,
-  .interviews__qa {
-    padding: var(--space-6);
+    padding: var(--space-5);
     border-radius: 1rem;
     background: var(--case-surface);
+    font-size: var(--text-small);
+    line-height: 1.5;
   }
 
   .interviews__head {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-4);
-    padding-bottom: var(--space-5);
+    gap: var(--space-3) var(--space-4);
+    padding-bottom: var(--space-3);
     border-bottom: var(--border-width) solid var(--case-border);
   }
 
@@ -213,11 +217,11 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
     display: grid;
     flex: none;
     place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 50%;
     background: var(--case-accent-1);
-    font-size: var(--text-h2);
+    font-size: var(--text-h3);
     font-weight: var(--weight-medium);
     color: var(--case-bg);
   }
@@ -232,25 +236,33 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin-top: var(--space-2);
     padding: 0;
     list-style: none;
   }
 
   .interviews__facts li {
-    padding: 0.15em 0.7em;
+    padding: 0.1em 0.7em;
     border: var(--border-width) solid var(--case-border);
     border-radius: var(--radius-pill);
-    font-size: var(--text-small);
     color: var(--case-muted);
   }
 
-  .interviews__block {
-    margin-top: var(--space-5);
+  .interviews__body {
+    display: grid;
+    gap: var(--space-5);
+    padding-top: var(--space-4);
+  }
+
+  .interviews__block + .interviews__block {
+    margin-top: var(--space-4);
+  }
+
+  .interviews__block h5,
+  .interviews__qa dt {
+    margin-bottom: var(--space-1);
   }
 
   .interviews__block h5 {
-    margin-bottom: var(--space-2);
     font-size: 0.75rem;
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-caps);
@@ -260,8 +272,8 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
 
   .interviews__block ul {
     display: grid;
-    gap: var(--space-2);
-    padding-left: var(--space-5);
+    gap: var(--space-1);
+    padding-left: var(--space-4);
     color: var(--case-text);
   }
 
@@ -272,7 +284,7 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
   .interviews__qa {
     display: grid;
     align-content: start;
-    gap: var(--space-5);
+    gap: var(--space-4);
     margin: 0;
   }
 
@@ -282,16 +294,34 @@ const slug = (s: string) => `interview-${s.toLowerCase().replace(/[^a-z0-9]+/g, 
   }
 
   .interviews__qa dd {
-    margin: var(--space-1) 0 0;
+    margin: 0;
     color: var(--case-text);
   }
 
   .interviews__qa dd::before { content: '“'; }
   .interviews__qa dd::after { content: '”'; }
 
-  @media (min-width: 64rem) {
+  @media (min-width: 48rem) {
     .interviews__panel {
+      padding: var(--space-5) var(--space-6);
+    }
+
+    .interviews__qa {
       grid-template-columns: 1fr 1fr;
+      gap: var(--space-4) var(--space-5);
+    }
+  }
+
+  /* Wide screens: notes in a narrow column, answers in two columns beside them */
+  @media (min-width: 56rem) {
+    .interviews__body {
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-6);
+    }
+
+    .interviews__about {
+      padding-right: var(--space-6);
+      border-right: var(--border-width) solid var(--case-border);
     }
   }
 </style>

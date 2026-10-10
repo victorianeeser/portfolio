@@ -2,7 +2,8 @@
 // Heuristic evaluation as a horizontal row of numbered cards, in order, that people can
 // swipe or scroll, with previous/next buttons (same pattern as SwipeCards). Each card
 // shows the heuristic, the question it asks, an everyday example and what I found in the
-// current app. Wrap words in **double asterisks** to bold them.
+// current app. Wrap words in **double asterisks** to bold them. Keep every card to two
+// short findings so the cards read as the same length.
 interface Heuristic {
   title: string;
   question: string;
@@ -36,8 +37,10 @@ const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</str
     {
       items.map(({ title, question, example, findings }, i) => (
         <li class="heur__card">
-          <span class="heur__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-          <h4 class="heur__title">{title}</h4>
+          <h4 class="heur__title">
+            <span class="heur__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            {title}
+          </h4>
           <p class="heur__question">{question}</p>
           <p class="heur__example">e.g. {example}</p>
           <div class="heur__findings">
@@ -88,7 +91,7 @@ const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</str
 <style>
   .heur {
     --card-width: 85%;
-    margin-block: var(--space-6);
+    margin-block: var(--space-5) var(--space-6);
     font-family: var(--case-font, var(--font-sans));
   }
 
@@ -97,7 +100,7 @@ const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</str
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
   }
 
   .heur__count {
@@ -163,7 +166,7 @@ const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</str
   .heur__card {
     display: flex;
     flex-direction: column;
-    padding: var(--space-6);
+    padding: var(--space-5);
     border-radius: 1rem;
     background: var(--oura-tint, var(--color-surface));
     color: var(--case-heading-1, var(--color-text));
@@ -171,33 +174,35 @@ const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</str
   }
 
   .heur__num {
-    font-size: var(--text-h1);
-    font-weight: var(--weight-medium);
-    line-height: 1;
-    opacity: 0.35;
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-caps);
+    opacity: 0.6;
   }
 
   .heur .heur__title {
-    margin-top: var(--space-4);
     font-size: var(--text-h3);
     font-weight: var(--weight-bold);
     color: inherit;
   }
 
   .heur__question {
-    margin-top: var(--space-2);
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
   }
 
   .heur__example {
-    margin-top: var(--space-2);
+    margin-block: var(--space-1) var(--space-4);
     font-size: var(--text-small);
     font-style: italic;
     color: var(--oura-quiet, var(--color-text-secondary));
   }
 
   /* What I found, set apart from the heuristic's definition */
+  /* Pushed to the bottom so the findings start at the same height on every card */
   .heur__findings {
-    margin-top: var(--space-5);
+    margin-top: auto;
     padding-top: var(--space-4);
     border-top: var(--border-width) solid rgb(47 74 115 / 0.2);
   }
