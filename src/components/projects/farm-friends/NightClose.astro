@@ -1,8 +1,8 @@
 ---
 // The closing section, set in the game's night sky (the last two sky stops), where every climb
 // ends: a full-width band with stars and the owl, a lead question and numbered lessons.
-import PixelSprite from './PixelSprite.astro';
-import { owl } from './flyers';
+import { Image } from 'astro:assets';
+import owl from '../../../assets/projects/farm-friends-climb/obstacles/owl.png';
 
 interface Lesson {
   title: string;
@@ -27,7 +27,7 @@ const stars = [
 
 <section class="ffc-night full-bleed" id={id}>
   {stars.map(([x, y], i) => <span class="ffc-night__star" data-big={i % 5 === 0 ? '' : undefined} style={`left: ${x}%; top: ${y}%`} aria-hidden="true" />)}
-  <span class="ffc-night__owl" aria-hidden="true"><PixelSprite {...owl} label="" /></span>
+  <span class="ffc-night__owl" aria-hidden="true"><Image src={owl} alt="" width={owl.width} /></span>
   <div class="ffc-night__inner">
     <h2 class="ffc-night__title">{title}</h2>
     <p class="ffc-night__lead">{lead}</p>
@@ -73,6 +73,14 @@ const stars = [
     top: var(--space-7);
     right: 8%;
     width: clamp(3.5rem, 7vw, 6rem);
+  }
+
+  .ffc-night__owl :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    image-rendering: pixelated;
   }
 
   .ffc-night__inner {
