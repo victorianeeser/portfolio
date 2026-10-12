@@ -30,6 +30,9 @@ import ConceptDemo from '../../components/projects/farm-friends/ConceptDemo.astr
 import PajamaToPixels from '../../components/projects/farm-friends/PajamaToPixels.astro';
 import Collection from '../../components/projects/farm-friends/Collection.astro';
 import LaunchBanner from '../../components/projects/farm-friends/LaunchBanner.astro';
+import InApp from '../../components/projects/farm-friends/InApp.astro';
+import appHome from '../../assets/projects/farm-friends-climb/in-app/app-home.png';
+import gameHome from '../../assets/projects/farm-friends-climb/in-app/game-home.png';
 import Leaderboard from '../../components/projects/farm-friends/Leaderboard.astro';
 import BuildStages from '../../components/projects/farm-friends/BuildStages.astro';
 import stageGreybox from '../../assets/projects/farm-friends-climb/iterations/greybox.png';
@@ -59,6 +62,7 @@ import NightClose from '../../components/projects/farm-friends/NightClose.astro'
     { label: 'The Collection', href: '#collection' },
     { label: 'Pajamas to Pixels', href: '#pajamas' },
     { label: 'The Concept', href: '#concept' },
+    { label: 'In the App', href: '#in-app' },
     { label: 'Leaderboard', href: '#leaderboard' },
     { label: 'The Token', href: '#token' },
     { label: 'System Map', href: '#system-map' },
@@ -116,6 +120,34 @@ Tap controls, rather than tilt, meant the game also had to work reliably during 
 
 </ConceptDemo>
 
+<InApp
+  id="in-app"
+  title="Built into the Dairy Boy App"
+  precedent="Dairy Boy has done this before. For its Decoy Camo drop, the brand put Chop Till You Drop, a wood-chopping game based on the campaign video, in its app only, with a leaderboard and prize boxes for the top players. Farm Friends Climb follows the same playbook for the next collection."
+  tap="Play Now"
+  screens={[
+    {
+      src: appHome,
+      alt: 'The Dairy Boy app home screen with a Farm Friends Climb banner at the top, showing the pixel farm and a Play Now button, above Arriving Soon and Accessories tiles',
+      label: 'Dairy Boy app home',
+    },
+    {
+      src: gameHome,
+      alt: 'The Farm Friends Climb home screen inside the app: a DB App back button, the Sheep in Scottish Plaid chosen as the climber, and Tap to Play, Leaderboard and My Stats buttons',
+      label: 'Farm Friends Climb',
+    },
+  ]}
+  reasons={[
+    { title: 'Opens the app before the drop', text: 'Playing means downloading and opening the app, so players are already there, signed in, when the collection goes live.' },
+    { title: 'Keeps the exclusive one tap away', text: 'The Rooster set is only sold in the app, and the game puts players right where it is.' },
+    { title: 'Real shoppers on the leaderboard', text: 'Every score belongs to a signed-in account, so winners are easy to verify and prizes ship to the address on file.' },
+  ]}
+>
+
+Farm Friends Climb isn’t a separate download. It lives inside the Dairy Boy app, where the people most likely to buy the collection already shop. A banner on the app’s home screen opens the game, and a DB App button takes players straight back to the shop.
+
+</InApp>
+
 <LaunchBanner eyebrow="The timing">
   Launches a week before the <em>clothing drop</em>
 </LaunchBanner>
@@ -167,12 +199,12 @@ Before designing screens, I mapped how the game moves between them: every screen
 <SystemMap />
 
 <BuildStages
-  title="From grey box to pixel art"
+  title="From orange box to pixel art"
   stages={[
     {
       image: stageGreybox,
-      alt: 'Grey-box prototype: an orange square bouncing between flat white platforms on a plain blue background, with the score 15 and best 277',
-      title: 'Grey box',
+      alt: 'First prototype: an orange square bouncing between flat white platforms on a plain blue background, with the score 15 and best 277',
+      title: 'Orange box',
       text: 'A square and flat platforms, just enough to prove the bounce, steering and score felt right.',
     },
     {

@@ -1,0 +1,215 @@
+---
+// Where the game lives: inside the Dairy Boy app. A full-width soft grey band (the app's own
+// background) with the copy and reasons on one side, and on the other the app's home screen
+// with the Farm Friends banner, an arrow for "Play Now", and the game's home screen with its
+// "DB App" button back to the shop (Game Design file, frames 301:402 and 312:1029).
+// A callout notes the brand's own precedent. Copy goes in the default slot.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import SectionTitle from '../../case/SectionTitle.astro';
+
+interface Props {
+  id?: string;
+  title: string;
+  precedent: string;
+  reasons: { title: string; text: string }[];
+  screens: [{ src: ImageMetadata; alt: string; label: string }, { src: ImageMetadata; alt: string; label: string }];
+  /** The tap that links the two screens, e.g. "Play Now" */
+  tap: string;
+}
+
+const { id, title, precedent, reasons, screens, tap } = Astro.props;
+---
+
+<section class="ffc-app full-bleed" id={id}>
+  <div class="ffc-app__inner">
+    <div class="ffc-app__text">
+      <SectionTitle>{title}</SectionTitle>
+      <slot />
+
+      <p class="ffc-app__precedent">
+        <span class="ffc-app__eyebrow">The precedent</span>
+        {precedent}
+      </p>
+
+      <ol class="ffc-app__reasons" role="list">
+        {
+          reasons.map(({ title, text }) => (
+            <li>
+              <p class="ffc-app__reason-title">{title}</p>
+              <p class="ffc-app__reason-text">{text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <figure class="ffc-app__flow">
+      {
+        screens.map(({ src, alt, label }, i) => (
+          <>
+            {i === 1 && (
+              <span class="ffc-app__tap" aria-hidden="true">
+                <span>{tap}</span>
+                <svg viewBox="0 0 64 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 8h58M53 2l7 6-7 6" />
+                </svg>
+              </span>
+            )}
+            <div class="ffc-app__screen">
+              <div class="ffc-app__phone">
+                <Image src={src} alt={alt} width={src.width} />
+              </div>
+              <figcaption>{label}</figcaption>
+            </div>
+          </>
+        ))
+      }
+    </figure>
+  </div>
+</section>
+
+<style>
+  .ffc-app {
+    grid-column: full;
+    margin-block: var(--space-8);
+    background: #f6f6f6;
+  }
+
+  .ffc-app__inner {
+    display: grid;
+    gap: var(--space-7);
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding: var(--space-7) var(--gutter);
+  }
+
+  .ffc-app__text > :global(* + *) {
+    margin-top: var(--space-4);
+  }
+
+  .ffc-app__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
+  /* The precedent: white card with a Merlot edge */
+  .ffc-app__precedent {
+    padding: var(--space-4) var(--space-5);
+    border-left: 4px solid #8b2a3a;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: #fff;
+    color: var(--color-text);
+  }
+
+  .ffc-app__eyebrow {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #8b2a3a;
+  }
+
+  .ffc-app__reasons {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    padding: 0;
+    list-style: none;
+    counter-reset: reason;
+  }
+
+  .ffc-app__reasons li {
+    position: relative;
+    padding-left: var(--space-7);
+    counter-increment: reason;
+  }
+
+  .ffc-app__reasons li::before {
+    content: counter(reason, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: #8b2a3a;
+  }
+
+  .ffc-app__reason-title {
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+  }
+
+  .ffc-app__reason-text {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  /* App home → Play Now → game home */
+  .ffc-app__flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .ffc-app__screen {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+  }
+
+  .ffc-app__phone {
+    width: 100%;
+    max-width: 14rem;
+    overflow: hidden;
+    border: 6px solid #2b2420;
+    border-radius: 1.75rem;
+    background: #2b2420;
+  }
+
+  .ffc-app__phone :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 1.35rem;
+  }
+
+  .ffc-app__screen figcaption {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+  }
+
+  .ffc-app__tap {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-1);
+    width: 3.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.75rem;
+    font-weight: var(--weight-medium);
+    text-align: center;
+    color: #8b2a3a;
+  }
+
+  .ffc-app__tap svg {
+    width: 100%;
+  }
+
+  @media (min-width: 64rem) {
+    .ffc-app__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      align-items: center;
+    }
+
+    .ffc-app__tap {
+      width: 4.5rem;
+      font-size: var(--text-small);
+    }
+  }
+</style>
