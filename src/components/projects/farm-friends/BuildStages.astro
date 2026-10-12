@@ -114,8 +114,9 @@ const { title, stages } = Astro.props;
   @media (min-width: 48rem) {
     .ffc-stages__track {
       grid-auto-flow: row;
-      grid-template-columns: repeat(3, minmax(0, 14rem));
-      column-gap: var(--space-8);
+      grid-template-columns: repeat(3, minmax(0, 15rem));
+      justify-content: space-between;
+      column-gap: var(--space-6);
       row-gap: var(--space-6);
       overflow: visible;
       padding: 0;

@@ -6,6 +6,8 @@
 // 2. What happens inside "Climbing" on every frame: an HTML flowchart with yes/no checks.
 //    Yes branches sit to the right and rejoin the next step; on phones they stack under
 //    their check.
+// The two sit behind tabs so the map takes the space of one diagram. Without JavaScript
+// both show in turn.
 
 const red = '#8b2a3a';
 const line = '#7a6a58';
@@ -42,7 +44,14 @@ const frame: Row[] = [
 ---
 
 <figure class="smap case-wide">
+  <div class="smap__tabs" role="tablist" aria-label="System map views" hidden>
+    <button type="button" role="tab" id="smap-tab-states" class="smap__tab" aria-selected="true" aria-controls="smap-states">Screens &amp; states</button>
+    <button type="button" role="tab" id="smap-tab-frame" class="smap__tab" aria-selected="false" aria-controls="smap-frame" tabindex="-1">Every frame</button>
+  </div>
+
+  <div class="smap__panels">
   <!-- 1. Screen and run states -->
+  <section id="smap-states" class="smap__panel" role="tabpanel" aria-labelledby="smap-tab-states" data-active>
   <svg class="smap__states" viewBox="20 140 1590 700" role="img" aria-labelledby="smap-states-title">
     <title id="smap-states-title">State diagram: Home leads to Countdown, then Climbing. Climbing can pause and resume, or end in Game Over directly or after being knocked off by an obstacle. Game Over leads back to Countdown or Home.</title>
     <defs>
@@ -153,8 +162,10 @@ const frame: Row[] = [
       ))
     }
   </ul>
+  </section>
 
   <!-- 2. Inside Climbing, every frame -->
+  <section id="smap-frame" class="smap__panel" role="tabpanel" aria-labelledby="smap-tab-frame">
   <div class="smap__frame">
     <p class="smap__frame-title">Inside “Climbing”: every frame, 120 times a second</p>
 
@@ -189,11 +200,100 @@ const frame: Row[] = [
       <span class="loop__back" aria-hidden="true" />
     </ol>
   </div>
+  </section>
+  </div>
 </figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.smap').forEach((root) => {
+    const list = root.querySelector<HTMLElement>('.smap__tabs')!;
+    const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('.smap__panel')];
+    list.hidden = false;
+    root.classList.add('is-ready');
+
+    const select = (index: number, focusTab = false) => {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+      });
+      panels.forEach((panel, i) => {
+        panel.toggleAttribute('data-active', i === index);
+        panel.inert = i !== index;
+      });
+      if (focusTab) tabs[index].focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        const keys: Record<string, number> = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+        if (!(e.key in keys)) return;
+        e.preventDefault();
+        select((keys[e.key] + tabs.length) % tabs.length, true);
+      });
+    });
+    select(0);
+  });
+</script>
 
 <style>
   .smap {
     margin-block: var(--space-6) var(--space-8);
+  }
+
+  /* ---------- Tabs ---------- */
+  .smap__tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-bottom: var(--space-5);
+    padding: var(--space-1);
+    border-radius: var(--radius-pill);
+    background: #f4e4c8;
+  }
+
+  .smap__tabs[hidden] {
+    display: none;
+  }
+
+  .smap__tab {
+    min-height: var(--tap-target);
+    padding: 0 var(--space-4);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: none;
+    font: inherit;
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: #5c4a3a;
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .smap__tab:hover {
+    color: #2b2420;
+  }
+
+  .smap__tab[aria-selected='true'] {
+    background: #8b2a3a;
+    color: #fff;
+  }
+
+  /* Without JavaScript the panels follow each other */
+  .smap__panel + .smap__panel {
+    margin-top: var(--space-7);
+  }
+
+  /* With tabs, only the chosen panel shows; each keeps its own height */
+  .smap.is-ready .smap__panel {
+    margin: 0;
+  }
+
+  .smap.is-ready .smap__panel:not([data-active]) {
+    display: none;
   }
 
   /* ---------- 1. States ---------- */
@@ -226,7 +326,7 @@ const frame: Row[] = [
 
   .smap__list {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -234,7 +334,7 @@ const frame: Row[] = [
 
   .smap__card {
     position: relative;
-    padding: var(--space-4);
+    padding: var(--space-3) var(--space-4);
     border: 2px solid #2b2420;
     border-radius: var(--radius-md);
     background: #fff;
@@ -271,7 +371,7 @@ const frame: Row[] = [
   }
 
   .smap__card-name {
-    font-size: var(--text-h3);
+    font-size: var(--text-body);
     font-weight: var(--weight-medium);
   }
 
@@ -283,8 +383,8 @@ const frame: Row[] = [
   .smap__card ul {
     display: grid;
     gap: var(--space-1);
-    margin-top: var(--space-3);
-    padding: var(--space-3) 0 0;
+    margin-top: var(--space-2);
+    padding: var(--space-2) 0 0;
     border-top: 1px solid currentColor;
     border-top-color: color-mix(in srgb, currentColor 20%, transparent);
     list-style: none;
@@ -293,14 +393,13 @@ const frame: Row[] = [
 
   /* ---------- 2. Every frame ---------- */
   .smap__frame {
-    margin-top: var(--space-7);
-    padding: var(--space-6) var(--space-4);
+    padding: var(--space-5) var(--space-4);
     border: 2px dashed #8b2a3a;
     border-radius: var(--radius-lg, 1.25rem);
   }
 
   .smap__frame-title {
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-4);
     font-size: var(--text-small);
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-caps);
@@ -310,7 +409,7 @@ const frame: Row[] = [
 
   .loop {
     --arrow: #7a6a58;
-    --gap: 2.75rem;
+    --gap: 1.75rem;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--gap);
@@ -322,7 +421,7 @@ const frame: Row[] = [
   .loop__step,
   .loop__yes {
     position: relative;
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-2) var(--space-4);
     border: 1.5px solid #d8cbbb;
     border-radius: var(--radius-md);
     background: #fff;
@@ -469,13 +568,13 @@ const frame: Row[] = [
     }
 
     .smap__frame {
-      padding: var(--space-7);
+      padding: var(--space-5) var(--space-6);
     }
 
     /* Columns: loop-back line · main steps · yes arrow · yes branch */
     .loop {
       grid-template-columns: 2.5rem minmax(0, 1.25fr) 5.5rem minmax(0, 1fr);
-      max-width: 60rem;
+      max-width: 56rem;
       margin-inline: auto;
     }
 
@@ -585,7 +684,7 @@ const frame: Row[] = [
       position: relative;
       grid-column: 1;
       grid-row: 1 / span var(--rows);
-      margin: 1.5rem 0 calc(0.75rem - 2px) 0.5rem;
+      margin: 1.3rem 0 calc(0.75rem - 2px) 0.5rem;
       border: 2px dashed var(--arrow);
       border-right: 0;
       pointer-events: none;
