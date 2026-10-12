@@ -1,0 +1,216 @@
+---
+// The collector's token: a full-width soft grey band with the kit photo up top and the six
+// needlepoint canvases in a row people can swipe or step through with previous/next buttons
+// (same pattern as SwipeCards). Without JavaScript the row still scrolls sideways.
+// The copy goes in the default slot.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import SectionTitle from '../../case/SectionTitle.astro';
+
+interface Props {
+  id?: string;
+  title: string;
+  hero: { src: ImageMetadata; alt: string };
+  tokens: { name: string; src: ImageMetadata }[];
+}
+
+const { id, title, hero, tokens } = Astro.props;
+const trackId = `${id ?? 'tokens'}-track`;
+---
+
+<section class="ffc-tokens full-bleed" id={id}>
+  <div class="ffc-tokens__inner">
+    <div class="ffc-tokens__head">
+      <div class="ffc-tokens__text">
+        <SectionTitle>{title}</SectionTitle>
+        <slot />
+      </div>
+      <Image src={hero.src} alt={hero.alt} class="ffc-tokens__hero" widths={[700, 1100, 1600]} sizes="(min-width: 64rem) 640px, 100vw" />
+    </div>
+
+    <div class="ffc-tokens__bar">
+      <p class="ffc-tokens__label">The six canvases</p>
+      <div class="ffc-tokens__controls" hidden>
+        <button type="button" class="ffc-tokens__btn" data-dir="-1" aria-controls={trackId} aria-label="Previous token">←</button>
+        <button type="button" class="ffc-tokens__btn" data-dir="1" aria-controls={trackId} aria-label="Next token">→</button>
+      </div>
+    </div>
+
+    <ul id={trackId} class="ffc-tokens__track" role="list" tabindex="0" aria-label="Needlepoint tokens, scrollable">
+      {
+        tokens.map(({ name, src }) => (
+          <li class="ffc-tokens__item">
+            <Image src={src} alt={`${name} needlepoint canvas`} widths={[400, 800]} sizes="(min-width: 64rem) 300px, 70vw" />
+            <p>{name}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.ffc-tokens').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('.ffc-tokens__track')!;
+    const controls = root.querySelector<HTMLElement>('.ffc-tokens__controls')!;
+    const [prev, next] = root.querySelectorAll<HTMLButtonElement>('.ffc-tokens__btn');
+    controls.hidden = false;
+
+    const step = () => {
+      const item = track.querySelector<HTMLElement>('.ffc-tokens__item');
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return item ? item.offsetWidth + gap : track.clientWidth;
+    };
+    const sync = () => {
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+    };
+
+    [prev, next].forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        track.scrollBy({ left: Number(btn.dataset.dir) * step(), behavior: reduce ? 'auto' : 'smooth' });
+      }),
+    );
+    track.addEventListener('scroll', sync, { passive: true });
+    addEventListener('resize', sync);
+    sync();
+  });
+</script>
+
+<style>
+  .ffc-tokens {
+    grid-column: full;
+    margin-block: var(--space-8);
+    background: #f6f6f6;
+  }
+
+  .ffc-tokens__inner {
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding: var(--space-8) var(--gutter);
+  }
+
+  .ffc-tokens__head {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .ffc-tokens__text > :global(* + *) {
+    margin-top: var(--space-4);
+  }
+
+  .ffc-tokens__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
+  .ffc-tokens :global(.ffc-tokens__hero) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  .ffc-tokens__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin: var(--space-7) 0 var(--space-4);
+  }
+
+  .ffc-tokens__label {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-heading-1, #621a28);
+  }
+
+  .ffc-tokens__controls {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .ffc-tokens__controls[hidden] {
+    display: none;
+  }
+
+  .ffc-tokens__btn {
+    width: var(--tap-target);
+    height: var(--tap-target);
+    border: var(--border-width) solid #621a28;
+    border-radius: var(--radius-pill);
+    background: var(--color-bg);
+    color: #621a28;
+    font-size: var(--text-body);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .ffc-tokens__btn:hover:not(:disabled) {
+    background: #621a28;
+    color: #fff;
+  }
+
+  .ffc-tokens__btn:disabled {
+    border-color: var(--color-border);
+    color: var(--color-text-tertiary);
+    cursor: default;
+  }
+
+  .ffc-tokens__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 70%;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0 0 var(--space-3);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    list-style: none;
+  }
+
+  .ffc-tokens__track:focus-visible {
+    outline-offset: var(--space-1);
+  }
+
+  .ffc-tokens__item {
+    scroll-snap-align: start;
+  }
+
+  .ffc-tokens__item :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  .ffc-tokens__item p {
+    margin-top: var(--space-3);
+    font-weight: var(--weight-medium);
+    text-align: center;
+    color: #3a2a20;
+  }
+
+  @media (min-width: 48rem) {
+    .ffc-tokens__track {
+      grid-auto-columns: calc((100% - var(--space-4) * 2) / 3.3);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .ffc-tokens__head {
+      grid-template-columns: 1fr 1.3fr;
+      gap: var(--space-8);
+    }
+
+    .ffc-tokens__track {
+      grid-auto-columns: calc((100% - var(--space-4) * 3) / 4);
+    }
+  }
+</style>

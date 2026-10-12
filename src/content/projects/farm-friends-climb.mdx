@@ -28,13 +28,21 @@ import CharacterTiles from '../../components/projects/farm-friends/CharacterTile
 import SkyClimb from '../../components/projects/farm-friends/SkyClimb.astro';
 import Platforms from '../../components/projects/farm-friends/Platforms.astro';
 import MarketingLoop from '../../components/projects/farm-friends/MarketingLoop.astro';
-import PrizeTiers from '../../components/projects/farm-friends/PrizeTiers.astro';
 import BriefIntro from '../../components/projects/farm-friends/BriefIntro.astro';
 import Deliverables from '../../components/projects/farm-friends/Deliverables.astro';
 import ConceptDemo from '../../components/projects/farm-friends/ConceptDemo.astro';
 import PajamaToPixels from '../../components/projects/farm-friends/PajamaToPixels.astro';
 import Collection from '../../components/projects/farm-friends/Collection.astro';
 import LaunchBanner from '../../components/projects/farm-friends/LaunchBanner.astro';
+import Leaderboard from '../../components/projects/farm-friends/Leaderboard.astro';
+import TokenGallery from '../../components/projects/farm-friends/TokenGallery.astro';
+import tokenKit from '../../assets/projects/farm-friends-climb/tokens/kit.jpg';
+import tokenMouse from '../../assets/projects/farm-friends-climb/tokens/mouse.jpg';
+import tokenPiglet from '../../assets/projects/farm-friends-climb/tokens/piglet.jpg';
+import tokenSheep from '../../assets/projects/farm-friends-climb/tokens/sheep.jpg';
+import tokenCow from '../../assets/projects/farm-friends-climb/tokens/cow.jpg';
+import tokenMallard from '../../assets/projects/farm-friends-climb/tokens/mallard.jpg';
+import tokenRooster from '../../assets/projects/farm-friends-climb/tokens/rooster.jpg';
 import pjRooster from '../../assets/projects/farm-friends-climb/collection/pj-rooster.png';
 import pjMouse from '../../assets/projects/farm-friends-climb/collection/pj-mouse.png';
 import pjSheep from '../../assets/projects/farm-friends-climb/collection/pj-sheep.png';
@@ -53,6 +61,8 @@ import NightClose from '../../components/projects/farm-friends/NightClose.astro'
     { label: 'The Collection', href: '#collection' },
     { label: 'Pajamas to Pixels', href: '#pajamas' },
     { label: 'The Concept', href: '#concept' },
+    { label: 'Leaderboard', href: '#leaderboard' },
+    { label: 'The Token', href: '#token' },
     { label: 'Design Process', href: '#design-process' },
     { label: 'Visual Design', href: '#visual-design' },
     { label: 'Characters', href: '#characters' },
@@ -114,6 +124,44 @@ Tap controls, rather than tilt, meant the game also had to work reliably during 
   Launches a week before the <em>clothing drop</em>
 </LaunchBanner>
 
+<Leaderboard
+  id="leaderboard"
+  title="The Leaderboard Strategy"
+  callout="Urgency for the top spot = reason to keep playing"
+  tiers={[
+    { place: '1st', label: 'First place', prizes: ['Needlepoint token', 'PR box'] },
+    { place: '2–3', label: '2nd & 3rd place', prizes: ['PR box'] },
+    { place: '4–10', label: '4th–10th place', prizes: ['An item from the collection'] },
+  ]}
+>
+
+In the week before the drop, players compete for the highest score. Only the top ten win a prize, and the best prize goes to just one player.
+
+</Leaderboard>
+
+<TokenGallery
+  id="token"
+  title="The Collector’s Token"
+  hero={{
+    src: tokenKit,
+    alt: 'The six Farm Friends needlepoint canvases laid around a clear Dairy Boy kit of colored threads, scissors and a needle threader',
+  }}
+  tokens={[
+    { name: 'Barn Mouse', src: tokenMouse },
+    { name: 'Piglet', src: tokenPiglet },
+    { name: 'Sheep', src: tokenSheep },
+    { name: 'Cow', src: tokenCow },
+    { name: 'Mallard', src: tokenMallard },
+    { name: 'Rooster', src: tokenRooster },
+  ]}
+>
+
+First place wins a one-of-one needlepoint token: their Farm Friend on its print, ready to stitch, with a Dairy Boy kit of threads and tools.
+
+Each character has its own canvas, so the prize matches the animal the winner played.
+
+</TokenGallery>
+
 <SectionTitle id="design-process">Design Process</SectionTitle>
 
 <div class="case-wide ffc-process">
@@ -156,13 +204,6 @@ Each run starts on a static barn-and-grass scene before the climb begins. Cloud 
     ]}
   />
   <p>The tiered structure creates urgency and a reason to share a score, while playing as different characters spreads awareness across the whole collection, not just one product.</p>
-  <PrizeTiers
-    items={[
-      { place: '1st', prize: 'A one-of-one hand-made needlepoint token' },
-      { place: '2nd–3rd', prize: 'A PR bundle' },
-      { place: '4th–10th', prize: 'An item of their choice' },
-    ]}
-  />
 </Panel>
 
 <Panel title="Screens & Marketing Function" tone="light" intro="Every screen is doing a job beyond gameplay.">
