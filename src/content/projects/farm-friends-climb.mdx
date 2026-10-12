@@ -22,7 +22,6 @@ hero:
 
 import SectionNav from '../../components/case/SectionNav.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
-import ImageSlot from '../../components/ImageSlot.astro';
 import SkyClimb from '../../components/projects/farm-friends/SkyClimb.astro';
 import Platforms from '../../components/projects/farm-friends/Platforms.astro';
 import BriefIntro from '../../components/projects/farm-friends/BriefIntro.astro';
@@ -32,6 +31,10 @@ import PajamaToPixels from '../../components/projects/farm-friends/PajamaToPixel
 import Collection from '../../components/projects/farm-friends/Collection.astro';
 import LaunchBanner from '../../components/projects/farm-friends/LaunchBanner.astro';
 import Leaderboard from '../../components/projects/farm-friends/Leaderboard.astro';
+import BuildStages from '../../components/projects/farm-friends/BuildStages.astro';
+import stageGreybox from '../../assets/projects/farm-friends-climb/iterations/greybox.png';
+import stageFirstArt from '../../assets/projects/farm-friends-climb/iterations/first-art.png';
+import stageFinal from '../../assets/projects/farm-friends-climb/iterations/final.png';
 import SystemMap from '../../components/projects/farm-friends/SystemMap.astro';
 import TokenGallery from '../../components/projects/farm-friends/TokenGallery.astro';
 import tokenKit from '../../assets/projects/farm-friends-climb/tokens/kit.jpg';
@@ -58,7 +61,7 @@ import NightClose from '../../components/projects/farm-friends/NightClose.astro'
     { label: 'The Concept', href: '#concept' },
     { label: 'Leaderboard', href: '#leaderboard' },
     { label: 'The Token', href: '#token' },
-    { label: 'Design Process', href: '#design-process' },
+    { label: 'System Map', href: '#system-map' },
     { label: 'Visual Design', href: '#visual-design' },
     { label: 'Process & Tools', href: '#process' },
     { label: 'What I Learned', href: '#learned' },
@@ -155,30 +158,37 @@ Each character has its own canvas, so the prize matches the animal the winner pl
 
 </TokenGallery>
 
-<SectionTitle id="design-process">Design Process</SectionTitle>
+<p class="eyebrow">UX research</p>
 
-<p class="eyebrow ffc-eyebrow">UX research</p>
-
-<SectionTitle level={3}>System Map</SectionTitle>
+<SectionTitle id="system-map">System Map</SectionTitle>
 
 Before designing screens, I mapped how the game moves between them: every screen and run state, and what sends the player from one to the next. Then I zoomed into the climb itself and listed the checks the game runs on every frame. The map became the plan for the build, so each state on it is a screen or a run state in the code.
 
 <SystemMap />
 
-<div class="case-wide ffc-process">
-  <div>
-    <h3 class="eyebrow">Lo-fi wireframes</h3>
-    <ImageSlot label="Early wireframes or layout sketches" ratio="portrait" />
-  </div>
-  <div>
-    <h3 class="eyebrow">Hi-fi designs</h3>
-    <ImageSlot label="Final Figma screens" ratio="portrait" />
-  </div>
-  <div>
-    <h3 class="eyebrow">Prototype</h3>
-    <ImageSlot label="Link, embed or recording of the working build" ratio="portrait" />
-  </div>
-</div>
+<BuildStages
+  title="From grey box to pixel art"
+  stages={[
+    {
+      image: stageGreybox,
+      alt: 'Grey-box prototype: an orange square bouncing between flat white platforms on a plain blue background, with the score 15 and best 277',
+      title: 'Grey box',
+      text: 'A square and flat platforms, just enough to prove the bounce, steering and score felt right.',
+    },
+    {
+      image: stageFirstArt,
+      alt: 'First art pass: the orange square bouncing between cartoon clouds on a pale yellow sky, with a red barn, silo and fence at the bottom',
+      title: 'First art pass',
+      text: 'A sunset sky, clouds and a farm, with the placeholder square still standing in for the player.',
+    },
+    {
+      image: stageFinal,
+      alt: 'Final game: the pixel-art sheep climbing pixel clouds, a spring cloud and a bee, with a detailed barn, tree and mountains below and a Climbed 17 ft card',
+      title: 'Final',
+      text: 'Pixel-art Farm Friends, cloud variants and obstacles, and a score card in feet with a pause button.',
+    },
+  ]}
+/>
 
 <SectionTitle id="visual-design">Visual & Brand Design</SectionTitle>
 

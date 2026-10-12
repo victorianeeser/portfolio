@@ -46,25 +46,16 @@
   --case-accent-3-text: #6b6b4f;
 }
 
-/* Design process: wireframes, hi-fi screens and prototype side by side (phone-shaped slots) */
-.ffc-process {
-  display: grid;
-  gap: var(--space-6) var(--space-4);
-  margin-block: var(--space-6);
-}
-
-.ffc-process h3 {
-  margin-bottom: var(--space-3);
-  color: var(--case-heading-1);
-}
-
-@media (min-width: 48rem) {
-  .ffc-process {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 /* Pull quotes in the game's red */
 .theme-farm-friends .case-body.prose > blockquote {
   --quote-color: #8b2a3a;
+}
+
+/* A small label sitting right on top of a section title, e.g. "UX research" over System Map */
+.theme-farm-friends .case-body > .eyebrow:has(+ .section-title) {
+  color: var(--case-heading-1);
+}
+
+.theme-farm-friends .case-body > .eyebrow + .section-title {
+  margin-top: var(--space-2);
 }

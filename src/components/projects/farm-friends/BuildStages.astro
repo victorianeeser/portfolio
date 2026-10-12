@@ -1,0 +1,124 @@
+---
+// Three in-game screenshots showing the build's stages, from the grey-box prototype to the
+// final pixel art (Game Design file, page "Farm Friends"). Each sits in the same phone-shaped
+// frame so the stages line up. Three across on wide screens; on phones they become a
+// sideways-scrolling row.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Stage {
+  image: ImageMetadata;
+  alt: string;
+  title: string;
+  text: string;
+}
+
+interface Props {
+  title: string;
+  stages: Stage[];
+}
+
+const { title, stages } = Astro.props;
+---
+
+<section class="ffc-stages case-wide">
+  <h3 class="ffc-stages__title">{title}</h3>
+  <ol class="ffc-stages__track" role="list" tabindex="0" aria-label={`${title}, scrollable`}>
+    {
+      stages.map(({ image, alt, title, text }, i) => (
+        <li class="ffc-stages__item">
+          <div class="ffc-stages__frame">
+            <Image src={image} alt={alt} widths={[400, image.width]} sizes="(min-width: 48rem) 224px, 65vw" />
+          </div>
+          <p class="ffc-stages__step">{String(i + 1).padStart(2, '0')}</p>
+          <p class="ffc-stages__name">{title}</p>
+          <p class="ffc-stages__text">{text}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .ffc-stages {
+    margin-block: var(--space-8);
+  }
+
+  .ffc-stages__title {
+    margin-bottom: var(--space-5);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    color: var(--case-heading-1);
+  }
+
+  .ffc-stages__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 65%;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0 0 var(--space-3);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    list-style: none;
+  }
+
+  .ffc-stages__track:focus-visible {
+    outline-offset: var(--space-1);
+  }
+
+  .ffc-stages__item {
+    scroll-snap-align: start;
+  }
+
+  /* Same phone shape for every stage */
+  .ffc-stages__frame {
+    aspect-ratio: 596 / 1306;
+    overflow: hidden;
+    border: 6px solid #2b2420;
+    border-radius: 1.75rem;
+    background: #2b2420;
+  }
+
+  .ffc-stages__frame :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 1.35rem;
+  }
+
+  .ffc-stages__step {
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: var(--case-heading-1);
+  }
+
+  .ffc-stages__name {
+    margin-top: var(--space-1);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+  }
+
+  .ffc-stages__text {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 48rem) {
+    .ffc-stages__track {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, minmax(0, 14rem));
+      column-gap: var(--space-8);
+      row-gap: var(--space-6);
+      overflow: visible;
+      padding: 0;
+    }
+  }
+</style>
