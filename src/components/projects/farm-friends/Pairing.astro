@@ -10,13 +10,16 @@ import sheep from '../../../assets/projects/farm-friends-climb/characters/sheep.
 import piglet from '../../../assets/projects/farm-friends-climb/characters/piglet.png';
 
 const sprites = [cow, duck, rooster, mouse, sheep, piglet];
+// Sprites keep their true size relative to each other: the tallest art (192px) is 3rem,
+// so the short, wide mouse comes out smaller instead of stretched to the same height
+const tallest = Math.max(...sprites.map((s) => s.height));
 const traits = ['Quick to learn', 'One-handed', 'Short, replayable bursts', 'Easy to show off'];
 ---
 
 <ul class="ffc-pair case-wide" role="list">
   <li class="ffc-pair__card">
     <div class="ffc-pair__art ffc-pair__art--roster" aria-hidden="true">
-      {sprites.map((s) => <Image src={s} alt="" width={s.width} />)}
+      {sprites.map((s) => <Image src={s} alt="" width={s.width} style={`height: ${(3 * s.height) / tallest}rem`} />)}
     </div>
     <h3 class="ffc-pair__title">The collection fits the mechanic</h3>
     <p class="ffc-pair__text">Six characters map directly onto a character-select roster, giving players a natural reason to try, and want, the whole lineup, not just one piece.</p>
@@ -58,7 +61,6 @@ const traits = ['Quick to learn', 'One-handed', 'Short, replayable bursts', 'Eas
 
   .ffc-pair__art--roster :global(img) {
     width: auto;
-    height: 3rem;
     image-rendering: pixelated;
   }
 
