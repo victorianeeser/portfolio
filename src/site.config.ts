@@ -11,6 +11,7 @@ export const site = {
   links: {
     linkedin: 'https://www.linkedin.com/in/victoria-neeser-bb133b2a7/',
     github: 'https://github.com/victorianeeser',
+    behance: 'https://www.behance.net/victoria-neeser',
   },
   resumePath: '/resume.pdf', // drop the PDF into /public/resume.pdf; linked from the About page
 };
