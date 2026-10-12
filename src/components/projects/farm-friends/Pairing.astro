@@ -10,16 +10,18 @@ import sheep from '../../../assets/projects/farm-friends-climb/characters/sheep.
 import piglet from '../../../assets/projects/farm-friends-climb/characters/piglet.png';
 
 const sprites = [cow, duck, rooster, mouse, sheep, piglet];
-// Sprites keep their true size relative to each other: the tallest art (192px) is 3rem,
-// so the short, wide mouse comes out smaller instead of stretched to the same height
+// Sprites keep their true size relative to each other: the tallest art (192px) is one
+// --sprite unit tall, so the short, wide mouse comes out smaller instead of stretched
 const tallest = Math.max(...sprites.map((s) => s.height));
-const traits = ['Quick to learn', 'One-handed', 'Short, replayable bursts', 'Easy to show off'];
+const traits = ['Quick to learn', 'One-handed', 'Short, replayable bursts', 'Easy to show off', 'Brings players back'];
 ---
 
 <ul class="ffc-pair case-wide" role="list">
   <li class="ffc-pair__card">
     <div class="ffc-pair__art ffc-pair__art--roster" aria-hidden="true">
-      {sprites.map((s) => <Image src={s} alt="" width={s.width} style={`height: ${(3 * s.height) / tallest}rem`} />)}
+      <div class="ffc-pair__lineup">
+        {sprites.map((s) => <Image src={s} alt="" width={s.width} style={`height: calc(var(--sprite) * ${(s.height / tallest).toFixed(3)})`} />)}
+      </div>
     </div>
     <h3 class="ffc-pair__title">The collection fits the mechanic</h3>
     <p class="ffc-pair__text">Six characters map directly onto a character-select roster, giving players a natural reason to try, and want, the whole lineup, not just one piece.</p>
@@ -55,8 +57,24 @@ const traits = ['Quick to learn', 'One-handed', 'Short, replayable bursts', 'Eas
   }
 
   .ffc-pair__art--roster {
-    gap: var(--space-4) var(--space-5);
     background: #faf7f2;
+  }
+
+  /* The animals stand on one line, feet level, like a lineup; the row is centered in the box */
+  /* --sprite: the tallest animal's height (smaller on phones so all six fit in a row) */
+  .ffc-pair__lineup {
+    --sprite: 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 30rem) {
+    .ffc-pair__lineup {
+      --sprite: 3rem;
+      gap: var(--space-5);
+    }
   }
 
   .ffc-pair__art--roster :global(img) {
