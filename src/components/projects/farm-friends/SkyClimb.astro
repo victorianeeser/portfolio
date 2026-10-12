@@ -4,12 +4,13 @@
 // Below it, each stop with the score where it's reached and the bounce tempo ramp.
 // Values come from the game's js/config.js (SKY_COLORS, SKY_STEP, TEMPO, STARS).
 import { Image } from 'astro:assets';
-import PixelSprite from './PixelSprite.astro';
-import { crow, owl, bee } from './flyers';
+import bee from '../../../assets/projects/farm-friends-climb/obstacles/bee.png';
+import crow from '../../../assets/projects/farm-friends-climb/obstacles/crow.png';
+import owl from '../../../assets/projects/farm-friends-climb/obstacles/owl.png';
 import gust from '../../../assets/projects/farm-friends-climb/clouds/gust.png';
 
 const stops = ['#FDE9AA', '#FFC98A', '#F3AFA0', '#CAA6B7', '#7683DC', '#3D4787', '#1D2559', '#091040'];
-const step = 80; // points of climb between stops
+const step = 80; // feet of climb between stops
 const gradient = `linear-gradient(to right, ${stops.map((c, i) => `${c} ${((i / (stops.length - 1)) * 100).toFixed(1)}%`).join(', ')})`;
 
 // A fixed scatter of stars over the night half (x, y in %)
@@ -22,10 +23,10 @@ const stars = [
 <figure class="sky case-wide">
   <div class="sky__band" style={`background: ${gradient}`}>
     {stars.map(([x, y], i) => <span class="sky__star" data-big={i % 5 === 0 ? '' : undefined} style={`left: ${x}%; top: ${y}%; opacity: ${0.35 + ((x - 55) / 45) * 0.65}`} aria-hidden="true" />)}
-    <span class="sky__flyer sky__flyer--crow"><PixelSprite {...crow} label="Crow obstacle" /></span>
+    <span class="sky__flyer sky__flyer--crow"><Image src={crow} alt="Crow obstacle" width={crow.width} /></span>
     <span class="sky__flyer sky__flyer--gust"><Image src={gust} alt="Wind gust obstacle" width={gust.width} /></span>
-    <span class="sky__flyer sky__flyer--owl"><PixelSprite {...owl} label="Owl obstacle" /></span>
-    <span class="sky__flyer sky__flyer--bee"><PixelSprite {...bee} label="Bee obstacle" /></span>
+    <span class="sky__flyer sky__flyer--owl"><Image src={owl} alt="Owl obstacle" width={owl.width} /></span>
+    <span class="sky__flyer sky__flyer--bee"><Image src={bee} alt="Bee obstacle" width={bee.width} /></span>
     <span class="sky__tag sky__tag--start">Sunset</span>
     <span class="sky__tag sky__tag--end">Night</span>
   </div>
@@ -36,7 +37,7 @@ const stars = [
         <li class="sky__stop">
           <span class="sky__chip" style={`background: ${color}`} aria-hidden="true" />
           <span class="sky__hex">{color}</span>
-          <span class="sky__pts">{i * step} pts</span>
+          <span class="sky__pts">{i * step} ft</span>
         </li>
       ))
     }
@@ -45,7 +46,7 @@ const stars = [
   <div class="sky__tempo">
     <span class="sky__tempo-label">Bounce tempo</span>
     <span class="sky__tempo-bar" aria-hidden="true" />
-    <span class="sky__tempo-range">0.75× at the start → 1× at full night ({(stops.length - 1) * step} pts)</span>
+    <span class="sky__tempo-range">0.75× at the start → 1× at full night ({(stops.length - 1) * step} ft)</span>
   </div>
 </figure>
 

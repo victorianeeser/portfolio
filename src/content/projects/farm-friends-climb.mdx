@@ -22,12 +22,9 @@ hero:
 
 import SectionNav from '../../components/case/SectionNav.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
-import Panel from '../../components/case/Panel.astro';
 import ImageSlot from '../../components/ImageSlot.astro';
-import CharacterTiles from '../../components/projects/farm-friends/CharacterTiles.astro';
 import SkyClimb from '../../components/projects/farm-friends/SkyClimb.astro';
 import Platforms from '../../components/projects/farm-friends/Platforms.astro';
-import MarketingLoop from '../../components/projects/farm-friends/MarketingLoop.astro';
 import BriefIntro from '../../components/projects/farm-friends/BriefIntro.astro';
 import Deliverables from '../../components/projects/farm-friends/Deliverables.astro';
 import ConceptDemo from '../../components/projects/farm-friends/ConceptDemo.astro';
@@ -49,8 +46,6 @@ import pjSheep from '../../assets/projects/farm-friends-climb/collection/pj-shee
 import pjCow from '../../assets/projects/farm-friends-climb/collection/pj-cow.png';
 import pjPiglet from '../../assets/projects/farm-friends-climb/collection/pj-piglet.png';
 import pjMallard from '../../assets/projects/farm-friends-climb/collection/pj-mallard.png';
-import GameScreens from '../../components/projects/farm-friends/GameScreens.astro';
-import KpiCards from '../../components/projects/farm-friends/KpiCards.astro';
 import BuildPipeline from '../../components/projects/farm-friends/BuildPipeline.astro';
 import DeviceFix from '../../components/projects/farm-friends/DeviceFix.astro';
 import NightClose from '../../components/projects/farm-friends/NightClose.astro';
@@ -65,8 +60,6 @@ import NightClose from '../../components/projects/farm-friends/NightClose.astro'
     { label: 'The Token', href: '#token' },
     { label: 'Design Process', href: '#design-process' },
     { label: 'Visual Design', href: '#visual-design' },
-    { label: 'Characters', href: '#characters' },
-    { label: 'Marketing', href: '#marketing' },
     { label: 'Process & Tools', href: '#process' },
     { label: 'What I Learned', href: '#learned' },
   ]}
@@ -147,12 +140,12 @@ In the week before the drop, players compete for the highest score. Only the top
     alt: 'The six Farm Friends needlepoint canvases laid around a clear Dairy Boy kit of colored threads, scissors and a needle threader',
   }}
   tokens={[
-    { name: 'Barn Mouse', src: tokenMouse },
-    { name: 'Piglet', src: tokenPiglet },
-    { name: 'Sheep', src: tokenSheep },
     { name: 'Cow', src: tokenCow },
-    { name: 'Mallard', src: tokenMallard },
+    { name: 'Piglet', src: tokenPiglet },
     { name: 'Rooster', src: tokenRooster },
+    { name: 'Sheep', src: tokenSheep },
+    { name: 'Mallard', src: tokenMallard },
+    { name: 'Barn Mouse', src: tokenMouse },
   ]}
 >
 
@@ -188,33 +181,6 @@ The game uses detailed, soft-shaded pixel art rather than blocky 8-bit: 64×64px
 Each run starts on a static barn-and-grass scene before the climb begins. Cloud platforms come in four variants, and obstacles shift with the sky: a bee and a curling wind gust by day, birds as the sun sets, and an owl as night falls.
 
 <Platforms />
-
-<Panel id="characters" title="Meet the Characters" tone="light" level={2} intro="Six Farm Friends, each wearing its print from the collection.">
-  <CharacterTiles />
-</Panel>
-
-<Panel id="marketing" title="The Marketing Loop" level={2} intro="Every run is built to feed the campaign, not just the leaderboard.">
-  <MarketingLoop
-    steps={[
-      'Play a run',
-      'Climb for height',
-      'Enter an email before the score posts',
-      'See your rank on the leaderboard',
-      'Unlock a prize tier',
-    ]}
-  />
-  <p>The tiered structure creates urgency and a reason to share a score, while playing as different characters spreads awareness across the whole collection, not just one product.</p>
-</Panel>
-
-<Panel title="Screens & Marketing Function" tone="light" intro="Every screen is doing a job beyond gameplay.">
-  <GameScreens />
-</Panel>
-
-<SectionTitle level={3}>Marketing KPIs</SectionTitle>
-
-If this ran as a real activation, I'd track it against these numbers. They show whether the game is doing its job: promoting the collection and keeping people opening the app.
-
-<KpiCards />
 
 <SectionTitle id="process">Process & Tools</SectionTitle>
 
