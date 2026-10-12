@@ -32,7 +32,7 @@ import Collection from '../../components/projects/farm-friends/Collection.astro'
 import LaunchBanner from '../../components/projects/farm-friends/LaunchBanner.astro';
 import InApp from '../../components/projects/farm-friends/InApp.astro';
 import appHome from '../../assets/projects/farm-friends-climb/in-app/app-home.png';
-import gameHome from '../../assets/projects/farm-friends-climb/in-app/game-home.png';
+import gameMockup from '../../assets/projects/farm-friends-climb/in-app/game-mockup.png';
 import Leaderboard from '../../components/projects/farm-friends/Leaderboard.astro';
 import BuildStages from '../../components/projects/farm-friends/BuildStages.astro';
 import stageGreybox from '../../assets/projects/farm-friends-climb/iterations/greybox.png';
@@ -123,7 +123,6 @@ Tap controls, rather than tilt, meant the game also had to work reliably during 
 <InApp
   id="in-app"
   title="Built into the Dairy Boy App"
-  precedent="Dairy Boy has done this before. For its Decoy Camo drop, the brand put Chop Till You Drop, a wood-chopping game based on the campaign video, in its app only, with a leaderboard and prize boxes for the top players. Farm Friends Climb follows the same playbook for the next collection."
   tap="Play Now"
   screens={[
     {
@@ -132,7 +131,8 @@ Tap controls, rather than tilt, meant the game also had to work reliably during 
       label: 'Dairy Boy app home',
     },
     {
-      src: gameHome,
+      src: gameMockup,
+      mockup: true,
       alt: 'The Farm Friends Climb home screen inside the app: a DB App back button, the Sheep in Scottish Plaid chosen as the climber, and Tap to Play, Leaderboard and My Stats buttons',
       label: 'Farm Friends Climb',
     },
