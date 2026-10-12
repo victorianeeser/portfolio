@@ -3,45 +3,86 @@
 // the six embroidered animals photographed on their pajama prints, an arrow, and the same
 // six as pixel-art characters on their game prints. The labels and arrow are elements; on
 // phones the two collages stack with the arrow pointing down.
+// The section sits on a full-width butter band (from the game's sunset sky), so it reads
+// apart from the grey Collection above and the white Concept below. Intro copy goes in
+// the default slot.
 import { Image } from 'astro:assets';
+import SectionTitle from '../../case/SectionTitle.astro';
 import pajamas from '../../../assets/projects/farm-friends-climb/pajamas.jpg';
 import game from '../../../assets/projects/farm-friends-climb/pajamas-game.png';
+
+interface Props {
+  title: string;
+  /** Anchor id for the section nav */
+  id?: string;
+}
+
+const { title, id } = Astro.props;
 ---
 
-<figure class="ffc-p2p case-wide">
-  <div class="ffc-p2p__side">
-    <figcaption class="ffc-p2p__label">Pajamas</figcaption>
-    <Image
-      src={pajamas}
-      alt="The six embroidered Farm Friends on their pajama fabrics: a pig on teal stripes, a mallard on merlot, a cow on pastel ribbon stripes, a rooster on pink gingham, a mouse on green pinstripe and a sheep on plaid"
-      widths={[600, 1100, 1600]}
-      sizes="(min-width: 48rem) 520px, 100vw"
-    />
-  </div>
+<section class="ffc-p2p-band full-bleed" id={id}>
+  <div class="ffc-p2p-band__inner">
+    <div class="ffc-p2p-band__text">
+      <SectionTitle>{title}</SectionTitle>
+      <slot />
+    </div>
 
-  <span class="ffc-p2p__arrow" aria-hidden="true">
-    <svg viewBox="0 0 120 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M2 8h114M108 2l8 6-8 6" />
-    </svg>
-  </span>
+    <figure class="ffc-p2p">
+      <div class="ffc-p2p__side">
+        <figcaption class="ffc-p2p__label">Pajamas</figcaption>
+        <Image
+          src={pajamas}
+          alt="The six embroidered Farm Friends on their pajama fabrics: a pig on teal stripes, a mallard on merlot, a cow on pastel ribbon stripes, a rooster on pink gingham, a mouse on green pinstripe and a sheep on plaid"
+          widths={[600, 1100, 1600]}
+          sizes="(min-width: 48rem) 520px, 100vw"
+        />
+      </div>
 
-  <div class="ffc-p2p__side">
-    <p class="ffc-p2p__label" aria-hidden="true">Game design</p>
-    <Image
-      src={game}
-      alt="The same six animals as pixel-art game characters, each on a pixel version of its print: pig, mallard, cow, rooster, mouse and sheep"
-      widths={[600, 1100, 1600]}
-      sizes="(min-width: 48rem) 520px, 100vw"
-    />
+      <span class="ffc-p2p__arrow" aria-hidden="true">
+        <svg viewBox="0 0 120 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 8h114M108 2l8 6-8 6" />
+        </svg>
+      </span>
+
+      <div class="ffc-p2p__side">
+        <p class="ffc-p2p__label" aria-hidden="true">Game design</p>
+        <Image
+          src={game}
+          alt="The same six animals as pixel-art game characters, each on a pixel version of its print: pig, mallard, cow, rooster, mouse and sheep"
+          widths={[600, 1100, 1600]}
+          sizes="(min-width: 48rem) 520px, 100vw"
+        />
+      </div>
+    </figure>
   </div>
-</figure>
+</section>
 
 <style>
+  .ffc-p2p-band {
+    grid-column: full;
+    margin-block: var(--space-8);
+    background: #fdf1d2;
+  }
+
+  .ffc-p2p-band__inner {
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding: var(--space-8) var(--gutter);
+  }
+
+  .ffc-p2p-band__text {
+    max-width: var(--container-prose);
+  }
+
+  .ffc-p2p-band__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
   .ffc-p2p {
     display: grid;
     gap: var(--space-4);
     justify-items: center;
-    margin-block: var(--space-6) var(--space-8);
+    margin-top: var(--space-7);
   }
 
   .ffc-p2p__side {
