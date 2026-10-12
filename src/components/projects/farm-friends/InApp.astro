@@ -3,8 +3,7 @@
 // background) with the copy and reasons on one side, and on the other the app's home screen
 // with the Farm Friends banner, an arrow for "Play Now", and the game's home screen with its
 // "DB App" button back to the shop (Game Design file, frames 301:402 and 312:1029).
-// The game screen can be a finished device mockup (`mockup: true`), shown as is without the
-// drawn phone frame. Copy goes in the default slot.
+// Copy goes in the default slot.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import SectionTitle from '../../case/SectionTitle.astro';
@@ -13,8 +12,6 @@ interface Screen {
   src: ImageMetadata;
   alt: string;
   label: string;
-  /** A finished device mockup image, shown without the drawn phone frame */
-  mockup?: boolean;
 }
 
 interface Props {
@@ -50,7 +47,7 @@ const { id, title, reasons, screens, tap } = Astro.props;
 
     <figure class="ffc-app__flow">
       {
-        screens.map(({ src, alt, label, mockup }, i) => (
+        screens.map(({ src, alt, label }, i) => (
           <>
             {i === 1 && (
               <span class="ffc-app__tap" aria-hidden="true">
@@ -61,7 +58,7 @@ const { id, title, reasons, screens, tap } = Astro.props;
               </span>
             )}
             <div class="ffc-app__screen">
-              <div class:list={['ffc-app__phone', mockup && 'ffc-app__phone--mockup']}>
+              <div class="ffc-app__phone">
                 <Image src={src} alt={alt} width={src.width} />
               </div>
               <figcaption>{label}</figcaption>
@@ -161,19 +158,6 @@ const { id, title, reasons, screens, tap } = Astro.props;
     width: 100%;
     height: auto;
     border-radius: 1.35rem;
-  }
-
-  /* The device mockup brings its own frame; sized to match the drawn phone's outline */
-  .ffc-app__phone--mockup {
-    max-width: 14.35rem;
-    overflow: visible;
-    border: 0;
-    border-radius: 0;
-    background: none;
-  }
-
-  .ffc-app__phone--mockup :global(img) {
-    border-radius: 0;
   }
 
   .ffc-app__screen figcaption {
