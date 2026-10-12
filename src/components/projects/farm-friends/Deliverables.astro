@@ -1,26 +1,69 @@
 ---
-// The three deliverables, each with a small illustration built from the game's art:
-// the design system's print colors and Play button, a scene from the prototype, and a
-// needlepoint-style collector's token in the Pink Gingham print.
+// The three deliverables, each on a card the size of the Figma cards (371×316):
+// 01 the design system (print colors, type, buttons and cloud platforms, built as
+// elements), 02 the working prototype's title screen rebuilt from its pixel art, and
+// 03 a photo of the collector's token. Sizes inside the cards use cqw, so each card
+// scales as one piece.
 import { Image } from 'astro:assets';
-import sheep from '../../../assets/projects/farm-friends-climb/characters/sheep.png';
-import rooster from '../../../assets/projects/farm-friends-climb/characters/rooster.png';
-import cloud from '../../../assets/projects/farm-friends-climb/clouds/static.png';
+import base from '../../../assets/projects/farm-friends-climb/deliverables/base.png';
+import logo from '../../../assets/projects/farm-friends-climb/deliverables/logo.png';
+import cloudNormal from '../../../assets/projects/farm-friends-climb/deliverables/cloud-normal.png';
+import cloudSpringBig from '../../../assets/projects/farm-friends-climb/deliverables/cloud-spring.png';
+import piglet from '../../../assets/projects/farm-friends-climb/deliverables/piglet.png';
+import cow from '../../../assets/projects/farm-friends-climb/deliverables/cow.png';
+import bee from '../../../assets/projects/farm-friends-climb/deliverables/bee.png';
+import bird from '../../../assets/projects/farm-friends-climb/deliverables/bird.png';
+import token from '../../../assets/projects/farm-friends-climb/deliverables/token.jpg';
+import cloudStatic from '../../../assets/projects/farm-friends-climb/clouds/static.png';
+import cloudMoving from '../../../assets/projects/farm-friends-climb/clouds/moving.png';
+import cloudSpring from '../../../assets/projects/farm-friends-climb/clouds/spring.png';
+import cloudBreakable from '../../../assets/projects/farm-friends-climb/clouds/breakable.png';
+import cloudGust from '../../../assets/projects/farm-friends-climb/clouds/gust.png';
 
 // Print colors from the game's character list (js/characters.js)
 const prints = ['#7798b6', '#621a28', '#db9c9d', '#979766', '#9a9a7b', '#458b90'];
+const clouds = [
+  { src: cloudStatic, label: 'Static' },
+  { src: cloudMoving, label: 'Moving' },
+  { src: cloudSpring, label: 'Spring' },
+  { src: cloudBreakable, label: 'Breaks' },
+  { src: cloudGust, label: 'Gust' },
+];
 ---
 
 <ol class="ffc-deliver case-wide" role="list">
   <li class="ffc-deliver__item">
     <div class="ffc-deliver__art ffc-deliver__art--system" aria-hidden="true">
       <div class="ffc-system">
+        <p class="ffc-system__label">Prints</p>
         <div class="ffc-system__chips">
           {prints.map((c) => <span style={`background: ${c}`} />)}
         </div>
-        <div class="ffc-system__row">
-          <span class="ffc-system__type">Aa</span>
-          <span class="ffc-system__button">Play</span>
+
+        <div class="ffc-system__split">
+          <div>
+            <p class="ffc-system__label">Type</p>
+            <p class="ffc-system__type">Aa <span>Climb</span></p>
+          </div>
+          <div>
+            <p class="ffc-system__label">Buttons</p>
+            <div class="ffc-system__buttons">
+              <span class="ffc-system__button">Play Now</span>
+              <span class="ffc-system__button ffc-system__button--ghost">Characters</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="ffc-system__label">Cloud platforms</p>
+        <div class="ffc-system__clouds">
+          {
+            clouds.map(({ src, label }) => (
+              <span>
+                <Image src={src} alt="" width={160} />
+                {label}
+              </span>
+            ))
+          }
         </div>
       </div>
     </div>
@@ -31,8 +74,18 @@ const prints = ['#7798b6', '#621a28', '#db9c9d', '#979766', '#9a9a7b', '#458b90'
 
   <li class="ffc-deliver__item">
     <div class="ffc-deliver__art ffc-deliver__art--proto" aria-hidden="true">
-      <Image src={sheep} alt="" class="ffc-proto__sprite" width={sheep.width} />
-      <Image src={cloud} alt="" class="ffc-proto__cloud" width={480} />
+      <Image src={base} alt="" class="ffc-proto__base" widths={[600, 1000]} sizes="(min-width: 48rem) 420px, 100vw" />
+      <Image src={cloudSpringBig} alt="" class="ffc-proto__cloud-spring" width={240} />
+      <Image src={cloudNormal} alt="" class="ffc-proto__cloud-normal" width={240} />
+      <Image src={bird} alt="" class="ffc-proto__bird" width={120} />
+      <Image src={bee} alt="" class="ffc-proto__bee" width={80} />
+      <div class="ffc-proto__title">
+        <Image src={logo} alt="" width={600} />
+        <span>Climb</span>
+      </div>
+      <span class="ffc-proto__play">Play Now</span>
+      <Image src={piglet} alt="" class="ffc-proto__piglet" width={160} />
+      <Image src={cow} alt="" class="ffc-proto__cow" width={200} />
     </div>
     <span class="ffc-deliver__num">02</span>
     <h3 class="ffc-deliver__title">Working prototype</h3>
@@ -40,12 +93,13 @@ const prints = ['#7798b6', '#621a28', '#db9c9d', '#979766', '#9a9a7b', '#458b90'
   </li>
 
   <li class="ffc-deliver__item">
-    <div class="ffc-deliver__art ffc-deliver__art--token" aria-hidden="true">
-      <div class="ffc-token">
-        <div class="ffc-token__inner">
-          <Image src={rooster} alt="" width={rooster.width} />
-        </div>
-      </div>
+    <div class="ffc-deliver__art ffc-deliver__art--token">
+      <Image
+        src={token}
+        alt="The collector's token: a needlepoint canvas of the cow on pastel stripes, surrounded by thread bobbins, scissors and Dairy Boy pins"
+        widths={[600, 1000, 1600]}
+        sizes="(min-width: 48rem) 560px, 140vw"
+      />
     </div>
     <span class="ffc-deliver__num">03</span>
     <h3 class="ffc-deliver__title">Collector's token</h3>
@@ -62,16 +116,20 @@ const prints = ['#7798b6', '#621a28', '#db9c9d', '#979766', '#9a9a7b', '#458b90'
     list-style: none;
   }
 
+  /* Every card is the Figma card's shape (371×316) */
   .ffc-deliver__art {
     position: relative;
-    display: grid;
-    place-items: center;
-    aspect-ratio: 4 / 3;
+    container-type: inline-size;
     overflow: hidden;
+    aspect-ratio: 371 / 316;
     border-radius: var(--radius-md);
   }
 
   .ffc-deliver__art :global(img) {
+    position: absolute;
+    max-width: none;
+    height: auto;
+    border-radius: 0;
     image-rendering: pixelated;
   }
 
@@ -96,105 +154,174 @@ const prints = ['#7798b6', '#621a28', '#db9c9d', '#979766', '#9a9a7b', '#458b90'
 
   /* 01: the design system on the home screen's cream */
   .ffc-deliver__art--system {
+    display: grid;
+    place-items: center;
     background: #faf7f2;
   }
 
   .ffc-system {
     display: grid;
-    gap: var(--space-4);
-    width: 72%;
+    gap: 2.2cqw;
+    width: 86%;
+    color: #3a2a20;
+  }
+
+  .ffc-system__label {
+    font-size: 2.8cqw;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8b2a3a;
   }
 
   .ffc-system__chips {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: var(--space-2);
+    gap: 1.8cqw;
+    margin-bottom: 1.5cqw;
   }
 
   .ffc-system__chips span {
     aspect-ratio: 1;
-    border-radius: var(--radius-sm);
+    border-radius: 1.5cqw;
   }
 
-  .ffc-system__row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
+  .ffc-system__split {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 4cqw;
+    margin-bottom: 1.5cqw;
+  }
+
+  .ffc-system__split > div {
+    display: grid;
+    gap: 2.2cqw;
+    align-content: start;
   }
 
   .ffc-system__type {
-    font-size: var(--text-h1);
+    font-size: 9cqw;
     font-weight: var(--weight-medium);
     line-height: 1;
-    color: #3a2a20;
+  }
+
+  .ffc-system__type span {
+    font-size: 3.6cqw;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8b2a3a;
+  }
+
+  .ffc-system__buttons {
+    display: grid;
+    gap: 1.6cqw;
   }
 
   .ffc-system__button {
-    flex: 1;
-    padding: var(--space-2);
-    border-radius: var(--radius-pill);
-    background: #621a28;
-    font-size: var(--text-small);
+    padding: 1.6cqw 3cqw;
+    border-radius: 999px;
+    background: #7d2839;
+    font-size: 3cqw;
+    font-weight: var(--weight-medium);
     text-align: center;
-    color: #ffffff;
+    color: #fff;
   }
 
-  /* 02: a moment from the climb, on the sunset sky */
+  .ffc-system__button--ghost {
+    background: none;
+    box-shadow: inset 0 0 0 0.4cqw #7d2839;
+    color: #7d2839;
+  }
+
+  .ffc-system__clouds {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2cqw;
+  }
+
+  .ffc-system__clouds span {
+    display: grid;
+    justify-items: center;
+    gap: 1cqw;
+    font-size: 2.6cqw;
+    color: #6b5a4e;
+  }
+
+  /* Same-size box for every cloud, so the labels line up */
+  .ffc-system__clouds :global(img) {
+    position: static;
+    width: 100%;
+    height: 9cqw;
+    object-fit: contain;
+    object-position: bottom;
+  }
+
+  /* 02: the prototype's title screen (positions are the Figma card's, as percentages) */
   .ffc-deliver__art--proto {
-    background: linear-gradient(#f3afa0, #ffc98a 60%, #fde9aa);
+    background: linear-gradient(#fdc98a, #fde2a3);
   }
 
-  .ffc-deliver__art--proto :global(.ffc-proto__sprite) {
+  .ffc-deliver__art--proto :global(.ffc-proto__base) { left: -2.3%; bottom: 0; width: 108.7%; }
+  .ffc-deliver__art--proto :global(.ffc-proto__cloud-spring) { left: -3.9%; top: 33.6%; width: 21.6%; }
+  .ffc-deliver__art--proto :global(.ffc-proto__cloud-normal) { left: 84.5%; top: 7.6%; width: 20.7%; }
+  .ffc-deliver__art--proto :global(.ffc-proto__bird) { left: 7.5%; top: 9.4%; width: 9.1%; }
+  .ffc-deliver__art--proto :global(.ffc-proto__bee) { left: 81.4%; top: 34.6%; width: 6.3%; transform: scaleX(-1); }
+  .ffc-deliver__art--proto :global(.ffc-proto__piglet) { left: 37.3%; top: 81.4%; width: 13.6%; }
+  .ffc-deliver__art--proto :global(.ffc-proto__cow) { left: 67.9%; top: 75.1%; width: 18.4%; transform: scaleX(-1); }
+
+  .ffc-proto__title {
     position: absolute;
-    bottom: 47%;
+    top: 10.4%;
     left: 50%;
-    width: 22%;
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.2cqw;
+    width: 59.8%;
     transform: translateX(-50%);
   }
 
-  .ffc-deliver__art--proto :global(.ffc-proto__cloud) {
-    position: absolute;
-    top: 52%;
-    left: 50%;
-    width: 52%;
-    height: auto;
-    transform: translateX(-50%);
+  .ffc-proto__title :global(img) {
+    position: static;
+    width: 100%;
+    image-rendering: auto;
   }
 
-  /* 03: a round needlepoint token in the Pink Gingham print */
+  .ffc-proto__title span {
+    font-size: 4cqw;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8b2a3a;
+  }
+
+  .ffc-proto__play {
+    position: absolute;
+    left: 57.1%;
+    top: 48.1%;
+    display: grid;
+    place-items: center;
+    width: 31%;
+    height: 11.8%;
+    border-radius: 999px;
+    background: #7d2839;
+    box-shadow: 0 0.2cqw 0.3cqw rgb(0 0 0 / 0.1);
+    font-size: 2.9cqw;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.04em;
+    color: #fff;
+  }
+
+  /* 03: the token photo, cropped as in Figma */
   .ffc-deliver__art--token {
-    background: #f3d1d0;
+    background: linear-gradient(#fdc98a, #fde2a3);
   }
 
-  .ffc-token {
-    display: grid;
-    place-items: center;
-    width: 58%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background:
-      repeating-linear-gradient(90deg, rgb(205 126 129 / 0.45) 0 8%, transparent 8% 16%),
-      repeating-linear-gradient(0deg, rgb(205 126 129 / 0.45) 0 8%, transparent 8% 16%),
-      #f9e4e3;
-    box-shadow:
-      0 0 0 var(--space-1) #ffffff,
-      0 0 0 calc(var(--space-1) * 2) #cd7e81,
-      0 var(--space-3) var(--space-5) rgb(98 26 40 / 0.18);
-  }
-
-  .ffc-token__inner {
-    display: grid;
-    place-items: center;
-    width: 64%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: #ffffff;
-  }
-
-  .ffc-token__inner :global(img) {
-    width: 62%;
-    height: auto;
+  .ffc-deliver__art--token :global(img) {
+    left: -16.7%;
+    top: -6.9%;
+    width: 140.5%;
+    image-rendering: auto;
   }
 
   @media (min-width: 48rem) {
