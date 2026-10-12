@@ -1,0 +1,57 @@
+---
+// A full-width Merlot band with one big statement, e.g. the game's launch timing.
+// The statement goes in the default slot; wrap words in <em> to set them in the
+// butter-yellow accent.
+interface Props {
+  eyebrow?: string;
+}
+
+const { eyebrow } = Astro.props;
+---
+
+<section class="ffc-banner full-bleed">
+  <div class="ffc-banner__inner">
+    {eyebrow && <p class="ffc-banner__eyebrow">{eyebrow}</p>}
+    <div class="ffc-banner__text"><slot /></div>
+  </div>
+</section>
+
+<style>
+  .ffc-banner {
+    grid-column: full;
+    margin-block: var(--space-8);
+    background: #621a28;
+    color: #fff;
+  }
+
+  .ffc-banner__inner {
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding: var(--space-9) var(--gutter);
+  }
+
+  .ffc-banner__eyebrow {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-small);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #fde9aa;
+  }
+
+  .ffc-banner__text {
+    max-width: 18ch;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-display);
+    line-height: 1.05;
+  }
+
+  .ffc-banner__text :global(p) {
+    margin: 0;
+  }
+
+  .ffc-banner__text :global(em) {
+    font-style: normal;
+    color: #fde9aa;
+  }
+</style>

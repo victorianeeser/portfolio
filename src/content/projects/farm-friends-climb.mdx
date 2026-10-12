@@ -34,6 +34,14 @@ import Deliverables from '../../components/projects/farm-friends/Deliverables.as
 import ConceptDemo from '../../components/projects/farm-friends/ConceptDemo.astro';
 import Pairing from '../../components/projects/farm-friends/Pairing.astro';
 import PajamaToPixels from '../../components/projects/farm-friends/PajamaToPixels.astro';
+import Collection from '../../components/projects/farm-friends/Collection.astro';
+import LaunchBanner from '../../components/projects/farm-friends/LaunchBanner.astro';
+import pjRooster from '../../assets/projects/farm-friends-climb/collection/pj-rooster.png';
+import pjMouse from '../../assets/projects/farm-friends-climb/collection/pj-mouse.png';
+import pjSheep from '../../assets/projects/farm-friends-climb/collection/pj-sheep.png';
+import pjCow from '../../assets/projects/farm-friends-climb/collection/pj-cow.png';
+import pjPiglet from '../../assets/projects/farm-friends-climb/collection/pj-piglet.png';
+import pjMallard from '../../assets/projects/farm-friends-climb/collection/pj-mallard.png';
 import GameScreens from '../../components/projects/farm-friends/GameScreens.astro';
 import KpiCards from '../../components/projects/farm-friends/KpiCards.astro';
 import BuildPipeline from '../../components/projects/farm-friends/BuildPipeline.astro';
@@ -43,6 +51,8 @@ import NightClose from '../../components/projects/farm-friends/NightClose.astro'
 <SectionNav
   items={[
     { label: 'The Brief', href: '#brief' },
+    { label: 'The Collection', href: '#collection' },
+    { label: 'Pajamas to Pixels', href: '#pajamas' },
     { label: 'The Concept', href: '#concept' },
     { label: 'Design Process', href: '#design-process' },
     { label: 'Visual Design', href: '#visual-design' },
@@ -63,6 +73,34 @@ I chose Dairy Boy’s Farm Friends collection, a line of six embroidered animal 
 
 <Deliverables />
 
+<Collection
+  id="collection"
+  title="The Collection"
+  price="$128"
+  sizes="XXS–XXL"
+  drop={{ date: 'May 7, 2026', time: '11 AM EST', where: 'dairyboy.com & the DB app' }}
+  sets={[
+    { name: 'Rooster', print: 'Pink Gingham', image: pjRooster, tag: 'In-app exclusive' },
+    { name: 'Barn Mouse', print: 'Green Pinstripe', image: pjMouse },
+    { name: 'Sheep', print: 'Scottish Plaid', image: pjSheep },
+    { name: 'Cow', print: 'Ribbon Stripe', image: pjCow },
+    { name: 'Piglet', print: 'Blueberry Lane', image: pjPiglet },
+    { name: 'Mallard', print: 'Merlot', image: pjMallard },
+  ]}
+>
+
+Dairy Boy’s Farm Friends collection is six pajama sets. Each one has a farm animal embroidered on the chest and its own print, from the Rooster in Pink Gingham to the Mallard in Merlot.
+
+Every set is $128 in sizes XXS–XXL, and the Rooster is exclusive to the Dairy Boy app.
+
+</Collection>
+
+<SectionTitle id="pajamas">From Pajamas to Pixels</SectionTitle>
+
+The Farm Friends pajamas already had what a game needs: a cast, a look and a palette. I wanted the game to feel like the pajamas come to life, so every design choice started from the fabric.
+
+<PajamaToPixels />
+
 <ConceptDemo id="concept" title="The Concept">
 
 Farm Friends Climb is a tap-to-steer, auto-bounce climber styled after Jelly Jump. Players tap left or right to steer their character upward across cloud platforms, climbing as high as they can before missing a platform ends the run.
@@ -73,11 +111,9 @@ Tap controls, rather than tilt, meant the game also had to work reliably during 
 
 </ConceptDemo>
 
-<SectionTitle level={3}>From pajamas to pixels</SectionTitle>
-
-The Farm Friends pajamas already had what a game needs: a cast, a look and a palette. I wanted the game to feel like the pajamas come to life, so every design choice started from the fabric.
-
-<PajamaToPixels />
+<LaunchBanner eyebrow="The timing">
+  Launches a week before the <em>clothing drop</em>
+</LaunchBanner>
 
 <SectionTitle level={3}>Two things made this pairing work</SectionTitle>
 

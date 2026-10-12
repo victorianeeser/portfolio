@@ -1,0 +1,189 @@
+---
+// The Collection: a full-width #F6F6F6 band showcasing Dairy Boy's Farm Friends pajamas,
+// rebuilt from the launch listing (Game Design file, frame 314:109). Each set is a product
+// card: the pajama photo, then name, print, price and sizes as text. The band's grey
+// matches the photos' backdrop, so the pajamas sit straight on the page.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import SectionTitle from '../../case/SectionTitle.astro';
+
+interface Set {
+  name: string;
+  print: string;
+  image: ImageMetadata;
+  /** e.g. "In-app exclusive" */
+  tag?: string;
+}
+
+interface Props {
+  id?: string;
+  title: string;
+  sets: Set[];
+  price: string;
+  sizes: string;
+  /** Drop details shown above the grid, e.g. date and time */
+  drop?: { date: string; time: string; where: string };
+}
+
+const { id, title, sets, price, sizes, drop } = Astro.props;
+---
+
+<section class="ffc-collection full-bleed" id={id}>
+  <div class="ffc-collection__inner">
+    <div class="ffc-collection__text">
+      <SectionTitle>{title}</SectionTitle>
+      <slot />
+    </div>
+
+    {
+      drop && (
+        <dl class="ffc-collection__drop">
+          <div>
+            <dt>Drop</dt>
+            <dd>{drop.date}</dd>
+          </div>
+          <div>
+            <dt>Time</dt>
+            <dd>{drop.time}</dd>
+          </div>
+          <div>
+            <dt>Where</dt>
+            <dd>{drop.where}</dd>
+          </div>
+        </dl>
+      )
+    }
+
+    <ul class="ffc-collection__grid" role="list">
+      {
+        sets.map(({ name, print, image, tag }) => (
+          <li class="ffc-collection__item">
+            <Image src={image} alt={`${name} pajama set in ${print}`} width={image.width} />
+            <h3 class="ffc-collection__name">{name}</h3>
+            <p class="ffc-collection__print">
+              in <em>{print}</em>
+            </p>
+            <p class="ffc-collection__meta">
+              {price}
+              <span aria-hidden="true"> · </span>
+              {sizes}
+            </p>
+            {tag && <p class="ffc-collection__tag">{tag}</p>}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ffc-collection {
+    grid-column: full;
+    margin-block: var(--space-8);
+    background: #f6f6f6;
+  }
+
+  .ffc-collection__inner {
+    max-width: calc(var(--container-max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding: var(--space-8) var(--gutter);
+  }
+
+  .ffc-collection__text {
+    max-width: var(--container-prose);
+  }
+
+  .ffc-collection__text > :global(* + *) {
+    margin-top: var(--space-4);
+  }
+
+  .ffc-collection__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
+  /* The drop details, styled like the listing's header (date, name, year) */
+  .ffc-collection__drop {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-7);
+    margin: var(--space-6) 0 0;
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid rgb(58 42 32 / 0.15);
+  }
+
+  .ffc-collection__drop dt {
+    font-size: 0.75rem;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+
+  .ffc-collection__drop dd {
+    margin: var(--space-1) 0 0;
+    font-weight: var(--weight-medium);
+    color: #3a2a20;
+  }
+
+  .ffc-collection__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-7) var(--space-4);
+    margin: var(--space-7) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ffc-collection__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #3a2a20;
+  }
+
+  .ffc-collection__item :global(img) {
+    width: min(100%, 11rem);
+    height: auto;
+    margin-bottom: var(--space-4);
+    border-radius: 0;
+  }
+
+  .ffc-collection__name {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    color: inherit;
+  }
+
+  .ffc-collection__print {
+    font-size: var(--text-small);
+  }
+
+  .ffc-collection__meta {
+    margin-top: var(--space-2);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  /* The listing's magenta, darkened slightly to read on the grey (5:1) */
+  .ffc-collection__tag {
+    margin-top: var(--space-2);
+    font-size: 0.75rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #b0176f;
+  }
+
+  @media (min-width: 48rem) {
+    .ffc-collection__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .ffc-collection__grid {
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--space-5);
+    }
+  }
+</style>
