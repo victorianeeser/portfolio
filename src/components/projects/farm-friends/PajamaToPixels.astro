@@ -1,0 +1,180 @@
+---
+// From pajamas to pixels: how each part of the Farm Friends pajamas became part of the game.
+// Three rows, each pairing what's on the pajamas with what it became in the game, with a
+// small piece of the game's art as the "after".
+import { Image } from 'astro:assets';
+import CharacterTile from './CharacterTile.astro';
+import cow from '../../../assets/projects/farm-friends-climb/characters/cow.png';
+import duck from '../../../assets/projects/farm-friends-climb/characters/duck.png';
+import rooster from '../../../assets/projects/farm-friends-climb/characters/rooster.png';
+import mouse from '../../../assets/projects/farm-friends-climb/characters/mouse.png';
+import sheep from '../../../assets/projects/farm-friends-climb/characters/sheep.png';
+import piglet from '../../../assets/projects/farm-friends-climb/characters/piglet.png';
+
+interface Row {
+  from: string;
+  to: string;
+  text: string;
+}
+
+interface Props {
+  rows: [Row, Row, Row];
+}
+
+const { rows } = Astro.props;
+const roster = [cow, duck, rooster, mouse, sheep, piglet];
+const tallest = Math.max(...roster.map((s) => s.height));
+---
+
+<ol class="ffc-p2p case-wide" role="list">
+  {
+    rows.map(({ from, to, text }, i) => (
+      <li class="ffc-p2p__row">
+        <div class="ffc-p2p__art" aria-hidden="true">
+          {i === 0 && (
+            <div class="ffc-p2p__stitch">
+              <Image src={sheep} alt="" width={sheep.width} />
+            </div>
+          )}
+          {i === 1 && (
+            <div class="ffc-p2p__tile">
+              <CharacterTile name="Sheep" />
+            </div>
+          )}
+          {i === 2 && (
+            <div class="ffc-p2p__roster">
+              {roster.map((s) => (
+                <Image src={s} alt="" width={s.width} style={`height: calc(var(--sprite) * ${(s.height / tallest).toFixed(3)})`} />
+              ))}
+            </div>
+          )}
+        </div>
+        <div class="ffc-p2p__copy">
+          <p class="ffc-p2p__map">
+            <span>{from}</span>
+            <span class="ffc-p2p__arrow" aria-hidden="true">→</span>
+            <span class="visually-hidden">became</span>
+            <strong>{to}</strong>
+          </p>
+          <p class="ffc-p2p__text">{text}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .ffc-p2p {
+    display: grid;
+    gap: var(--space-4);
+    margin-block: var(--space-5) var(--space-7);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ffc-p2p__row {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: var(--space-5);
+    align-items: center;
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: #faf7f2;
+  }
+
+  /* Every picture gets the same square box, so the text below lines up across cards */
+  .ffc-p2p__art {
+    display: grid;
+    place-items: center;
+    width: 7rem;
+    height: 7rem;
+  }
+
+  /* Embroidery to pixels: the sheep on a faint stitch grid, like an embroidery chart */
+  .ffc-p2p__stitch {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-md);
+    background-color: #ffffff;
+    background-image:
+      linear-gradient(rgb(98 26 40 / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(98 26 40 / 0.1) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+
+  .ffc-p2p__stitch :global(img) {
+    width: 70%;
+    height: auto;
+    image-rendering: pixelated;
+  }
+
+  .ffc-p2p__tile {
+    width: 100%;
+  }
+
+  .ffc-p2p__roster {
+    --sprite: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: var(--space-2) var(--space-1);
+    align-items: end;
+    justify-items: center;
+  }
+
+  .ffc-p2p__roster :global(img) {
+    width: auto;
+    image-rendering: pixelated;
+  }
+
+  .ffc-p2p__map {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-2);
+    color: var(--color-text-secondary);
+  }
+
+  .ffc-p2p__map strong {
+    font-weight: var(--weight-medium);
+    color: var(--case-heading-1);
+  }
+
+  .ffc-p2p__arrow {
+    color: var(--case-heading-1);
+  }
+
+  .ffc-p2p__text {
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 48rem) {
+    .ffc-p2p {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Rows stack from the top, so taller cards don't spread out their content */
+    .ffc-p2p__row {
+      grid-template-columns: 1fr;
+      align-content: start;
+      align-items: start;
+      padding: var(--space-5);
+    }
+
+    .ffc-p2p__art {
+      width: 8.5rem;
+      height: 8.5rem;
+      justify-self: center;
+    }
+
+    .ffc-p2p__roster {
+      --sprite: 2.4rem;
+    }
+
+    .ffc-p2p__map,
+    .ffc-p2p__text {
+      font-size: var(--text-body);
+    }
+  }
+</style>

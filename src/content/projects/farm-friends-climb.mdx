@@ -33,6 +33,7 @@ import BriefIntro from '../../components/projects/farm-friends/BriefIntro.astro'
 import Deliverables from '../../components/projects/farm-friends/Deliverables.astro';
 import ConceptDemo from '../../components/projects/farm-friends/ConceptDemo.astro';
 import Pairing from '../../components/projects/farm-friends/Pairing.astro';
+import PajamaToPixels from '../../components/projects/farm-friends/PajamaToPixels.astro';
 import GameScreens from '../../components/projects/farm-friends/GameScreens.astro';
 import KpiCards from '../../components/projects/farm-friends/KpiCards.astro';
 import BuildPipeline from '../../components/projects/farm-friends/BuildPipeline.astro';
@@ -71,6 +72,30 @@ I chose this mechanic over a traditional platformer (too much scope risk for a t
 Tap controls, rather than tilt, meant the game also had to work reliably during laptop browser testing, not just on a phone. The result is a mechanic that's one-handed, learnable in seconds, and fast enough to replay in short bursts: exactly what a marketing game needs to keep players coming back.
 
 </ConceptDemo>
+
+<SectionTitle level={3}>From pajamas to pixels</SectionTitle>
+
+The Farm Friends pajamas already had what a game needs: a cast, a look and a palette. I wanted the game to feel like the pajamas come to life, so every design choice started from the fabric.
+
+<PajamaToPixels
+  rows={[
+    {
+      from: 'Embroidered animals',
+      to: 'Pixel-art characters',
+      text: 'Embroidery is built stitch by stitch, the way pixel art is built pixel by pixel, so each animal became a soft-shaded sprite that keeps its stitched look.',
+    },
+    {
+      from: 'Each pajama print',
+      to: 'A character tile and color',
+      text: 'The Sheep wears Scottish Plaid and the Rooster wears Pink Gingham. Each print became that character’s select-screen tile, and its color became the character’s accent.',
+    },
+    {
+      from: 'Six animals in the collection',
+      to: 'Six playable characters',
+      text: 'Choosing a character works like choosing a pair of pajamas, giving players a reason to try every animal in the lineup.',
+    },
+  ]}
+/>
 
 <SectionTitle level={3}>Two things made this pairing work</SectionTitle>
 
