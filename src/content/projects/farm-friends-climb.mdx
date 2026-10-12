@@ -32,6 +32,7 @@ import PajamaToPixels from '../../components/projects/farm-friends/PajamaToPixel
 import Collection from '../../components/projects/farm-friends/Collection.astro';
 import LaunchBanner from '../../components/projects/farm-friends/LaunchBanner.astro';
 import Leaderboard from '../../components/projects/farm-friends/Leaderboard.astro';
+import SystemMap from '../../components/projects/farm-friends/SystemMap.astro';
 import TokenGallery from '../../components/projects/farm-friends/TokenGallery.astro';
 import tokenKit from '../../assets/projects/farm-friends-climb/tokens/kit.jpg';
 import tokenMouse from '../../assets/projects/farm-friends-climb/tokens/mouse.jpg';
@@ -155,6 +156,14 @@ Each character has its own canvas, so the prize matches the animal the winner pl
 </TokenGallery>
 
 <SectionTitle id="design-process">Design Process</SectionTitle>
+
+<p class="eyebrow ffc-eyebrow">UX research</p>
+
+<SectionTitle level={3}>System Map</SectionTitle>
+
+Before designing screens, I mapped how the game moves between them: every screen and run state, and what sends the player from one to the next. Then I zoomed into the climb itself and listed the checks the game runs on every frame. The map became the plan for the build, so each state on it is a screen or a run state in the code.
+
+<SystemMap />
 
 <div class="case-wide ffc-process">
   <div>

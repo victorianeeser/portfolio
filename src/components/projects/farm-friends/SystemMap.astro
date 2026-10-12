@@ -1,0 +1,605 @@
+---
+// The game's system map, rebuilt from the FigJam board as elements:
+// 1. The screen and run states. On wide screens it's an SVG state diagram with real text
+//    (solid arrows are in-play moves, dashed ones go back home or restart). On phones the
+//    diagram is too small to read, so the same states become a list of cards with their exits.
+// 2. What happens inside "Climbing" on every frame: an HTML flowchart with yes/no checks.
+//    Yes branches sit to the right and rejoin the next step; on phones they stack under
+//    their check.
+
+const red = '#8b2a3a';
+const line = '#7a6a58';
+const label = '#5f5a2e';
+
+// For the phone list: each state with where it leads
+const states = [
+  { name: 'Leaderboard · My Stats · How to Play', text: 'Side screens', exits: ['Back → Home'] },
+  { name: 'Home', text: 'Pick a character', start: true, exits: ['Tap to Play → Countdown', 'Side screens ↔ Home'] },
+  { name: 'Countdown', text: '3 · 2 · 1 · Go!', exits: ['“Go!” → Climbing'] },
+  { name: 'Climbing', text: 'Steering + scoring', loop: true, exits: ['Fell past every cloud → Game Over', 'Hit a crow, bee, owl or gust → Knocked off', 'Pause button, P / Esc, or app hidden → Paused'] },
+  { name: 'Paused', text: 'Menu + How to Play', exits: ['Resume → Climbing', 'Quit → Home'] },
+  { name: 'Knocked off', text: 'No steering, falling', exits: ['Falls off screen → Game Over'] },
+  { name: 'Game Over', text: 'Run saved · best updated', end: true, exits: ['Play again → Countdown', 'Home → Home'] },
+];
+
+type Row = {
+  title: string;
+  text?: string;
+  kind?: 'start' | 'check';
+  yes?: { title: string; text: string; end?: boolean };
+};
+
+const frame: Row[] = [
+  { kind: 'start', title: 'New frame (1/120 s)' },
+  { title: 'Read taps and holds', text: 'Left or right half of the screen steers; edges wrap' },
+  { title: 'Apply gravity × tempo²', text: 'Tempo ramps from 0.75 to 1 as the sky turns to night' },
+  { kind: 'check', title: 'Falling onto a cloud?', yes: { title: 'Bounce up', text: 'Spring cloud: big launch · Wispy: breaks · Moving: keeps sliding' } },
+  { title: 'Move obstacles', text: 'Crows glide · bees flutter · owls glide · gusts curl' },
+  { kind: 'check', title: 'Touching an obstacle?', yes: { title: 'Knocked off', text: 'Cause recorded; steering stops and the friend falls' } },
+  { title: 'Camera follows upward', text: 'Score = highest point reached (10 px = 1 ft)' },
+  { kind: 'check', title: 'Below the bottom of the screen?', yes: { title: 'Game Over', text: 'Run, cause and character saved; new best saved if beaten', end: true } },
+];
+---
+
+<figure class="smap case-wide">
+  <!-- 1. Screen and run states -->
+  <svg class="smap__states" viewBox="20 140 1590 700" role="img" aria-labelledby="smap-states-title">
+    <title id="smap-states-title">State diagram: Home leads to Countdown, then Climbing. Climbing can pause and resume, or end in Game Over directly or after being knocked off by an obstacle. Game Over leads back to Countdown or Home.</title>
+    <defs>
+      <marker id="smap-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+        <path d="M0 0 10 5 0 10z" fill={line} />
+      </marker>
+    </defs>
+
+    <g fill="none" stroke={line} stroke-width="2.5" marker-end="url(#smap-arrow)">
+      <path d="M229 405H297" marker-start="url(#smap-arrow)" />
+      <path d="M528 405H644" />
+      <path d="M873 405H989" />
+      <path d="M1228 405H1350" />
+      <path d="M1070 467V627" />
+      <path d="M1140 630V470" />
+      <path d="M1222 458 1375 628" />
+      <path d="M1519 630V470" />
+    </g>
+    <g fill="none" stroke={line} stroke-width="2.5" stroke-dasharray="9 7" marker-end="url(#smap-arrow)">
+      <path d="M1548 345V175H413V342" />
+      <path d="M1443 345V255H760V342" />
+      <path d="M1105 752V823H413V470" />
+    </g>
+
+    <g class="smap__label" fill={label} text-anchor="middle">
+      <text x="980" y="163">Home</text>
+      <text x="1100" y="244">Play again</text>
+      <text x="760" y="812">Quit to home</text>
+      <text x="586" y="389">Tap to Play</text>
+      <text x="930" y="389">“Go!”</text>
+      <text x="1290" y="379">Fell past</text>
+      <text x="1290" y="400">every cloud</text>
+      <text x="1370" y="508">Hit a crow, bee,</text>
+      <text x="1370" y="530">owl or gust</text>
+      <g text-anchor="end">
+        <text x="1058" y="526">Pause button,</text>
+        <text x="1058" y="548">P / Esc, or</text>
+        <text x="1058" y="570">app hidden</text>
+      </g>
+      <g text-anchor="start">
+        <text x="1152" y="557">Resume</text>
+        <text x="1530" y="544">Falls off</text>
+        <text x="1530" y="566">screen</text>
+      </g>
+    </g>
+
+    <g class="smap__tag" fill={red} text-anchor="middle">
+      <text x="413" y="326">START</text>
+      <text x="1473" y="326">END OF RUN</text>
+    </g>
+
+    <!-- Boxes -->
+    <rect x="30" y="330" width="196" height="150" rx="16" fill="#fff" stroke="#e2d3c1" stroke-width="2.5" />
+    <g class="smap__name" text-anchor="middle" fill="#2b2420">
+      <text x="128" y="378">Leaderboard</text>
+      <text x="128" y="411">My Stats</text>
+      <text x="128" y="444">How to Play</text>
+    </g>
+
+    <rect x="300" y="345" width="227" height="121" rx="16" fill={red} />
+    <text class="smap__name" x="413" y="398" text-anchor="middle" fill="#fff">Home</text>
+    <text class="smap__sub" x="413" y="430" text-anchor="middle" fill="#fff">Pick a character</text>
+
+    {
+      [
+        { x: 647, w: 226, name: 'Countdown', sub: ['3 · 2 · 1 · Go!'] },
+        { x: 992, w: 226, name: 'Climbing', sub: ['Steering + scoring'] },
+      ].map(({ x, w, name, sub }) => (
+        <g>
+          <rect x={x} y="345" width={w} height="121" rx="16" fill="#fff" stroke="#2b2420" stroke-width="2.5" />
+          <text class="smap__name" x={x + w / 2} y="398" text-anchor="middle" fill="#2b2420">{name}</text>
+          <text class="smap__sub" x={x + w / 2} y="430" text-anchor="middle" fill="#6b5e4b">{sub[0]}</text>
+        </g>
+      ))
+    }
+    <rect x="982" y="335" width="246" height="141" rx="20" fill="none" stroke={red} stroke-width="2.5" stroke-dasharray="9 7" />
+
+    <rect x="1353" y="345" width="241" height="121" rx="16" fill="#efdde1" stroke={red} stroke-width="2.5" />
+    <text class="smap__name" x="1473" y="395" text-anchor="middle" fill="#2b2420">Game Over</text>
+    <text class="smap__sub" x="1473" y="426" text-anchor="middle" fill="#6b5e4b">Run saved · best</text>
+    <text class="smap__sub" x="1473" y="450" text-anchor="middle" fill="#6b5e4b">updated</text>
+
+    {
+      [
+        { x: 992, w: 226, name: 'Paused', sub: 'Menu + How to Play' },
+        { x: 1353, w: 241, name: 'Knocked off', sub: 'No steering, falling' },
+      ].map(({ x, w, name, sub }) => (
+        <g>
+          <rect x={x} y="631" width={w} height="121" rx="16" fill="#fff" stroke="#2b2420" stroke-width="2.5" />
+          <text class="smap__name" x={x + w / 2} y="684" text-anchor="middle" fill="#2b2420">{name}</text>
+          <text class="smap__sub" x={x + w / 2} y="716" text-anchor="middle" fill="#6b5e4b">{sub}</text>
+        </g>
+      ))
+    }
+  </svg>
+
+  <!-- Phone version of the same states -->
+  <ul class="smap__list" role="list" aria-label="Screen and run states">
+    {
+      states.map(({ name, text, exits, start, end, loop }) => (
+        <li class="smap__card" data-start={start ? '' : undefined} data-end={end ? '' : undefined} data-loop={loop ? '' : undefined}>
+          {start && <span class="smap__flag">Start</span>}
+          {end && <span class="smap__flag">End of run</span>}
+          <p class="smap__card-name">{name}</p>
+          <p class="smap__card-text">{text}</p>
+          <ul role="list">{exits.map((e) => <li>{e}</li>)}</ul>
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- 2. Inside Climbing, every frame -->
+  <div class="smap__frame">
+    <p class="smap__frame-title">Inside “Climbing”: every frame, 120 times a second</p>
+
+    <ol class="loop" role="list" style={`--rows: ${frame.length + 1}`}>
+      {
+        frame.map((row, i) => {
+          const after = frame[i - 1];
+          return (
+            <>
+              <li
+                class:list={['loop__step', row.kind && `loop__step--${row.kind}`]}
+                style={`grid-row: ${i + 1}`}
+                data-no={after?.kind === 'check' ? '' : undefined}
+                data-first={i === 0 ? '' : undefined}
+              >
+                <p class="loop__title">{row.title}</p>
+                {row.text && <p class="loop__text">{row.text}</p>}
+              </li>
+              {row.yes && (
+                <li class:list={['loop__yes', row.yes.end && 'loop__yes--end']} style={`grid-row: ${i + 1}`}>
+                  <span class="loop__yes-label" aria-hidden="true">Yes</span>
+                  <p class="loop__title"><span class="visually-hidden">If yes: </span>{row.yes.title}</p>
+                  <p class="loop__text">{row.yes.text}</p>
+                </li>
+              )}
+              {after?.yes && !after.yes.end && <span class="loop__return" style={`grid-row: ${i + 1}`} aria-hidden="true" />}
+            </>
+          );
+        })
+      }
+      <li class="loop__next" style={`grid-row: ${frame.length + 1}`}>No: next frame</li>
+      <span class="loop__back" aria-hidden="true" />
+    </ol>
+  </div>
+</figure>
+
+<style>
+  .smap {
+    margin-block: var(--space-6) var(--space-8);
+  }
+
+  /* ---------- 1. States ---------- */
+  .smap__states {
+    display: none;
+    width: 100%;
+    height: auto;
+    font-family: var(--font-sans);
+  }
+
+  .smap__name {
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .smap__sub {
+    font-size: 18px;
+  }
+
+  .smap__label {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .smap__tag {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+  }
+
+  .smap__list {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .smap__card {
+    position: relative;
+    padding: var(--space-4);
+    border: 2px solid #2b2420;
+    border-radius: var(--radius-md);
+    background: #fff;
+    color: #2b2420;
+  }
+
+  .smap__card[data-start] {
+    border-color: #8b2a3a;
+    background: #8b2a3a;
+    color: #fff;
+  }
+
+  .smap__card[data-end] {
+    border-color: #8b2a3a;
+    background: #efdde1;
+  }
+
+  .smap__card[data-loop] {
+    outline: 2px dashed #8b2a3a;
+    outline-offset: 4px;
+  }
+
+  .smap__flag {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: 0.75rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+  }
+
+  .smap__card[data-end] .smap__flag {
+    color: #8b2a3a;
+  }
+
+  .smap__card-name {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+  }
+
+  .smap__card-text {
+    font-size: var(--text-small);
+    opacity: 0.85;
+  }
+
+  .smap__card ul {
+    display: grid;
+    gap: var(--space-1);
+    margin-top: var(--space-3);
+    padding: var(--space-3) 0 0;
+    border-top: 1px solid currentColor;
+    border-top-color: color-mix(in srgb, currentColor 20%, transparent);
+    list-style: none;
+    font-size: var(--text-small);
+  }
+
+  /* ---------- 2. Every frame ---------- */
+  .smap__frame {
+    margin-top: var(--space-7);
+    padding: var(--space-6) var(--space-4);
+    border: 2px dashed #8b2a3a;
+    border-radius: var(--radius-lg, 1.25rem);
+  }
+
+  .smap__frame-title {
+    margin-bottom: var(--space-6);
+    font-size: var(--text-small);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #8b2a3a;
+  }
+
+  .loop {
+    --arrow: #7a6a58;
+    --gap: 2.75rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .loop__step,
+  .loop__yes {
+    position: relative;
+    padding: var(--space-3) var(--space-4);
+    border: 1.5px solid #d8cbbb;
+    border-radius: var(--radius-md);
+    background: #fff;
+    text-align: center;
+    color: #2b2420;
+  }
+
+  .loop__title {
+    font-weight: var(--weight-medium);
+  }
+
+  .loop__text {
+    margin-top: var(--space-1);
+    font-size: var(--text-small);
+    color: #6b5e4b;
+  }
+
+  .loop__step--start {
+    border-color: #8b2a3a;
+    border-radius: var(--radius-pill);
+    background: #8b2a3a;
+    color: #fff;
+  }
+
+  .loop__step--check {
+    border-color: #d8c39d;
+    border-radius: var(--radius-pill);
+    background: #f4e4c8;
+  }
+
+  /* Down arrow from the step above, through the row gap */
+  .loop__step:not([data-first])::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    width: 2px;
+    height: calc(var(--gap) - 2px);
+    background: var(--arrow);
+    translate: -1px 0;
+  }
+
+  .loop__step:not([data-first])::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 1px);
+    border: 6px solid transparent;
+    border-top: 9px solid var(--arrow);
+    border-bottom: 0;
+    translate: -6px 0;
+  }
+
+  .loop__step[data-no] .loop__no,
+  .loop__step[data-no]::before {
+    /* keeps the arrow; the "No" sits beside it */
+  }
+
+  .loop__step[data-no] > .loop__title::before {
+    content: 'No';
+    position: absolute;
+    left: calc(50% + 0.6rem);
+    bottom: calc(100% + var(--gap) / 2 - 0.6em);
+    font-size: var(--text-small);
+    font-weight: var(--weight-regular, 400);
+    color: #5f5a2e;
+  }
+
+  .loop__yes--end {
+    border-color: #8b2a3a;
+    background: #efdde1;
+  }
+
+  .loop__yes-label {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--text-small);
+    color: #5f5a2e;
+  }
+
+  .loop__return,
+  .loop__back {
+    display: none;
+  }
+
+  .loop__next {
+    font-size: var(--text-small);
+    color: #5f5a2e;
+  }
+
+  /* Phones: yes branches tuck under their check */
+  @media (max-width: 47.99rem) {
+    .loop {
+      row-gap: 0;
+    }
+
+    .loop__step:not([data-first]) {
+      margin-top: var(--gap);
+    }
+
+    .loop__yes {
+      margin: var(--space-2) 0 0 var(--space-6);
+      text-align: left;
+    }
+
+    .loop__yes::before {
+      content: '↳';
+      position: absolute;
+      left: calc(-1 * var(--space-5));
+      top: var(--space-3);
+      color: var(--arrow);
+    }
+
+    .loop__yes-label {
+      display: inline;
+      margin: 0 var(--space-2) 0 0;
+    }
+
+    .loop__yes .loop__title {
+      display: inline;
+    }
+
+    .loop > * {
+      grid-row: auto !important;
+    }
+
+    .loop__next {
+      margin-top: var(--space-4);
+      text-align: center;
+    }
+
+    .loop__next::before {
+      content: '↻ ';
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .smap__states {
+      display: block;
+    }
+
+    .smap__list {
+      display: none;
+    }
+
+    .smap__frame {
+      padding: var(--space-7);
+    }
+
+    /* Columns: loop-back line · main steps · yes arrow · yes branch */
+    .loop {
+      grid-template-columns: 2.5rem minmax(0, 1.25fr) 5.5rem minmax(0, 1fr);
+      max-width: 60rem;
+      margin-inline: auto;
+    }
+
+    .loop__step,
+    .loop__next {
+      grid-column: 2;
+    }
+
+    .loop__step--check {
+      align-self: center;
+    }
+
+    .loop__yes {
+      grid-column: 4;
+    }
+
+    /* Yes arrow, drawn across the third column into the branch */
+    .loop__yes::before {
+      content: '';
+      position: absolute;
+      right: calc(100% + 2px);
+      top: 50%;
+      width: calc(5.5rem - 2px);
+      height: 2px;
+      background: var(--arrow);
+    }
+
+    .loop__yes::after {
+      content: '';
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      border: 6px solid transparent;
+      border-left: 9px solid var(--arrow);
+      border-right: 0;
+      translate: 0 -6px;
+    }
+
+    .loop__yes-label {
+      position: absolute;
+      right: calc(100% + 2.75rem);
+      top: calc(50% - 1.6em);
+      margin: 0;
+      translate: 50% 0;
+    }
+
+    /* Elbow from the branch back into the next step */
+    .loop__return {
+      display: block;
+      position: relative;
+      grid-column: 3 / 5;
+      pointer-events: none;
+    }
+
+    .loop__return::before {
+      content: '';
+      position: absolute;
+      top: calc(-1 * var(--gap));
+      bottom: 50%;
+      left: 2px;
+      right: 50%;
+      border-right: 2px solid var(--arrow);
+      border-bottom: 2px solid var(--arrow);
+    }
+
+    .loop__return::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 50%;
+      border: 6px solid transparent;
+      border-right: 9px solid var(--arrow);
+      border-left: 0;
+      translate: 0 calc(50% - 1px);
+    }
+
+    /* The last check's "No" drops down, then the dashed line runs back up to New frame */
+    .loop__next {
+      position: relative;
+      align-self: end;
+      height: 1.5rem;
+      padding-left: 3.75rem;
+      line-height: 1.5rem;
+      text-align: left;
+    }
+
+    .loop__next::before {
+      content: '';
+      position: absolute;
+      left: 3rem;
+      top: calc(-1 * var(--gap));
+      bottom: 0.75rem;
+      border-left: 2px dashed var(--arrow);
+    }
+
+    .loop__next::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 3rem;
+      top: calc(0.75rem - 2px);
+      border-top: 2px dashed var(--arrow);
+    }
+
+    .loop__back {
+      display: block;
+      position: relative;
+      grid-column: 1;
+      grid-row: 1 / span var(--rows);
+      margin: 1.5rem 0 calc(0.75rem - 2px) 0.5rem;
+      border: 2px dashed var(--arrow);
+      border-right: 0;
+      pointer-events: none;
+    }
+
+    .loop__back::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -1px;
+      border: 6px solid transparent;
+      border-left: 9px solid var(--arrow);
+      border-right: 0;
+      translate: 0 -50%;
+    }
+  }
+</style>
