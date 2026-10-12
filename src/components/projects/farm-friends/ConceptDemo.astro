@@ -1,12 +1,25 @@
 ---
-// The Concept: the copy beside the game's character select screen on a phone (the Figma
-// mockup). The copy sits level with the bottom of the phone. It goes in the default slot.
+// The Concept: the section title and copy beside the game's character select screen on a
+// phone (the Figma mockup). The title and copy sit together, level with the bottom of the
+// phone. The copy goes in the default slot.
 import { Image } from 'astro:assets';
 import phone from '../../../assets/projects/farm-friends-climb/concept-phone.png';
+import SectionTitle from '../../case/SectionTitle.astro';
+
+interface Props {
+  title: string;
+  /** Anchor id for the section nav */
+  id?: string;
+}
+
+const { title, id } = Astro.props;
 ---
 
 <div class="ffc-concept case-wide">
-  <div class="ffc-concept__text"><slot /></div>
+  <div class="ffc-concept__text">
+    <SectionTitle id={id}>{title}</SectionTitle>
+    <slot />
+  </div>
 
   <figure class="ffc-phone">
     <Image
@@ -28,6 +41,10 @@ import phone from '../../../assets/projects/farm-friends-climb/concept-phone.png
 
   .ffc-concept__text > :global(* + *) {
     margin-top: var(--space-4);
+  }
+
+  .ffc-concept__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
   }
 
   .ffc-phone {
