@@ -1,16 +1,25 @@
 ---
-// The Brief's opening: the copy on the left and the guiding question as a Merlot callout
-// on the right (stacked on phones). The copy goes in the default slot.
+// The Brief's opening: the section title and copy on the left, with the title level with
+// the top of the guiding-question callout on the right (stacked on phones).
+// The copy goes in the default slot.
+import SectionTitle from '../../case/SectionTitle.astro';
+
 interface Props {
   question: string;
   label?: string;
+  title: string;
+  /** Anchor id for the section nav */
+  id?: string;
 }
 
-const { question, label = 'The guiding question' } = Astro.props;
+const { question, label = 'The guiding question', title, id } = Astro.props;
 ---
 
 <div class="ffc-intro case-wide">
-  <div class="ffc-intro__text"><slot /></div>
+  <div class="ffc-intro__text">
+    <SectionTitle id={id}>{title}</SectionTitle>
+    <slot />
+  </div>
   <aside class="ffc-intro__question" aria-label={label}>
     <p class="ffc-intro__label">{label}</p>
     <p class="ffc-intro__quote">{question}</p>
@@ -21,12 +30,26 @@ const { question, label = 'The guiding question' } = Astro.props;
   .ffc-intro {
     display: grid;
     gap: var(--space-6);
-    align-items: center;
+    align-items: stretch;
     margin-block: var(--space-4) var(--space-7);
   }
 
   .ffc-intro__text > :global(* + *) {
     margin-top: var(--space-4);
+  }
+
+  /* The title sits flush with the top of the callout */
+  .ffc-intro__text > :global(.section-title) {
+    margin-top: 0;
+    line-height: 1;
+  }
+
+  .ffc-intro__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
+  .ffc-intro__question {
+    align-self: start;
   }
 
   .ffc-intro__question {
