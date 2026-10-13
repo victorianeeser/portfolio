@@ -65,6 +65,7 @@ import NightClose from '../../components/projects/farm-friends/NightClose.astro'
 <SectionNav
   items={[
     { label: 'The Brief', href: '#brief' },
+    { label: 'Process & Tools', href: '#process' },
     { label: 'The Collection', href: '#collection' },
     { label: 'Pajamas to Pixels', href: '#pajamas' },
     { label: 'The Concept', href: '#concept' },
@@ -73,7 +74,6 @@ import NightClose from '../../components/projects/farm-friends/NightClose.astro'
     { label: 'The Token', href: '#token' },
     { label: 'System Map', href: '#system-map' },
     { label: 'Visual Design', href: '#visual-design' },
-    { label: 'Process & Tools', href: '#process' },
     { label: 'User Testing', href: '#testing' },
     { label: 'What I Learned', href: '#learned' },
   ]}
@@ -88,6 +88,12 @@ I chose Dairy Boy’s Farm Friends collection, a line of six embroidered animal 
 </BriefIntro>
 
 <Deliverables />
+
+<SectionTitle id="process">Process & Tools</SectionTitle>
+
+I built the game using Claude Code connected to Figma through its Dev Mode MCP server, pulling real screen designs straight into the codebase instead of rebuilding them from static references. I worked in small, single-purpose prompts, one feature or fix at a time, so every change was easy to check:
+
+<BuildPipeline />
 
 <Collection
   id="collection"
@@ -237,12 +243,6 @@ The game uses detailed, soft-shaded pixel art rather than blocky 8-bit: 64×64px
 Each run starts on a static barn-and-grass scene before the climb begins. Cloud platforms come in four variants, and obstacles shift with the sky: a bee and a curling wind gust by day, birds as the sun sets, and an owl as night falls.
 
 <Platforms />
-
-<SectionTitle id="process">Process & Tools</SectionTitle>
-
-I built the game using Claude Code connected to Figma through its Dev Mode MCP server, pulling real screen designs straight into the codebase instead of rebuilding them from static references. I worked in small, single-purpose prompts, one feature or fix at a time, so every change was easy to check against the brief's standard:
-
-<BuildPipeline />
 
 <UserTesting
   id="testing"
