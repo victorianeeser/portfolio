@@ -1,92 +1,112 @@
 ---
-// User testing: what players got wrong, and the design change it led to. The copy and the
-// finding sit on one side; on the other, the obstacle before and after the change, each on
-// the daytime sky it flies in, with an arrow between. On phones the pair stacks under the text.
+// User testing: what players got wrong, and the design change each finding led to. The intro
+// goes in the default slot; then one row per finding, with the finding and the change on one
+// side and a before → after on the other. A `sprite` pair shows game art on the daytime sky it
+// flies in; a `screen` pair shows two app screens in phone frames. On phones each row stacks.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import SectionTitle from '../../case/SectionTitle.astro';
 
 interface Side {
   src: ImageMetadata;
+  alt: string;
   name: string;
   note: string;
+}
+
+interface Finding {
+  finding: string;
+  change: string;
+  kind: 'sprite' | 'screen';
+  before: Side;
+  after: Side;
 }
 
 interface Props {
   id?: string;
   title: string;
-  finding: string;
-  change: string;
-  before: Side;
-  after: Side;
+  findings: Finding[];
 }
 
-const { id, title, finding, change, before, after } = Astro.props;
+const { id, title, findings } = Astro.props;
 ---
 
 <section class="ffc-test case-wide" id={id}>
-  <div class="ffc-test__text">
+  <div class="ffc-test__intro">
     <SectionTitle>{title}</SectionTitle>
     <slot />
-
-    <dl class="ffc-test__notes">
-      <div class="ffc-test__finding">
-        <dt>Finding</dt>
-        <dd>{finding}</dd>
-      </div>
-      <div class="ffc-test__change">
-        <dt>The change</dt>
-        <dd>{change}</dd>
-      </div>
-    </dl>
   </div>
 
-  <figure class="ffc-test__compare">
-    {
-      [before, after].map(({ src, name, note }, i) => (
-        <>
-          {i === 1 && (
-            <span class="ffc-test__arrow" aria-hidden="true">
-              <svg viewBox="0 0 64 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 8h58M53 2l7 6-7 6" />
-              </svg>
-            </span>
-          )}
-          <div class="ffc-test__side">
-            <div class="ffc-test__tile">
-              <Image src={src} alt={`${name} obstacle`} width={src.width} />
-            </div>
-            <figcaption>
-              <span class="ffc-test__label">{i === 0 ? 'Before' : 'After'}</span>
-              <span class="ffc-test__name">{name}</span>
-              <span class="ffc-test__note">{note}</span>
-            </figcaption>
+  {
+    findings.map(({ finding, change, kind, before, after }, n) => (
+      <div class="ffc-test__row">
+        <dl class="ffc-test__notes">
+          <div class="ffc-test__finding">
+            <dt>Finding {String(n + 1).padStart(2, '0')}</dt>
+            <dd>{finding}</dd>
           </div>
-        </>
-      ))
-    }
-  </figure>
+          <div class="ffc-test__change">
+            <dt>The change</dt>
+            <dd>{change}</dd>
+          </div>
+        </dl>
+
+        <figure class:list={['ffc-test__compare', `ffc-test__compare--${kind}`]}>
+          {[before, after].map(({ src, alt, name, note }, i) => (
+            <>
+              {i === 1 && (
+                <span class="ffc-test__arrow" aria-hidden="true">
+                  <svg viewBox="0 0 64 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 8h58M53 2l7 6-7 6" />
+                  </svg>
+                </span>
+              )}
+              <div class="ffc-test__side">
+                <div class="ffc-test__art">
+                  <Image src={src} alt={alt} width={src.width} />
+                </div>
+                <figcaption>
+                  <span class="ffc-test__label">{i === 0 ? 'Before' : 'After'}</span>
+                  <span class="ffc-test__name">{name}</span>
+                  <span class="ffc-test__note">{note}</span>
+                </figcaption>
+              </div>
+            </>
+          ))}
+        </figure>
+      </div>
+    ))
+  }
 </section>
 
 <style>
   .ffc-test {
-    display: grid;
-    gap: var(--space-7);
     margin-block: var(--space-8);
   }
 
-  .ffc-test__text > :global(* + *) {
-    margin-top: var(--space-4);
+  .ffc-test__intro {
+    max-width: var(--container-prose);
   }
 
-  .ffc-test__text > :global(.section-title + *) {
+  .ffc-test__intro > :global(.section-title + *) {
     margin-top: var(--space-5);
+  }
+
+  .ffc-test__row {
+    display: grid;
+    gap: var(--space-6);
+    margin-top: var(--space-7);
+  }
+
+  .ffc-test__row + .ffc-test__row {
+    padding-top: var(--space-7);
+    border-top: var(--border);
   }
 
   .ffc-test__notes {
     display: grid;
     gap: var(--space-3);
-    margin: var(--space-5) 0 0;
+    margin: 0;
   }
 
   .ffc-test__notes > div {
@@ -129,22 +149,41 @@ const { id, title, finding, change, before, after } = Astro.props;
   .ffc-test__side {
     display: grid;
     gap: var(--space-3);
+    justify-items: start;
   }
 
-  /* The daytime sky the obstacle flies in, from the game's first two stops */
-  .ffc-test__tile {
+  /* Game art: on the daytime sky it flies in, from the game's first two stops */
+  .ffc-test__compare--sprite .ffc-test__art {
     display: grid;
     place-items: center;
+    width: 100%;
     aspect-ratio: 1;
     border-radius: var(--radius-md);
     background: linear-gradient(to bottom, #fde9aa, #ffc98a);
   }
 
-  .ffc-test__tile :global(img) {
+  .ffc-test__compare--sprite .ffc-test__art :global(img) {
     width: 55%;
     height: auto;
     border-radius: 0;
     image-rendering: pixelated;
+  }
+
+  /* App screens: in the same drawn phone frame as the in-app section */
+  .ffc-test__compare--screen .ffc-test__art {
+    width: 100%;
+    max-width: 13rem;
+    overflow: hidden;
+    border: 6px solid #2b2420;
+    border-radius: 1.75rem;
+    background: #2b2420;
+  }
+
+  .ffc-test__compare--screen .ffc-test__art :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 1.35rem;
   }
 
   .ffc-test__side figcaption {
@@ -171,7 +210,7 @@ const { id, title, finding, change, before, after } = Astro.props;
     color: var(--color-text-secondary);
   }
 
-  /* Level with the middle of the tiles */
+  /* Level with the middle of the art */
   .ffc-test__arrow {
     align-self: center;
     width: 3rem;
@@ -185,7 +224,7 @@ const { id, title, finding, change, before, after } = Astro.props;
   }
 
   @media (min-width: 64rem) {
-    .ffc-test {
+    .ffc-test__row {
       grid-template-columns: 1fr 1fr;
       gap: var(--space-8);
       align-items: center;

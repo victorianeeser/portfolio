@@ -45,6 +45,8 @@ import SystemMap from '../../components/projects/farm-friends/SystemMap.astro';
 import UserTesting from '../../components/projects/farm-friends/UserTesting.astro';
 import butterfly from '../../assets/projects/farm-friends-climb/obstacles/butterfly.png';
 import bee from '../../assets/projects/farm-friends-climb/obstacles/bee.png';
+import homeBefore from '../../assets/projects/farm-friends-climb/testing/home-before.png';
+import homeAfter from '../../assets/projects/farm-friends-climb/testing/home-after.png';
 import TokenGallery from '../../components/projects/farm-friends/TokenGallery.astro';
 import tokenKit from '../../assets/projects/farm-friends-climb/tokens/kit.jpg';
 import tokenMouse from '../../assets/projects/farm-friends-climb/tokens/mouse.jpg';
@@ -247,13 +249,25 @@ Each run starts on a static barn-and-grass scene before the climb begins. Cloud 
 <UserTesting
   id="testing"
   title="User Testing"
-  finding="Players read the butterfly as friendly, but it’s an obstacle: touching it knocks your Farm Friend off and ends the run."
-  change="I replaced it with a bee. Its stinger and warning stripes say “avoid me” at a glance, so players don’t have to learn it the hard way."
-  before={{ src: butterfly, name: 'Butterfly', note: 'Looked harmless, so players didn’t avoid it' }}
-  after={{ src: bee, name: 'Bee', note: 'Stinger and stripes read as a threat' }}
+  findings={[
+    {
+      finding: 'Players read the butterfly as friendly, but it’s an obstacle: touching it knocks your Farm Friend off and ends the run.',
+      change: 'I replaced it with a bee. Its stinger and warning stripes say “avoid me” at a glance, so players don’t have to learn it the hard way.',
+      kind: 'sprite',
+      before: { src: butterfly, alt: 'Pixel-art butterfly obstacle', name: 'Butterfly', note: 'Looked harmless, so players didn’t avoid it' },
+      after: { src: bee, alt: 'Pixel-art bee obstacle', name: 'Bee', note: 'Stinger and stripes read as a threat' },
+    },
+    {
+      finding: 'The home screen felt separate from the game: a plain grey page with buttons, nothing like the sunset climb that came after it.',
+      change: 'I brought the game into the home screen: the sunset sky, pixel clouds, the barn and farm, and a crow and bee flying past, plus a DB App button back to the shop.',
+      kind: 'screen',
+      before: { src: homeBefore, alt: 'Earlier home screen: the Farm Friends wordmark, the Cow in Ribbon Stripe, and Tap to Play, Leaderboard and My Stats buttons on a plain grey background', name: 'Plain home', note: 'Grey background, no game elements' },
+      after: { src: homeAfter, alt: 'Final home screen: the Sheep in Scottish Plaid on a sunset sky with pixel clouds, a crow, a bee, and the barn and farm along the bottom', name: 'Game home', note: 'The climb’s sky, clouds, farm and obstacles' },
+    },
+  ]}
 >
 
-I had people play the prototype to check that the game read the way I designed it to, especially what to touch and what to avoid.
+I had people play the prototype to check that the game read the way I designed it to: what to touch, what to avoid, and whether every screen felt like part of the same game.
 
 </UserTesting>
 
