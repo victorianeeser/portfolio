@@ -1,0 +1,198 @@
+---
+// User testing: what players got wrong, and the design change it led to. The copy and the
+// finding sit on one side; on the other, the obstacle before and after the change, each on
+// the daytime sky it flies in, with an arrow between. On phones the pair stacks under the text.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import SectionTitle from '../../case/SectionTitle.astro';
+
+interface Side {
+  src: ImageMetadata;
+  name: string;
+  note: string;
+}
+
+interface Props {
+  id?: string;
+  title: string;
+  finding: string;
+  change: string;
+  before: Side;
+  after: Side;
+}
+
+const { id, title, finding, change, before, after } = Astro.props;
+---
+
+<section class="ffc-test case-wide" id={id}>
+  <div class="ffc-test__text">
+    <SectionTitle>{title}</SectionTitle>
+    <slot />
+
+    <dl class="ffc-test__notes">
+      <div class="ffc-test__finding">
+        <dt>Finding</dt>
+        <dd>{finding}</dd>
+      </div>
+      <div class="ffc-test__change">
+        <dt>The change</dt>
+        <dd>{change}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <figure class="ffc-test__compare">
+    {
+      [before, after].map(({ src, name, note }, i) => (
+        <>
+          {i === 1 && (
+            <span class="ffc-test__arrow" aria-hidden="true">
+              <svg viewBox="0 0 64 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 8h58M53 2l7 6-7 6" />
+              </svg>
+            </span>
+          )}
+          <div class="ffc-test__side">
+            <div class="ffc-test__tile">
+              <Image src={src} alt={`${name} obstacle`} width={src.width} />
+            </div>
+            <figcaption>
+              <span class="ffc-test__label">{i === 0 ? 'Before' : 'After'}</span>
+              <span class="ffc-test__name">{name}</span>
+              <span class="ffc-test__note">{note}</span>
+            </figcaption>
+          </div>
+        </>
+      ))
+    }
+  </figure>
+</section>
+
+<style>
+  .ffc-test {
+    display: grid;
+    gap: var(--space-7);
+    margin-block: var(--space-8);
+  }
+
+  .ffc-test__text > :global(* + *) {
+    margin-top: var(--space-4);
+  }
+
+  .ffc-test__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
+  .ffc-test__notes {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-5) 0 0;
+  }
+
+  .ffc-test__notes > div {
+    padding: var(--space-4) var(--space-5);
+    border-left: 4px solid #8b2a3a;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .ffc-test__finding {
+    background: #fdf1d2;
+  }
+
+  .ffc-test__change {
+    background: #faf7f2;
+  }
+
+  .ffc-test__notes dt {
+    margin-bottom: var(--space-1);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #8b2a3a;
+  }
+
+  .ffc-test__notes dd {
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  /* Before → after */
+  .ffc-test__compare {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    gap: var(--space-4);
+    margin: 0;
+  }
+
+  .ffc-test__side {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  /* The daytime sky the obstacle flies in, from the game's first two stops */
+  .ffc-test__tile {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border-radius: var(--radius-md);
+    background: linear-gradient(to bottom, #fde9aa, #ffc98a);
+  }
+
+  .ffc-test__tile :global(img) {
+    width: 55%;
+    height: auto;
+    border-radius: 0;
+    image-rendering: pixelated;
+  }
+
+  .ffc-test__side figcaption {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .ffc-test__label {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #8b2a3a;
+  }
+
+  .ffc-test__name {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    color: var(--color-text);
+  }
+
+  .ffc-test__note {
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  /* Level with the middle of the tiles */
+  .ffc-test__arrow {
+    align-self: center;
+    width: 3rem;
+    margin-bottom: 5rem;
+    color: #8b2a3a;
+  }
+
+  .ffc-test__arrow svg {
+    display: block;
+    width: 100%;
+  }
+
+  @media (min-width: 64rem) {
+    .ffc-test {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      align-items: center;
+    }
+
+    .ffc-test__arrow {
+      width: 4rem;
+    }
+  }
+</style>

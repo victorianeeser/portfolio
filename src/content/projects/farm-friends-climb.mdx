@@ -42,6 +42,9 @@ import stageGreybox from '../../assets/projects/farm-friends-climb/iterations/gr
 import stageFirstArt from '../../assets/projects/farm-friends-climb/iterations/first-art.png';
 import stageFinal from '../../assets/projects/farm-friends-climb/iterations/final.png';
 import SystemMap from '../../components/projects/farm-friends/SystemMap.astro';
+import UserTesting from '../../components/projects/farm-friends/UserTesting.astro';
+import butterfly from '../../assets/projects/farm-friends-climb/obstacles/butterfly.png';
+import bee from '../../assets/projects/farm-friends-climb/obstacles/bee.png';
 import TokenGallery from '../../components/projects/farm-friends/TokenGallery.astro';
 import tokenKit from '../../assets/projects/farm-friends-climb/tokens/kit.jpg';
 import tokenMouse from '../../assets/projects/farm-friends-climb/tokens/mouse.jpg';
@@ -71,6 +74,7 @@ import NightClose from '../../components/projects/farm-friends/NightClose.astro'
     { label: 'System Map', href: '#system-map' },
     { label: 'Visual Design', href: '#visual-design' },
     { label: 'Process & Tools', href: '#process' },
+    { label: 'User Testing', href: '#testing' },
     { label: 'What I Learned', href: '#learned' },
   ]}
 />
@@ -239,6 +243,19 @@ Each run starts on a static barn-and-grass scene before the climb begins. Cloud 
 I built the game using Claude Code connected to Figma through its Dev Mode MCP server, pulling real screen designs straight into the codebase instead of rebuilding them from static references. I worked in small, single-purpose prompts, one feature or fix at a time, so every change was easy to check against the brief's standard:
 
 <BuildPipeline />
+
+<UserTesting
+  id="testing"
+  title="User Testing"
+  finding="Players read the butterfly as friendly, but it’s an obstacle: touching it knocks your Farm Friend off and ends the run."
+  change="I replaced it with a bee. Its stinger and warning stripes say “avoid me” at a glance, so players don’t have to learn it the hard way."
+  before={{ src: butterfly, name: 'Butterfly', note: 'Looked harmless, so players didn’t avoid it' }}
+  after={{ src: bee, name: 'Bee', note: 'Stinger and stripes read as a threat' }}
+>
+
+I had people play the prototype to check that the game read the way I designed it to, especially what to touch and what to avoid.
+
+</UserTesting>
 
 <NightClose
   id="learned"
