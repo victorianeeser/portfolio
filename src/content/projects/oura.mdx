@@ -30,6 +30,7 @@ import SolutionBand from '../../components/projects/oura/SolutionBand.astro';
 import NovaFlow from '../../components/projects/oura/NovaFlow.astro';
 import UserFlow from '../../components/projects/oura/UserFlow.astro';
 import OuraPersona from '../../components/projects/oura/OuraPersona.astro';
+import OuraConclusion from '../../components/projects/oura/OuraConclusion.astro';
 import UsabilityRound2 from '../../components/projects/oura/UsabilityRound2.astro';
 import RefineSteps from '../../components/projects/oura/RefineSteps.astro';
 import refineStepBefore from '../../assets/projects/oura/refine/before.png';
@@ -71,6 +72,7 @@ import problem7 from '../../assets/projects/oura/problem-7.png';
     { label: 'Findings', href: '#findings' },
     { label: 'Refinement Process', href: '#refinement-process' },
     { label: 'Testing Round 2', href: '#testing-2' },
+    { label: 'Conclusion', href: '#conclusion' },
   ]}
 />
 
@@ -551,5 +553,28 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
       { task: 'Navigate to Readiness and find Nova’s breakdown.', question: 'How likely are you to use the breakdown feature?', percent: 100 },
       { task: 'Use the AI chat to ask Nova: “How have my sleep patterns changed?”', question: 'How natural did the chat interaction feel?', percent: 100 },
     ]}
+  />
+</Panel>
+
+<Panel id="conclusion" level={2} eyebrow="Conclusion" title="From Data to Direction" highlight="Direction">
+  <OuraConclusion
+    lessons={[
+      {
+        title: 'Simple beats more data',
+        text: 'People get overwhelmed when a lot of numbers are thrown at them. The first round of testing showed they wanted a simple, plain design.',
+      },
+      {
+        title: 'Testing proved the direction',
+        text: 'After the refinement, the second round rated the updated overview 100%, up from 71%, so the simpler design was on the right track.',
+      },
+      {
+        title: 'A guide makes data approachable',
+        text: 'A conversational AI guide like Nova eases people into understanding their data and breaks it down in an easy way.',
+      },
+    ]}
+    next={{
+      label: 'If I had more time',
+      text: 'I’d keep simplifying the screens. There’s still a lot of information on them, and every number should earn its place.',
+    }}
   />
 </Panel>
