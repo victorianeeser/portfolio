@@ -52,3 +52,13 @@
   --case-accent-3-text: #2f4a73;
   --case-glow: none;
 }
+
+/* The usability testing panel is white like the page, so its bottom padding would only add
+   empty space before Findings; drop it and keep one normal gap between the two */
+.theme-oura .case-body > #testing {
+  padding-bottom: 0;
+}
+
+.theme-oura .case-body > #testing + #findings {
+  margin-top: var(--space-6);
+}
