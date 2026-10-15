@@ -17,6 +17,7 @@ cover:
 heroComponent: rebound
 ---
 
+import PrototypeEmbed from '../../components/case/PrototypeEmbed.astro';
 import SectionNav from '../../components/case/SectionNav.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
 import CompareCards from '../../components/case/CompareCards.astro';
@@ -401,6 +402,23 @@ After testing, the final app brings exercises, progress and support together, fr
     },
   ]}
 />
+
+<PrototypeEmbed
+  level={3}
+  title="Try the App"
+  label="Interactive Figma prototype of the Rebound app"
+  embed="https://embed.figma.com/proto/xknDOzYjo4CSoe9EtRStu8/Rebound-App?node-id=398-1810&viewport=352%2C277%2C0.05&scaling=scale-down&content-scaling=fixed&starting-point-node-id=398%3A1810&page-id=398%3A855&embed-host=share"
+  link="https://www.figma.com/proto/xknDOzYjo4CSoe9EtRStu8/Rebound-App?node-id=398-1810&scaling=scale-down&content-scaling=fixed&starting-point-node-id=398%3A1810&page-id=398%3A855"
+  tries={[
+    'Create an account and pick a clinic and therapist.',
+    'Start today’s routine from the home screen.',
+    'Check your progress and open the chat with your care team.',
+  ]}
+>
+
+Tap through Rebound the way Annie would, from signing up to her daily routine.
+
+</PrototypeEmbed>
 
 <ReboundConclusion
   id="conclusion"
