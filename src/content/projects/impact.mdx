@@ -34,6 +34,7 @@ gallery:
     ratio: hero
 ---
 
+import PrototypeEmbed from '../../components/case/PrototypeEmbed.astro';
 import { Image } from 'astro:assets';
 import Panel from '../../components/case/Panel.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
@@ -235,6 +236,23 @@ The core app brings everything together: a dashboard to start sessions, insights
 ![A player checking a live session on their phone at the edge of a soccer field, with live stats overlaid](../../assets/projects/impact/live-sessions.jpg)
 
 ![The shin guard being worn, with an app card showing a position heat map of where the player spent the match](../../assets/projects/impact/product-heatmap.jpg)
+
+<PrototypeEmbed
+  level={3}
+  title="Try the App"
+  label="Interactive Figma prototype of the IMPACT app"
+  embed="https://embed.figma.com/proto/sOxfXthjR5dNB8aLC34d0w/Impact-Smart-Shin-Guards?node-id=51-325&p=f&viewport=187%2C159%2C0.11&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A325&page-id=0%3A1&embed-host=share"
+  link="https://www.figma.com/proto/sOxfXthjR5dNB8aLC34d0w/Impact-Smart-Shin-Guards?node-id=51-325&p=f&scaling=scale-down&content-scaling=fixed&starting-point-node-id=51%3A325&page-id=0%3A1"
+  tries={[
+    'Sign up or log in from the welcome screen.',
+    'Start a session from the dashboard.',
+    'Open your insights: the position heat map, 30-day trends and recovery.',
+  ]}
+>
+
+Tap through the IMPACT app, from signing in to a player’s match insights.
+
+</PrototypeEmbed>
 
 <Panel id="design-system" eyebrow="Design system" title="Branding coming to life" highlight="life" accent={2}>
   <Swatches
