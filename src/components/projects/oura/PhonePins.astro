@@ -153,6 +153,30 @@ const groups = flank
     color: var(--color-bg);
   }
 
+  /* On a navy panel: white labels, a white "after" pill, pins outlined in pale blue */
+  :global([data-tone='dark']) .pins {
+    color: #ffffff;
+  }
+
+  :global([data-tone='dark']) .pins__label {
+    border-color: #ffffff;
+  }
+
+  :global([data-tone='dark']) .pins__phone:not(.is-before) .pins__label {
+    background: #ffffff;
+    color: #2f4a73;
+  }
+
+  :global([data-tone='dark']) .pins__device {
+    filter: drop-shadow(0 1.5rem 2rem rgb(0 0 0 / 0.35));
+  }
+
+  /* The note cards stay white, so their text keeps the navy */
+  :global([data-tone='dark']) .pins__note {
+    color: #2f4a73;
+    border-color: transparent;
+  }
+
   /* The frame image is the phone's size (1710×3460); the screen sits in its bezel, on top */
   .pins__device {
     position: relative;
