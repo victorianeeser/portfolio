@@ -478,12 +478,14 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
   items={[
     {
       question: 'How easy was it to find your key scores on the Home screen?',
+      short: 'Finding key scores',
       scale: '1 = Very difficult, 10 = Very easy',
       responses: [9, 10, 10, 10, 10],
       text: 'Users found their key scores very easily. The Home screen is intuitive here and matches what people expect.',
     },
     {
       question: 'How natural did the chat interaction feel?',
+      short: 'AI chat',
       scale: '1 = Very awkward, 10 = Very smooth',
       responses: [10, 9, 9, 10, 10],
       text: 'Users found the AI chat intuitive and conversational, so Nova’s tone and interaction style fit their expectations.',
@@ -491,6 +493,8 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
   ]}
   keyFinding={{
     question: 'After using Nova Insights and the breakdown, how helpful did the overview feel?',
+    short: 'Nova breakdown',
+    headline: 'The breakdown made sense, but didn’t tell people what to do next.',
     scale: '1 = Not helpful at all, 10 = Extremely helpful',
     responses: [9, 6, 7.5, 6, 7],
     text: 'They liked the AI insights and breakdown, and they made sense, but the design could be improved to make the breakdown feel more helpful. Users wanted it more intuitive, and to know what to do based on the insights.',

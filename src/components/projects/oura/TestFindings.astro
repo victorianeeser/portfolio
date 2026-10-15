@@ -1,7 +1,8 @@
 ---
 // Usability test findings: score rings for the questions that went well, then the key
-// finding in a dark card with its own ring. Each ring is drawn as SVG from the average
-// of the responses, so the chart always matches the numbers listed under it.
+// finding in a navy card: a headline, its ring with every response plotted on a 1–10 line,
+// the testers' words, and a small chart comparing its average with the other questions.
+// Rings, dots and bars are all drawn from the responses, so they always match the numbers.
 import OuraStar from './OuraStar.astro';
 
 interface Finding {
@@ -9,11 +10,13 @@ interface Finding {
   scale: string;
   responses: number[];
   text: string;
+  /** A short name for the comparison chart, e.g. "AI chat" */
+  short: string;
 }
 
 interface Props {
   items: Finding[];
-  keyFinding: Finding & { highlight?: string };
+  keyFinding: Finding & { highlight?: string; headline: string };
 }
 
 const { items, keyFinding } = Astro.props;
@@ -21,6 +24,17 @@ const { items, keyFinding } = Astro.props;
 const avg = (r: number[]) => Math.round((r.reduce((a, b) => a + b, 0) / r.length) * 10) / 10;
 const R = 42;
 const C = 2 * Math.PI * R;
+
+// Every response on a 1–10 line; repeated values stack upward so each one shows
+const seen: Record<string, number> = {};
+const dots = keyFinding.responses.map((v) => {
+  const k = String(v);
+  seen[k] = (seen[k] ?? 0) + 1;
+  return { v, left: ((v - 1) / 9) * 100, stack: seen[k] - 1 };
+});
+
+// The comparison: the questions that went well, then the key finding
+const compare = [...items.map((f) => ({ label: f.short, a: avg(f.responses), key: false })), { label: keyFinding.short, a: avg(keyFinding.responses), key: true }];
 
 // Highlight one phrase of the key finding in coral, as in the slide
 const [before, after] =
@@ -61,13 +75,15 @@ const [before, after] =
   </ul>
 
   <section class="findings2__key" aria-labelledby="key-finding-title">
-    <p class="findings2__eyebrow" id="key-finding-title">Key finding</p>
+    <p class="findings2__eyebrow">Key finding</p>
+    <h3 class="findings2__headline" id="key-finding-title">{keyFinding.headline}</h3>
+
     <div class="findings2__key-grid">
-      <div>
+      <div class="findings2__key-score">
         <h4>{keyFinding.question}</h4>
         <p class="findings2__scale">{keyFinding.scale}</p>
         <div class="findings2__body">
-          <figure class="findings2__ring" data-tone="key">
+          <figure class="findings2__ring findings2__ring--big" data-tone="key">
             <svg viewBox="0 0 100 100" aria-hidden="true">
               <circle cx="50" cy="50" r={R} class="findings2__track" />
               <circle
@@ -84,17 +100,45 @@ const [before, after] =
               <span>out of 10</span>
             </figcaption>
           </figure>
-          <p class="findings2__responses">Responses: {keyFinding.responses.join(', ')}</p>
+          <div class="findings2__spread">
+            <p class="findings2__spread-label">Each tester’s rating</p>
+            <div class="findings2__line" aria-hidden="true">
+              {dots.map(({ left, stack }) => <span class="findings2__dot" style={`left: ${left}%; --stack: ${stack}`} />)}
+              <span class="findings2__end">1</span>
+              <span class="findings2__end findings2__end--max">10</span>
+            </div>
+            <p class="findings2__responses">Responses: {keyFinding.responses.join(', ')}</p>
+          </div>
         </div>
       </div>
-      <p class="findings2__insight">
-        <OuraStar size="1.25rem" />
-        <span>
-          {before}
-          {after !== undefined && <span class="findings2__coral">{keyFinding.highlight}</span>}
-          {after}
-        </span>
-      </p>
+
+      <div class="findings2__key-text">
+        <p class="findings2__insight">
+          <OuraStar size="1.1rem" />
+          <span>
+            {before}
+            {after !== undefined && <span class="findings2__coral">{keyFinding.highlight}</span>}
+            {after}
+          </span>
+        </p>
+
+        <div class="findings2__compare">
+          <p class="findings2__spread-label">How it compares (average out of 10)</p>
+          <ul role="list">
+            {
+              compare.map(({ label, a, key }) => (
+                <li class:list={[key && 'is-key']}>
+                  <span class="findings2__bar-label">{label}</span>
+                  <span class="findings2__bar" aria-hidden="true">
+                    <span style={`width: ${a * 10}%`} />
+                  </span>
+                  <span class="findings2__bar-value">{a}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -187,7 +231,7 @@ const [before, after] =
     font-size: 0.6875rem;
   }
 
-  /* The key finding: a dark card with a coral ring */
+  /* The key finding: a navy card with a coral ring */
   .findings2__key {
     padding: var(--space-6);
     border-radius: 1.5rem;
@@ -196,12 +240,19 @@ const [before, after] =
   }
 
   .findings2__eyebrow {
-    margin-bottom: var(--space-4);
     font-size: var(--text-small);
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
-    color: #6fcbff;
+    color: #9fd0f7;
+  }
+
+  .findings2__headline {
+    margin-top: var(--space-2);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-heading);
+    color: #ffffff;
   }
 
   .findings2__key .findings2__scale,
@@ -215,23 +266,134 @@ const [before, after] =
   .findings2__key-grid {
     display: grid;
     gap: var(--space-6);
+    margin-top: var(--space-6);
+  }
+
+  .findings2__ring--big {
+    width: 8.5rem;
+  }
+
+  /* Every rating on a 1–10 line */
+  /* Beside the ring when there's room; below it on narrow screens */
+  .findings2__key .findings2__body {
+    flex-wrap: wrap;
+  }
+
+  .findings2__spread {
+    flex: 1 1 13rem;
+    min-width: 0;
+  }
+
+  .findings2__spread-label {
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    color: #d5deeb;
+  }
+
+  .findings2__line {
+    position: relative;
+    height: 2px;
+    margin: var(--space-6) 0 var(--space-5);
+    background: rgb(255 255 255 / 0.3);
+  }
+
+  .findings2__dot {
+    position: absolute;
+    bottom: calc(-0.4rem + var(--stack) * 0.95rem);
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: #ff8a80;
+    box-shadow: 0 0 0 2px #23395b;
+    transform: translateX(-50%);
+  }
+
+  .findings2__end {
+    position: absolute;
+    top: 0.5rem;
+    left: 0;
+    font-size: 0.75rem;
+    color: #d5deeb;
+    transform: translateX(-50%);
+  }
+
+  .findings2__end--max {
+    left: 100%;
   }
 
   .findings2__insight {
     display: flex;
     align-items: baseline;
     gap: var(--space-3);
-    font-size: var(--text-h2);
-    line-height: 1.4;
+    font-size: var(--text-h3);
+    line-height: 1.5;
   }
 
   .findings2__insight :global(.oura-star) {
     position: relative;
     top: 0.15em;
+    flex: none;
+    color: #9fd0f7;
   }
 
   /* Coral from the slide, lightened so it reads on the dark card */
   .findings2__coral {
+    color: #ff8a80;
+  }
+
+  /* How the key finding compares with the questions that went well */
+  .findings2__compare {
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+  }
+
+  .findings2__compare ul {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .findings2__compare li {
+    display: grid;
+    grid-template-columns: 9rem 1fr 2.5rem;
+    gap: var(--space-3);
+    align-items: center;
+    font-size: var(--text-small);
+    color: #d5deeb;
+  }
+
+  .findings2__bar {
+    height: 0.6rem;
+    border-radius: var(--radius-pill);
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  .findings2__bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #9fd0f7;
+  }
+
+  .findings2__bar-value {
+    font-weight: var(--weight-bold);
+    text-align: right;
+    color: #ffffff;
+  }
+
+  .findings2__compare li.is-key {
+    color: #ffffff;
+    font-weight: var(--weight-medium);
+  }
+
+  .findings2__compare li.is-key .findings2__bar span {
+    background: #ff8a80;
+  }
+
+  .findings2__compare li.is-key .findings2__bar-value {
     color: #ff8a80;
   }
 
@@ -250,7 +412,7 @@ const [before, after] =
     .findings2__key-grid {
       grid-template-columns: 1fr 1.1fr;
       gap: var(--space-8);
-      align-items: center;
+      align-items: start;
     }
   }
 </style>
