@@ -1,0 +1,135 @@
+---
+// The final prototype: the live Figma prototype embedded in a tall, phone-shaped frame
+// beside the title, a short intro and what to try. The embed loads lazily. On phones,
+// where an embedded prototype is cramped, a button opens it full screen instead.
+import SectionTitle from '../../case/SectionTitle.astro';
+import OuraStar from './OuraStar.astro';
+
+interface Props {
+  id?: string;
+  eyebrow: string;
+  title: string;
+  /** The embed.figma.com prototype URL */
+  embed: string;
+  /** The same prototype on figma.com, opened full screen */
+  link: string;
+  tries: string[];
+}
+
+const { id, eyebrow, title, embed, link, tries } = Astro.props;
+---
+
+<section class="oproto case-wide" id={id}>
+  <div class="oproto__text">
+    <p class="eyebrow oproto__eyebrow">{eyebrow}</p>
+    <SectionTitle>{title}</SectionTitle>
+    <slot />
+
+    <h3 class="oproto__label">Things to try</h3>
+    <ul class="oproto__tries" role="list">
+      {
+        tries.map((t) => (
+          <li>
+            <OuraStar size="0.85rem" />
+            <span>{t}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a class="button oproto__open" href={link} target="_blank" rel="noopener">
+      Open the prototype full screen ↗<span class="visually-hidden"> (opens in a new tab)</span>
+    </a>
+  </div>
+
+  <div class="oproto__device">
+    <iframe src={embed} title="Interactive Figma prototype of the Oura redesign" loading="lazy" allowfullscreen></iframe>
+  </div>
+</section>
+
+<style>
+  .oproto {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    margin-block: var(--space-8);
+    color: #2f4a73;
+  }
+
+  .oproto__eyebrow {
+    margin-bottom: var(--space-3);
+    color: #2f4a73;
+  }
+
+  .oproto__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
+  .oproto__label {
+    margin-top: var(--space-6);
+    font-size: var(--text-small);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #2f4a73;
+  }
+
+  .oproto__tries {
+    display: grid;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .oproto__tries li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+    color: var(--color-text-secondary);
+  }
+
+  .oproto__tries :global(.oura-star) {
+    position: relative;
+    top: 0.1em;
+    color: #4f74a8;
+  }
+
+  .oproto__open {
+    margin-top: var(--space-6);
+  }
+
+  /* A tall, phone-shaped window for the live prototype */
+  .oproto__device {
+    display: none;
+    justify-self: center;
+    width: 100%;
+    max-width: 24rem;
+    aspect-ratio: 400 / 780;
+    overflow: hidden;
+    border-radius: 1.75rem;
+    background: #1b2333;
+    box-shadow: 0 1.5rem 3rem rgb(47 74 115 / 0.25);
+  }
+
+  .oproto__device iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .oproto__device {
+      display: block;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .oproto {
+      grid-template-columns: 1fr 24rem;
+      gap: var(--space-8);
+    }
+  }
+</style>

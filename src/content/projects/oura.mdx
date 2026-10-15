@@ -10,6 +10,9 @@ order: 6
 comingSoon: true
 featured: true
 theme: oura
+links:
+  - label: "View prototype"
+    url: "https://www.figma.com/proto/K9bLB1aEsBCqUxakios3DE/Victoria-Neeser---Final-Project--Copy-?node-id=2082-4405&p=f&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2082%3A4405&page-id=2080%3A1970"
 # figma: "https://www.figma.com/design/K9bLB1aEsBCqUxakios3DE"
 cover:
   label: "Oura Redesign: cover"
@@ -30,6 +33,7 @@ import SolutionBand from '../../components/projects/oura/SolutionBand.astro';
 import NovaFlow from '../../components/projects/oura/NovaFlow.astro';
 import UserFlow from '../../components/projects/oura/UserFlow.astro';
 import OuraPersona from '../../components/projects/oura/OuraPersona.astro';
+import OuraPrototype from '../../components/projects/oura/OuraPrototype.astro';
 import OuraConclusion from '../../components/projects/oura/OuraConclusion.astro';
 import UsabilityRound2 from '../../components/projects/oura/UsabilityRound2.astro';
 import RefineSteps from '../../components/projects/oura/RefineSteps.astro';
@@ -72,6 +76,7 @@ import problem7 from '../../assets/projects/oura/problem-7.png';
     { label: 'Findings', href: '#findings' },
     { label: 'Refinement Process', href: '#refinement-process' },
     { label: 'Testing Round 2', href: '#testing-2' },
+    { label: 'Prototype', href: '#prototype' },
     { label: 'Conclusion', href: '#conclusion' },
   ]}
 />
@@ -555,6 +560,23 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
     ]}
   />
 </Panel>
+
+<OuraPrototype
+  id="prototype"
+  eyebrow="Final prototype"
+  title="Try the Redesign"
+  embed="https://embed.figma.com/proto/K9bLB1aEsBCqUxakios3DE/Victoria-Neeser---Final-Project--Copy-?node-id=2082-4405&p=f&viewport=-286%2C-730%2C0.21&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2082%3A4405&page-id=2080%3A1970&embed-host=share"
+  link="https://www.figma.com/proto/K9bLB1aEsBCqUxakios3DE/Victoria-Neeser---Final-Project--Copy-?node-id=2082-4405&p=f&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2082%3A4405&page-id=2080%3A1970"
+  tries={[
+    'Tap the Nova Insights card on Today for your daily overview.',
+    'Open Readiness and find Nova’s breakdown.',
+    'Ask Nova a question in the chat.',
+  ]}
+>
+
+This is the final version, after both rounds of testing. Click through it the way testers did.
+
+</OuraPrototype>
 
 <Panel id="conclusion" level={2} eyebrow="Conclusion" title="From Data to Direction" highlight="Direction">
   <OuraConclusion
