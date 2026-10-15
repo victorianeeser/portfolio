@@ -1,110 +1,163 @@
 ---
-// The problem: three statements led by the slides' star, then a row of current-app screens
-// that shows how much data the app puts in front of people. The row scrolls sideways on
-// phones. Wrap words in **double asterisks** to bold them.
+// The problem, as one screen: the title and three numbered points on the left (the last one,
+// how people feel, on navy), and on the right the current app's screens fanned out in an
+// overlapping pile, so the amount of data reads at a glance. Stacks on phones, where the
+// pile gets smaller. Wrap words in **double asterisks** to bold them.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import OuraStar from './OuraStar.astro';
+import SectionTitle from '../../case/SectionTitle.astro';
 
 interface Props {
+  id?: string;
+  eyebrow: string;
+  title: string;
   points: string[];
   screens: { src: ImageMetadata; alt: string }[];
 }
 
-const { points, screens } = Astro.props;
+const { id, eyebrow, title, points, screens } = Astro.props;
 
 const escape = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 const rich = (s: string) => escape(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+// The fan: each screen tilts a little further and steps up or down, from the middle out
+const mid = (screens.length - 1) / 2;
+const fan = screens.map((_, i) => ({ r: (i - mid) * 4, y: Math.abs(i - mid) * 0.9 }));
 ---
 
-<div class="problem case-wide">
-  <ul class="problem__points" role="list">
-    {
-      points.map((p) => (
-        <li>
-          <OuraStar size="1.25rem" />
-          <span set:html={rich(p)} />
-        </li>
-      ))
-    }
-  </ul>
+<section class="problem case-wide" id={id}>
+  <div class="problem__text">
+    <p class="eyebrow problem__eyebrow">{eyebrow}</p>
+    <SectionTitle>{title}</SectionTitle>
+    <ol class="problem__points" role="list">
+      {
+        points.map((p, i) => (
+          <li class:list={[i === points.length - 1 && 'is-key']}>
+            <span class="problem__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span set:html={rich(p)} />
+          </li>
+        ))
+      }
+    </ol>
+  </div>
 
-  <ul class="problem__screens" role="list" tabindex="0" aria-label="Current Oura app screens, scrollable">
+  <ul class="problem__pile" role="list" aria-label="Screens from the current Oura app">
     {
-      screens.map(({ src, alt }) => (
-        <li>
-          <Image src={src} alt={alt} widths={[300, 600]} sizes="(min-width: 64rem) 160px, 40vw" />
+      screens.map(({ src, alt }, i) => (
+        <li style={`--r: ${fan[i].r}deg; --y: ${fan[i].y}rem; z-index: ${screens.length - Math.round(Math.abs(i - mid) * 2)}`}>
+          <Image src={src} alt={alt} widths={[300, 600]} sizes="(min-width: 64rem) 150px, 90px" />
         </li>
       ))
     }
   </ul>
-</div>
+</section>
 
 <style>
   .problem {
-    margin-block: var(--space-5) var(--space-6);
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    margin-block: var(--space-8);
     font-family: var(--case-font, var(--font-sans));
     color: var(--case-heading-1, var(--color-text));
   }
 
+  .problem__eyebrow {
+    margin-bottom: var(--space-3);
+    color: var(--case-heading-1, #2f4a73);
+  }
+
   .problem__points {
     display: grid;
-    gap: var(--space-4);
-    max-width: var(--container-prose);
-    margin: 0 0 var(--space-7);
+    gap: var(--space-3);
+    margin: var(--space-6) 0 0;
     padding: 0;
     list-style: none;
-    font-size: var(--text-h3);
   }
 
   .problem__points li {
-    display: flex;
-    align-items: baseline;
+    display: grid;
+    grid-template-columns: auto 1fr;
     gap: var(--space-4);
+    align-items: baseline;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--oura-tint, #eef3fa);
+    font-size: var(--text-h3);
+    line-height: 1.35;
+  }
+
+  .problem__num {
+    font-size: var(--text-small);
+    font-weight: var(--weight-bold);
+    color: var(--oura-quiet, #56657c);
+  }
+
+  /* The point that matters most: how it feels, on navy */
+  .problem__points li.is-key {
+    background: #2f4a73;
+    color: #ffffff;
+  }
+
+  .problem__points li.is-key .problem__num {
+    color: #b9cdea;
   }
 
   .problem__points :global(strong) {
     color: inherit;
   }
 
-  .problem__points :global(.oura-star) {
-    position: relative;
-    top: 0.2em;
+  .problem__points li.is-key :global(strong) {
+    color: #b9cdea;
   }
 
-  .problem__screens {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 40%;
-    gap: var(--space-3);
+  /* The pile: screens overlap and fan out from the middle */
+  .problem__pile {
+    --w: 5.5rem;
+    --overlap: -3.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0;
-    padding: 0 0 var(--space-3);
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
+    padding: var(--space-5) 0;
     list-style: none;
   }
 
-  .problem__screens li {
-    scroll-snap-align: start;
+  .problem__pile li {
+    position: relative;
+    flex: none;
+    width: var(--w);
+    transform: translateY(var(--y)) rotate(var(--r));
   }
 
-  .problem__screens :global(img) {
+  .problem__pile li + li {
+    margin-left: var(--overlap);
+  }
+
+  .problem__pile :global(img) {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 0.75rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.75rem 1.75rem rgb(20 33 54 / 0.28);
   }
 
   @media (min-width: 48rem) {
-    .problem__points {
-      font-size: var(--text-h2);
+    .problem__pile {
+      --w: 8rem;
+      --overlap: -4.25rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .problem {
+      grid-template-columns: 1fr 1.1fr;
+      gap: var(--space-8);
     }
 
-    .problem__screens {
-      grid-auto-columns: minmax(0, 1fr);
-      overflow: visible;
+    .problem__pile {
+      --w: 9.5rem;
+      --overlap: -5.25rem;
     }
   }
 </style>
