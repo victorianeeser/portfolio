@@ -1,7 +1,7 @@
 ---
 // The version testers used: a row of the app's screens, in task order, each captioned with
-// the task it belongs to. Made for a navy Panel, where the dark screens get a thin pale
-// outline so their edges read. Five across on wide screens; a sideways-scrolling row on phones.
+// the task it belongs to. Made for a white Panel; the dark screens get a soft navy shadow.
+// Five across on wide screens; a sideways-scrolling row on phones.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
@@ -48,7 +48,7 @@ const { label, screens } = Astro.props;
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
-    color: #b9cdea;
+    color: #2f4a73;
   }
 
   .tested__row {
@@ -81,9 +81,7 @@ const { label, screens } = Astro.props;
     width: 100%;
     height: auto;
     border-radius: 1.25rem;
-    box-shadow:
-      0 0 0 1px rgb(185 205 234 / 0.35),
-      0 1rem 2rem rgb(0 0 0 / 0.3);
+    box-shadow: 0 1rem 2rem rgb(47 74 115 / 0.22);
   }
 
   .tested__row p {
@@ -94,11 +92,11 @@ const { label, screens } = Astro.props;
 
   .tested__task {
     font-weight: var(--weight-bold);
-    color: #b9cdea;
+    color: #4f74a8;
   }
 
   .tested__name {
-    color: #ffffff;
+    color: #2f4a73;
   }
 
   @media (min-width: 48rem) {

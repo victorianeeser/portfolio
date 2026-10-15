@@ -1,6 +1,6 @@
 ---
 // Usability testing tasks as a row of cards: the task, whether testers completed it, and
-// the follow-up questions they rated. Place inside a dark Panel.
+// the follow-up questions they rated. Made for a white Panel.
 import OuraStar from './OuraStar.astro';
 
 interface Task {
@@ -53,9 +53,8 @@ const { items } = Astro.props;
     flex-direction: column;
     gap: var(--space-3);
     padding: var(--space-5);
-    border: var(--border-width) solid rgb(255 255 255 / 0.15);
     border-radius: 1rem;
-    background: rgb(255 255 255 / 0.06);
+    background: var(--oura-tint, #eef3fa);
   }
 
   .tasks__num {
@@ -66,17 +65,17 @@ const { items } = Astro.props;
     font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
-    color: #6fcbff;
+    color: #4f74a8;
   }
 
   .tasks .tasks__title {
     font-size: var(--text-body);
     font-weight: var(--weight-bold);
     line-height: 1.4;
-    color: #fff;
+    color: #2f4a73;
   }
 
-  /* Completion badge in the slide's light blue (6.4:1 on navy) */
+  /* Completion badge: white pill, navy text */
   .tasks__result {
     display: inline-flex;
     align-items: center;
@@ -84,10 +83,10 @@ const { items } = Astro.props;
     width: fit-content;
     padding: 0.2em 0.75em;
     border-radius: var(--radius-pill);
-    background: rgb(111 203 255 / 0.15);
+    background: #ffffff;
     font-size: var(--text-small);
     font-weight: var(--weight-bold);
-    color: #6fcbff;
+    color: #2f4a73;
   }
 
   .tasks__questions {
@@ -95,11 +94,11 @@ const { items } = Astro.props;
     gap: var(--space-2);
     margin-top: auto;
     padding: var(--space-3) 0 0;
-    border-top: var(--border-width) solid rgb(255 255 255 / 0.15);
+    border-top: var(--border-width) solid rgb(47 74 115 / 0.15);
     font-size: var(--text-small);
     line-height: 1.5;
     list-style: none;
-    color: #dbe4f0;
+    color: var(--oura-quiet, #56657c);
   }
 
   @media (min-width: 48rem) {
