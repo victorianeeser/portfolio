@@ -35,7 +35,7 @@ import SolutionBand from '../../components/projects/oura/SolutionBand.astro';
 import NovaFlow from '../../components/projects/oura/NovaFlow.astro';
 import UserFlow from '../../components/projects/oura/UserFlow.astro';
 import OuraPersona from '../../components/projects/oura/OuraPersona.astro';
-import OuraPrototype from '../../components/projects/oura/OuraPrototype.astro';
+import PrototypeEmbed from '../../components/case/PrototypeEmbed.astro';
 import OuraConclusion from '../../components/projects/oura/OuraConclusion.astro';
 import UsabilityRound2 from '../../components/projects/oura/UsabilityRound2.astro';
 import RefineSteps from '../../components/projects/oura/RefineSteps.astro';
@@ -563,8 +563,9 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
   />
 </Panel>
 
-<OuraPrototype
+<PrototypeEmbed
   id="prototype"
+  label="Interactive Figma prototype of the Oura redesign"
   eyebrow="Final prototype"
   title="Try the Redesign"
   embed="https://embed.figma.com/proto/K9bLB1aEsBCqUxakios3DE/Victoria-Neeser---Final-Project--Copy-?node-id=2082-4405&p=f&viewport=-286%2C-730%2C0.21&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2082%3A4405&page-id=2080%3A1970&embed-host=share"
@@ -578,7 +579,7 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
 
 This is the final version, after both rounds of testing. Click through it the way testers did.
 
-</OuraPrototype>
+</PrototypeEmbed>
 
 <Panel id="conclusion" level={2} eyebrow="Conclusion" title="From Data to Direction" highlight="Direction">
   <OuraConclusion

@@ -1,0 +1,135 @@
+---
+// A live Figma prototype, embedded in a tall, phone-shaped window beside a title, a short
+// intro (the default slot) and a list of things to try. Colors come from the project
+// theme's heading color. The embed loads lazily. On phones, where an embedded prototype
+// is cramped, only the button to open it full screen shows.
+import SectionTitle from './SectionTitle.astro';
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title: string;
+  /** 2 for its own section, 3 inside an existing one */
+  level?: 2 | 3;
+  /** The embed.figma.com prototype URL */
+  embed: string;
+  /** The same prototype on figma.com, opened full screen */
+  link: string;
+  tries: string[];
+  /** Accessible name for the embedded prototype */
+  label: string;
+}
+
+const { id, eyebrow, title, level = 2, embed, link, tries, label } = Astro.props;
+---
+
+<section class="proto case-wide" id={id}>
+  <div class="proto__text">
+    {eyebrow && <p class="eyebrow proto__eyebrow">{eyebrow}</p>}
+    <SectionTitle level={level}>{title}</SectionTitle>
+    <slot />
+
+    <h4 class="proto__label">Things to try</h4>
+    <ul class="proto__tries" role="list">
+      {tries.map((t) => <li>{t}</li>)}
+    </ul>
+
+    <a class="button proto__open" href={link} target="_blank" rel="noopener">
+      Open the prototype full screen ↗<span class="visually-hidden"> (opens in a new tab)</span>
+    </a>
+  </div>
+
+  <div class="proto__device">
+    <iframe src={embed} title={label} loading="lazy" allowfullscreen></iframe>
+  </div>
+</section>
+
+<style>
+  .proto {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    margin-block: var(--space-8);
+  }
+
+  .proto__eyebrow {
+    margin-bottom: var(--space-3);
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  .proto__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
+  .proto__label {
+    margin-top: var(--space-6);
+    font-size: var(--text-small);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--case-heading-1, var(--color-text));
+  }
+
+  .proto__tries {
+    display: grid;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .proto__tries li {
+    position: relative;
+    padding-left: var(--space-5);
+    color: var(--color-text-secondary);
+  }
+
+  /* A small accent marker in the project's color */
+  .proto__tries li::before {
+    content: '';
+    position: absolute;
+    left: 0.15rem;
+    top: 0.6em;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--case-heading-1, currentColor);
+  }
+
+  .proto__open {
+    margin-top: var(--space-6);
+  }
+
+  /* A tall, phone-shaped window for the live prototype */
+  .proto__device {
+    display: none;
+    justify-self: center;
+    width: 100%;
+    max-width: 24rem;
+    aspect-ratio: 400 / 780;
+    overflow: hidden;
+    border-radius: 1.75rem;
+    background: #1b1b1f;
+    box-shadow: 0 1.5rem 3rem rgb(0 0 0 / 0.2);
+  }
+
+  .proto__device iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .proto__device {
+      display: block;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .proto {
+      grid-template-columns: 1fr 24rem;
+      gap: var(--space-8);
+    }
+  }
+</style>
