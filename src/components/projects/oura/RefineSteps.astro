@@ -1,0 +1,121 @@
+---
+// The refinement process: the same screen at each step, from before testing to the final
+// design, as a row of equal phones with a step label and a note on what changed. Arrows
+// sit between the steps on wide screens; the final step's label is filled navy. Two by two
+// on tablets, one after another on phones.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Step {
+  label: string;
+  src: ImageMetadata;
+  alt: string;
+  text: string;
+}
+
+interface Props {
+  steps: Step[];
+}
+
+const { steps } = Astro.props;
+---
+
+<ol class="refine case-wide" role="list">
+  {
+    steps.map(({ label, src, alt, text }, i) => (
+      <li class:list={['refine__step', i === steps.length - 1 && 'is-final']}>
+        <p class="refine__label">{label}</p>
+        <div class="refine__phone">
+          <Image src={src} alt={alt} widths={[400, 700]} sizes="(min-width: 64rem) 220px, (min-width: 48rem) 40vw, 80vw" />
+        </div>
+        <p class="refine__text">{text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .refine {
+    display: grid;
+    gap: var(--space-7) var(--space-5);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+    color: #2f4a73;
+  }
+
+  .refine__step {
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    justify-items: center;
+  }
+
+  .refine__label {
+    padding: 0.15em 0.85em;
+    border: var(--border-width) solid #2f4a73;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+  }
+
+  .refine__step.is-final .refine__label {
+    background: #2f4a73;
+    color: #ffffff;
+  }
+
+  /* The same drawn phone frame as the rest of the page */
+  .refine__phone {
+    width: min(100%, 13rem);
+    overflow: hidden;
+    border: 6px solid #1b2333;
+    border-radius: 1.9rem;
+    background: #1b2333;
+    box-shadow: 0 1rem 2rem rgb(47 74 115 / 0.2);
+  }
+
+  .refine__phone :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 618 / 1337;
+    border-radius: 1.5rem;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .refine__text {
+    max-width: 16rem;
+    font-size: var(--text-small);
+    line-height: 1.5;
+    text-align: center;
+    color: var(--oura-quiet, #56657c);
+  }
+
+  @media (min-width: 48rem) {
+    .refine {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .refine {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+    }
+
+    /* An arrow between steps, level with the middle of the phones */
+    .refine__step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      top: 45%;
+      right: calc(var(--space-6) / -2);
+      font-size: var(--text-h3);
+      color: #4f74a8;
+      transform: translate(50%, -50%);
+    }
+  }
+</style>

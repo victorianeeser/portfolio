@@ -30,6 +30,11 @@ import SolutionBand from '../../components/projects/oura/SolutionBand.astro';
 import NovaFlow from '../../components/projects/oura/NovaFlow.astro';
 import UserFlow from '../../components/projects/oura/UserFlow.astro';
 import OuraPersona from '../../components/projects/oura/OuraPersona.astro';
+import RefineSteps from '../../components/projects/oura/RefineSteps.astro';
+import refineStepBefore from '../../assets/projects/oura/refine/before.png';
+import refineStepV1 from '../../assets/projects/oura/refine/v1.png';
+import refineStepV2 from '../../assets/projects/oura/refine/v2.png';
+import refineStepFinal from '../../assets/projects/oura/refine/final.png';
 import TestedScreens from '../../components/projects/oura/TestedScreens.astro';
 import v1Today from '../../assets/projects/oura/v1/today.png';
 import v1Insights from '../../assets/projects/oura/v1/insights.png';
@@ -63,6 +68,7 @@ import problem7 from '../../assets/projects/oura/problem-7.png';
     { label: 'Persona', href: '#persona' },
     { label: 'Usability Testing', href: '#testing' },
     { label: 'Findings', href: '#findings' },
+    { label: 'Refinement Process', href: '#refinement-process' },
   ]}
 />
 
@@ -501,3 +507,34 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
     highlight: 'design could be improved',
   }}
 />
+
+<Panel id="refinement-process" level={2} tone="light" eyebrow="Iteration" title="Refinement Process" highlight="Refinement" intro="The key finding pointed at the Nova breakdown, so I reworked that screen through two more versions to make it clearer and easier to act on.">
+  <RefineSteps
+    steps={[
+      {
+        label: 'Before',
+        src: refineStepBefore,
+        alt: 'The Nova breakdown before testing: three dense cards, each mixing stats and a recommendation under a small heading',
+        text: 'Each card mixed the stats and the recommendation under a small heading.',
+      },
+      {
+        label: 'Version 1',
+        src: refineStepV1,
+        alt: 'Version 1: section titles with icons sit above each card, and Nova moves into the top bar',
+        text: 'Section titles with icons move above the cards, so each part is easy to find.',
+      },
+      {
+        label: 'Version 2',
+        src: refineStepV2,
+        alt: 'Version 2: each card leads with the recommendation, with the stats underneath and a recap link outside the card',
+        text: 'The recommendation leads each card, so people see what to do first.',
+      },
+      {
+        label: 'Final',
+        src: refineStepFinal,
+        alt: 'Final Nova insights screen: Readiness 85, Sleep 78 and Activity 80, each with a progress bar above a short summary',
+        text: 'Each section shows its score and a progress bar up top, now called Nova insights.',
+      },
+    ]}
+  />
+</Panel>
