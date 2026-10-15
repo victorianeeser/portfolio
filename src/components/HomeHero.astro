@@ -1,0 +1,291 @@
+---
+// The home page header, in the colors of the projects below it:
+// - the name's letters rise in one by one, and each hops and takes a project color on hover
+// - "I design ___" cycles through what the projects are, each word in its project's color
+// - soft orbs in the projects' colors drift behind it and lean toward the cursor
+// With reduced motion everything holds still and the sentence reads in full.
+import { site } from '../site.config';
+
+// What I design, each in the color of a project that shows it (text-safe on white)
+const words = [
+  { text: 'smart products', color: '#00794a' }, // IMPACT
+  { text: 'apps', color: '#4d37a4' }, // Rebound
+  { text: 'brands', color: '#015aff' }, // CourtSync
+  { text: 'games', color: '#c0283f' }, // Farm Friends
+  { text: 'experiences', color: '#2f4a73' }, // Oura
+];
+
+// The orbs: the projects' brand colors, placed toward the right so the text stays clear
+const orbs = [
+  { color: '#00e786', x: 72, y: 18, size: 22, dur: 18 },
+  { color: '#9e86fd', x: 86, y: 52, size: 26, dur: 22 },
+  { color: '#015aff', x: 60, y: 62, size: 18, dur: 16 },
+  { color: '#f2a7b5', x: 92, y: 12, size: 16, dur: 20 },
+  { color: '#b9cdea', x: 78, y: 80, size: 20, dur: 24 },
+  { color: '#fde9aa', x: 52, y: 28, size: 14, dur: 19 },
+];
+
+const letters = [...site.name];
+const hoverColors = words.map((w) => w.color);
+const sentence = `I design ${words.slice(0, -1).map((w) => w.text).join(', ')} and ${words.at(-1)!.text}.`;
+---
+
+<section class="hhero" aria-labelledby="hero-title">
+  <div class="hhero__orbs" aria-hidden="true">
+    {orbs.map(({ color, x, y, size, dur }, i) => <span class="hhero__orb" style={`--c: ${color}; --x: ${x}%; --y: ${y}%; --s: ${size}rem; --d: ${dur}s; --i: ${i}`} />)}
+  </div>
+
+  <div class="hhero__inner container">
+    <p class="eyebrow hhero__hello">Hi, I’m</p>
+    <h1 id="hero-title" class="hhero__name" aria-label={site.name}>
+      {
+        letters.map((ch, i) =>
+          ch === ' ' ? (
+            <span class="hhero__space" aria-hidden="true"> </span>
+          ) : (
+            <span class="hhero__letter" aria-hidden="true" style={`--i: ${i}; --hover: ${hoverColors[i % hoverColors.length]}`}>
+              {ch}
+            </span>
+          ),
+        )
+      }
+    </h1>
+
+    <p class="hhero__line">
+      <span class="visually-hidden">{sentence}</span>
+      <span aria-hidden="true">I design </span>
+      <span class="hhero__words" aria-hidden="true">
+        {words.map(({ text, color }, i) => <span class="hhero__word" data-active={i === 0 ? '' : undefined} style={`color: ${color}`}>{text}</span>)}
+      </span>
+    </p>
+
+    <p class="hhero__statement lead">{site.positioning}</p>
+  </div>
+</section>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('.hhero');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (hero && !reduce.matches) {
+    // Cycle the words: the current one slides up and out, the next slides in from below
+    const words = [...hero.querySelectorAll<HTMLElement>('.hhero__word')];
+    let i = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      const current = words[i];
+      i = (i + 1) % words.length;
+      current.removeAttribute('data-active');
+      current.setAttribute('data-leaving', '');
+      setTimeout(() => current.removeAttribute('data-leaving'), 600);
+      words[i].setAttribute('data-active', '');
+    }, 2200);
+
+    // The orbs lean toward the cursor
+    let frame = 0;
+    hero.addEventListener('pointermove', (e) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const r = hero.getBoundingClientRect();
+        hero.style.setProperty('--mx', String((e.clientX - r.left) / r.width - 0.5));
+        hero.style.setProperty('--my', String((e.clientY - r.top) / r.height - 0.5));
+      });
+    });
+    hero.addEventListener('pointerleave', () => {
+      hero.style.setProperty('--mx', '0');
+      hero.style.setProperty('--my', '0');
+    });
+  }
+</script>
+
+<style>
+  .hhero {
+    --mx: 0;
+    --my: 0;
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-9) var(--space-8);
+    isolation: isolate;
+  }
+
+  .hhero__inner {
+    position: relative;
+  }
+
+  /* ---------- Orbs ---------- */
+  /* Faded at the top and bottom, so the orbs melt into the page instead of ending in a line */
+  .hhero__orbs {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 70%, transparent);
+  }
+
+  .hhero__orb {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--s);
+    height: var(--s);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--c), transparent 70%);
+    opacity: 0.55;
+    filter: blur(28px);
+    translate: -50% -50%;
+    transform: translate(calc(var(--mx) * (1.5rem + var(--i) * 0.6rem)), calc(var(--my) * (1.5rem + var(--i) * 0.6rem)));
+    transition: transform 1.2s var(--ease-out);
+    animation: hhero-drift var(--d) ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -3s);
+  }
+
+  @keyframes hhero-drift {
+    from { translate: -50% -50%; }
+    50% { translate: -40% -62%; }
+    to { translate: -60% -42%; }
+  }
+
+  /* ---------- Name ---------- */
+  .hhero__hello {
+    color: var(--color-text-secondary);
+    animation: hhero-fade 0.8s var(--ease-out) both;
+  }
+
+  .hhero__name {
+    margin-top: var(--space-3);
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--color-text);
+  }
+
+  .hhero__letter,
+  .hhero__space {
+    display: inline-block;
+  }
+
+  .hhero__space {
+    width: 0.25em;
+  }
+
+  /* Each letter rises in, one after another */
+  .hhero__letter {
+    animation: hhero-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(0.15s + var(--i) * 0.045s);
+    transition:
+      color 0.25s var(--ease-out),
+      transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+
+  /* …and hops into a project's color on hover */
+  .hhero__letter:hover {
+    color: var(--hover);
+    transform: translateY(-0.12em) rotate(-4deg);
+  }
+
+  @keyframes hhero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.6em) rotate(6deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes hhero-fade {
+    from { opacity: 0; transform: translateY(0.5rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ---------- I design ___ ---------- */
+  .hhero__line {
+    margin-top: var(--space-5);
+    font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+    font-weight: var(--weight-medium);
+    line-height: 1.2;
+    color: var(--color-text);
+    animation: hhero-fade 0.8s var(--ease-out) 0.9s both;
+  }
+
+  /* All the words share one spot; only the active one shows */
+  .hhero__words {
+    display: inline-grid;
+    vertical-align: bottom;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+  }
+
+  .hhero__word {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(100%);
+    transition:
+      transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 0.4s ease;
+  }
+
+  .hhero__word[data-active] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hhero__word[data-leaving] {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  .hhero__statement {
+    max-width: var(--container-statement);
+    margin-top: var(--space-6);
+    text-wrap: balance;
+    animation: hhero-fade 0.8s var(--ease-out) 1.1s both;
+  }
+
+  /* ---------- Reduced motion: hold still, read in full ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .hhero__orb,
+    .hhero__letter,
+    .hhero__hello,
+    .hhero__line,
+    .hhero__statement {
+      animation: none;
+      transition: none;
+    }
+
+    .hhero__letter:hover {
+      transform: none;
+    }
+
+    .hhero__orb {
+      transform: none;
+    }
+
+    /* The words show as one list instead of cycling */
+    .hhero__words {
+      display: inline;
+    }
+
+    .hhero__word {
+      opacity: 1;
+      transform: none;
+    }
+
+    .hhero__word:not(:last-child)::after {
+      content: ',';
+      color: var(--color-text);
+    }
+
+    .hhero__word:last-child::before {
+      content: 'and ';
+      color: var(--color-text);
+    }
+
+    .hhero__word + .hhero__word {
+      margin-left: 0.3em;
+    }
+  }
+</style>
