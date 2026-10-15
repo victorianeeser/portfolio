@@ -30,6 +30,12 @@ import SolutionBand from '../../components/projects/oura/SolutionBand.astro';
 import NovaFlow from '../../components/projects/oura/NovaFlow.astro';
 import UserFlow from '../../components/projects/oura/UserFlow.astro';
 import OuraPersona from '../../components/projects/oura/OuraPersona.astro';
+import TestedScreens from '../../components/projects/oura/TestedScreens.astro';
+import v1Today from '../../assets/projects/oura/v1/today.png';
+import v1Insights from '../../assets/projects/oura/v1/insights.png';
+import v1Readiness from '../../assets/projects/oura/v1/readiness.png';
+import v1Breakdown from '../../assets/projects/oura/v1/breakdown.png';
+import v1Chat from '../../assets/projects/oura/v1/chat.png';
 import UsabilityTasks from '../../components/projects/oura/UsabilityTasks.astro';
 import TestFindings from '../../components/projects/oura/TestFindings.astro';
 import personaEllie from '../../assets/projects/oura/persona-ellie.jpg';
@@ -427,6 +433,17 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
 </Panel>
 
 <Panel id="testing" level={2} eyebrow="Usability testing" title="Version 1: Four Tasks" highlight="Four Tasks" intro="Testers completed four tasks in the first version, then rated each one from 1 to 10.">
+  <TestedScreens
+    label="The version they tested"
+    screens={[
+      { src: v1Today, task: 1, name: 'Today', alt: 'Version 1 Today screen: Readiness, Sleep, Activity and Heart Rate score rings, a good-morning greeting and a Nova Insights card' },
+      { src: v1Insights, task: 2, name: 'Nova Insights', alt: 'Version 1 Nova breakdown screen: a snapshot for today with readiness, sleep and activity summaries and recommendations' },
+      { src: v1Readiness, task: 3, name: 'Readiness', alt: 'Version 1 Readiness screen: the readiness score card with Nova Insights, metrics and contributors' },
+      { src: v1Breakdown, task: 3, name: 'Readiness Nova breakdown', alt: 'Version 1 Readiness Nova breakdown: a quick summary, what to pay attention to, and a recovery boost plan' },
+      { src: v1Chat, task: 4, name: 'Nova Chat', alt: 'Version 1 Nova Chat: a user asks how their sleep patterns changed and Nova answers with insights and suggested questions' },
+    ]}
+  />
+
   <UsabilityTasks
     items={[
       {
