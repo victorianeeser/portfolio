@@ -27,6 +27,7 @@ import HeuristicCards from '../../components/projects/oura/HeuristicCards.astro'
 import PhonePins from '../../components/projects/oura/PhonePins.astro';
 import ProblemScreens from '../../components/projects/oura/ProblemScreens.astro';
 import SolutionBand from '../../components/projects/oura/SolutionBand.astro';
+import NovaFlow from '../../components/projects/oura/NovaFlow.astro';
 import UserFlow from '../../components/projects/oura/UserFlow.astro';
 import OuraPersona from '../../components/projects/oura/OuraPersona.astro';
 import UsabilityTasks from '../../components/projects/oura/UsabilityTasks.astro';
@@ -368,12 +369,19 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
   ]}
 />
 
-<p id="user-flow" class="eyebrow collection-label">User flow</p>
-
-<SectionTitle>Where Nova Fits In</SectionTitle>
+<NovaFlow
+  id="user-flow"
+  eyebrow="User flow"
+  title="Where Nova Fits In"
+  intro="Nova can be used in three parts of the app, each one step from where people already are."
+  touchpoints={[
+    { title: 'Nova Chat', text: 'From Today, ask Nova about your stats, trends or anything else, instead of doing your own research.' },
+    { title: 'Nova Insights', text: 'A brief daily overview of readiness, sleep and activity on the home screen, without being overwhelming.' },
+    { title: 'Nova breakdown', text: 'Inside Readiness, Sleep and Activity: what to pay attention to, and a personalized plan for today.' },
+  ]}
+>
 
 <UserFlow
-  caption="Nova can be used in three parts of the app."
   start="Log in / open app"
   branches={[
     {
@@ -389,6 +397,8 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
     { label: 'Activity', children: [{ label: 'Activity Nova breakdown', nova: 3 }, { label: 'Activity stats' }] },
   ]}
 />
+
+</NovaFlow>
 
 <Panel id="persona" level={2} tone="light" eyebrow="Persona" title="Designing for Ellie" highlight="Ellie">
   <OuraPersona
