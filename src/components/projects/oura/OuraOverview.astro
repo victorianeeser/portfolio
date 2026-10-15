@@ -77,12 +77,14 @@ const c = 2 * Math.PI * r;
     align-items: start;
   }
 
-  .oura-overview__text > :global(* + *) {
-    margin-top: var(--space-4);
+  .oura-overview__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
   }
 
-  .oura-overview__text > :global(.section-title + *) {
-    margin-top: var(--space-5);
+  .oura-overview__text > :global(.section-title) {
+    margin-bottom: var(--space-1);
   }
 
   /* The promise: navy card, white text, the slides' star */
@@ -148,9 +150,16 @@ const c = 2 * Math.PI * r;
   }
 
   @media (min-width: 48rem) {
+    /* Both columns share one height: the title at the top, the copy ending level with the
+       bottom of the callout */
     .oura-overview__intro {
       grid-template-columns: 1.2fr 1fr;
       gap: var(--space-8);
+      align-items: stretch;
+    }
+
+    .oura-overview__text > :global(.section-title) {
+      margin-bottom: auto;
     }
 
     .oura-overview__features {
