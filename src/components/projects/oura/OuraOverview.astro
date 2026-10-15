@@ -1,0 +1,160 @@
+---
+// The overview, laid out like the other case studies' openings: the section title and copy
+// on the left, beside a navy callout with the product's promise (stacked on phones). Under
+// them, the three things Oura tracks as cards, each topped with a score ring like the app's
+// own (decorative, so no numbers). The copy goes in the default slot.
+import SectionTitle from '../../case/SectionTitle.astro';
+import OuraStar from './OuraStar.astro';
+
+interface Feature {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  id?: string;
+  title: string;
+  promise: string;
+  features: Feature[];
+}
+
+const { id, title, promise, features } = Astro.props;
+
+// How far round each decorative ring runs, so the three don't look identical
+const fills = [0.82, 0.68, 0.9];
+const r = 26;
+const c = 2 * Math.PI * r;
+---
+
+<section class="oura-overview case-wide" id={id}>
+  <div class="oura-overview__intro">
+    <div class="oura-overview__text">
+      <SectionTitle>{title}</SectionTitle>
+      <slot />
+    </div>
+    <aside class="oura-overview__promise" aria-label="What Oura promises">
+      <OuraStar size="1.5rem" />
+      <p>{promise}</p>
+    </aside>
+  </div>
+
+  <h3 class="oura-overview__label">Key features</h3>
+  <ul class="oura-overview__features" role="list">
+    {
+      features.map(({ title, text }, i) => (
+        <li>
+          <svg class="oura-overview__ring" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r={r} fill="none" stroke="#d5deeb" stroke-width="6" />
+            <circle
+              cx="32"
+              cy="32"
+              r={r}
+              fill="none"
+              stroke="#2f4a73"
+              stroke-width="6"
+              stroke-linecap="round"
+              stroke-dasharray={`${(c * fills[i % fills.length]).toFixed(1)} ${c.toFixed(1)}`}
+              transform="rotate(-90 32 32)"
+            />
+          </svg>
+          <h4>{title}</h4>
+          <p>{text}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .oura-overview {
+    margin-block: var(--space-6) var(--space-8);
+  }
+
+  /* The title sits level with the top of the callout, as in the other case studies */
+  .oura-overview__intro {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  .oura-overview__text > :global(* + *) {
+    margin-top: var(--space-4);
+  }
+
+  .oura-overview__text > :global(.section-title + *) {
+    margin-top: var(--space-5);
+  }
+
+  /* The promise: navy card, white text, the slides' star */
+  .oura-overview__promise {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg, 1.25rem);
+    background: #2f4a73;
+    color: #ffffff;
+  }
+
+  .oura-overview__promise :global(svg) {
+    color: #b9cdea;
+  }
+
+  .oura-overview__promise p {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-heading);
+  }
+
+  .oura-overview__label {
+    margin-top: var(--space-8);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #2f4a73;
+  }
+
+  .oura-overview__features {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .oura-overview__features li {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--oura-tint, #eef3fa);
+  }
+
+  .oura-overview__ring {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .oura-overview__features h4 {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    color: #2f4a73;
+  }
+
+  .oura-overview__features p {
+    color: var(--oura-quiet, #56657c);
+  }
+
+  @media (min-width: 48rem) {
+    .oura-overview__intro {
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--space-8);
+    }
+
+    .oura-overview__features {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

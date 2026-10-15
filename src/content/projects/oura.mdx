@@ -21,7 +21,7 @@ heroComponent: oura
 import SectionNav from '../../components/case/SectionNav.astro';
 import SectionTitle from '../../components/case/SectionTitle.astro';
 import Panel from '../../components/case/Panel.astro';
-import KeyFeatures from '../../components/projects/oura/KeyFeatures.astro';
+import OuraOverview from '../../components/projects/oura/OuraOverview.astro';
 import InterviewTabs from '../../components/projects/oura/InterviewTabs.astro';
 import HeuristicCards from '../../components/projects/oura/HeuristicCards.astro';
 import PhonePins from '../../components/projects/oura/PhonePins.astro';
@@ -60,19 +60,20 @@ import problem7 from '../../assets/projects/oura/problem-7.png';
   ]}
 />
 
-<p id="overview" class="eyebrow collection-label">Overview</p>
-
-<SectionTitle>What Is Oura?</SectionTitle>
-
-Oura is a smart ring and wellness app that helps users understand their sleep, readiness, and activity levels through detailed biometric tracking.
-
-<KeyFeatures
-  items={[
-    { title: 'Sleep', text: 'Tracks sleep quality, including stages, time in bed, and efficiency.' },
-    { title: 'Readiness', text: 'Measures readiness, combining metrics like resting heart rate, HRV, and body temperature.' },
-    { title: 'Activity', text: 'Monitors activity, including steps, calories burned, and recovery.' },
+<OuraOverview
+  id="overview"
+  title="What Is Oura?"
+  promise="Oura empowers people to make informed decisions about their wellness, every day."
+  features={[
+    { title: 'Sleep', text: 'Tracks sleep quality, including stages, time in bed and efficiency.' },
+    { title: 'Readiness', text: 'Combines resting heart rate, HRV and body temperature into one readiness score.' },
+    { title: 'Activity', text: 'Monitors steps, calories burned and recovery.' },
   ]}
-/>
+>
+
+Oura is a smart ring and wellness app that helps people understand their sleep, readiness and activity through detailed biometric tracking.
+
+</OuraOverview>
 
 <Panel
   id="interviews"
