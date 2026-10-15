@@ -1,53 +1,71 @@
 ---
-// Usability testing, round 2, for a navy Panel: the four tasks with a completion badge on
-// one side, the questions' scores as rings on the other (the question the refinement was
-// aimed at marked with a coral star), and underneath, that question's score before and
-// after the refinement as two bars. Rings and bars are drawn from the percentages given.
+// Usability testing, round 2, for a navy Panel, leading with the result: the targeted
+// question's score before → after in large type beside how many testers finished every
+// task, then one card per task pairing it with its follow-up question and score ring
+// (the targeted question's card marked with a coral star). Rings are drawn from the
+// percentages given, and the gain is worked out from before and after.
 import OuraStar from './OuraStar.astro';
 
-interface Props {
-  tasks: string[];
-  completed: string;
-  scores: { question: string; percent: number; focus?: boolean }[];
-  /** The question the refinement targeted, before and after */
-  improvement: { question: string; before: number; after: number; text: string };
+interface Result {
+  task: string;
+  question: string;
+  percent: number;
+  focus?: boolean;
 }
 
-const { tasks, completed, scores, improvement } = Astro.props;
+interface Props {
+  results: Result[];
+  completed: { done: number; of: number; text: string };
+  /** The question the refinement targeted, before and after */
+  improvement: { question: string; before: number; after: number };
+}
+
+const { results, completed, improvement } = Astro.props;
+const gain = improvement.after - improvement.before;
 
 const R = 42;
 const C = 2 * Math.PI * R;
 ---
 
 <div class="round2 case-wide">
-  <div class="round2__grid">
-    <div class="round2__tasks">
-      <ol role="list">
-        {
-          tasks.map((t, i) => (
-            <li>
-              <span class="round2__num">Task {i + 1}</span>
-              <span>{t}</span>
-            </li>
-          ))
-        }
-      </ol>
-      <p class="round2__done">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m5 12.5 4.5 4.5L19 7.5" />
-        </svg>
-        {completed}
+  <div class="round2__headline">
+    <section class="round2__gain" aria-label={`${improvement.question} ${improvement.before}% in version 1, ${improvement.after}% in version 2`}>
+      <p class="round2__eyebrow">
+        <OuraStar size="0.9rem" />
+        {improvement.question}
       </p>
-    </div>
+      <div class="round2__numbers" aria-hidden="true">
+        <span class="round2__before">
+          <strong>{improvement.before}%</strong>
+          <span>Version 1</span>
+        </span>
+        <span class="round2__arrow">→</span>
+        <span class="round2__after">
+          <strong>{improvement.after}%</strong>
+          <span>Version 2</span>
+        </span>
+      </div>
+      <p class="round2__delta">+{gain} points after the refinement</p>
+    </section>
 
-    <ul class="round2__scores" role="list">
-      {
-        scores.map(({ question, percent, focus }) => (
-          <li class:list={[focus && 'is-focus']}>
-            <p class="round2__question">
-              {focus && <OuraStar size="0.9rem" />}
-              {question}
-            </p>
+    <section class="round2__done">
+      <p class="round2__big">
+        {completed.done}<span>/{completed.of}</span>
+      </p>
+      <p class="round2__done-text">{completed.text}</p>
+    </section>
+  </div>
+
+  <ol class="round2__results" role="list">
+    {
+      results.map(({ task, question, percent, focus }, i) => (
+        <li class:list={[focus && 'is-focus']}>
+          <p class="round2__num">
+            {focus && <OuraStar size="0.85rem" />}
+            Task {i + 1}
+          </p>
+          <p class="round2__task">{task}</p>
+          <div class="round2__score">
             <figure class="round2__ring">
               <svg viewBox="0 0 100 100" aria-hidden="true">
                 <circle cx="50" cy="50" r={R} class="round2__track" />
@@ -55,82 +73,92 @@ const C = 2 * Math.PI * R;
               </svg>
               <figcaption>{percent}%</figcaption>
             </figure>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
-
-  <section class="round2__gain" aria-label="Before and after the refinement">
-    <div class="round2__gain-head">
-      <p class="round2__eyebrow">
-        <OuraStar size="0.9rem" />
-        The question that needed work
-      </p>
-      <h4>{improvement.question}</h4>
-      <p class="round2__gain-text">{improvement.text}</p>
-    </div>
-    <ul class="round2__bars" role="list">
-      {
-        [
-          { label: 'Version 1', value: improvement.before, tone: 'before' },
-          { label: 'Version 2', value: improvement.after, tone: 'after' },
-        ].map(({ label, value, tone }) => (
-          <li data-tone={tone}>
-            <span class="round2__bar-label">{label}</span>
-            <span class="round2__bar" aria-hidden="true">
-              <span style={`width: ${value}%`} />
-            </span>
-            <span class="round2__bar-value">{value}%</span>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+            <p class="round2__question">{question}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
 </div>
 
 <style>
   .round2 {
-    margin-block: var(--space-6) 0;
+    margin-top: var(--space-6);
     color: #ffffff;
   }
 
-  .round2__grid {
-    display: grid;
-    gap: var(--space-7);
-  }
-
-  /* Tasks */
-  .round2__tasks ol {
+  /* The result, in large type */
+  .round2__headline {
     display: grid;
     gap: var(--space-4);
-    margin: 0;
-    padding: 0;
-    list-style: none;
   }
 
-  .round2__tasks li {
-    display: grid;
-    gap: var(--space-1);
-    padding-left: var(--space-4);
-    border-left: 2px solid rgb(185 205 234 / 0.4);
-    line-height: 1.45;
+  .round2__gain,
+  .round2__done {
+    padding: var(--space-6);
+    border-radius: 1.25rem;
+    background: rgb(255 255 255 / 0.07);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
   }
 
-  .round2__num {
+  .round2__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     font-size: var(--text-small);
-    font-weight: var(--weight-bold);
+    font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
+    color: #d5deeb;
+  }
+
+  .round2__eyebrow :global(.oura-star) {
+    flex: none;
+    color: #ff8a80;
+  }
+
+  .round2__numbers {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+  }
+
+  .round2__before,
+  .round2__after {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .round2__numbers strong {
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .round2__numbers span span {
+    font-size: var(--text-small);
+    color: #d5deeb;
+  }
+
+  .round2__before strong {
+    color: #ff8a80;
+  }
+
+  .round2__after strong {
     color: #9fd0f7;
   }
 
-  .round2__done {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
+  .round2__arrow {
+    font-size: var(--text-h2);
+    color: #d5deeb;
+  }
+
+  .round2__delta {
+    width: fit-content;
     margin-top: var(--space-5);
-    padding: 0.35em 0.9em;
+    padding: 0.3em 0.9em;
     border-radius: var(--radius-pill);
     background: rgb(159 208 247 / 0.16);
     font-size: var(--text-small);
@@ -138,48 +166,82 @@ const C = 2 * Math.PI * R;
     color: #9fd0f7;
   }
 
-  /* Score rings, two by two */
-  .round2__scores {
+  .round2__done {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-6) var(--space-4);
-    margin: 0;
+    align-content: center;
+    gap: var(--space-2);
+  }
+
+  .round2__big {
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    color: #ffffff;
+  }
+
+  .round2__big span {
+    color: #d5deeb;
+  }
+
+  .round2__done-text {
+    color: #d5deeb;
+  }
+
+  /* One card per task */
+  .round2__results {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-5) 0 0;
     padding: 0;
     list-style: none;
   }
 
-  /* Question at the top, ring at the bottom: rings in one row line up however long the
-     questions are */
-  .round2__scores li {
+  .round2__results li {
     display: grid;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: auto 1fr auto;
     gap: var(--space-3);
-    justify-items: center;
-    text-align: center;
+    padding: var(--space-5);
+    border-radius: 1rem;
+    background: rgb(255 255 255 / 0.05);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
   }
 
-  .round2__question {
-    display: block;
+  .round2__results li.is-focus {
+    box-shadow: inset 0 0 0 2px #ff8a80;
+  }
+
+  .round2__num {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     font-size: var(--text-small);
-    line-height: 1.45;
-    color: #d5deeb;
-  }
-
-  .round2__scores li.is-focus .round2__question {
     font-weight: var(--weight-bold);
-    color: #ffffff;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: #9fd0f7;
   }
 
-  .round2__question :global(.oura-star) {
-    position: relative;
-    top: 0.12em;
-    margin-right: 0.3em;
+  .round2__num :global(.oura-star) {
     color: #ff8a80;
+  }
+
+  .round2__task {
+    font-weight: var(--weight-medium);
+    line-height: 1.45;
+  }
+
+  .round2__score {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    align-items: center;
+    padding-top: var(--space-3);
+    border-top: 1px solid rgb(255 255 255 / 0.12);
   }
 
   .round2__ring {
     position: relative;
-    width: 6.5rem;
+    width: 4rem;
     margin: 0;
   }
 
@@ -192,7 +254,7 @@ const C = 2 * Math.PI * R;
   .round2__track,
   .round2__arc {
     fill: none;
-    stroke-width: 9;
+    stroke-width: 10;
   }
 
   .round2__track {
@@ -209,98 +271,29 @@ const C = 2 * Math.PI * R;
     inset: 0;
     display: grid;
     place-items: center;
-    font-size: var(--text-h3);
+    font-size: var(--text-small);
     font-weight: var(--weight-bold);
   }
 
-  /* The payoff: the targeted question, before and after */
-  .round2__gain {
-    display: grid;
-    gap: var(--space-5);
-    align-items: center;
-    margin-top: var(--space-7);
-    padding: var(--space-6);
-    border-radius: 1.25rem;
-    background: rgb(255 255 255 / 0.08);
-    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
-  }
-
-  .round2__eyebrow {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+  .round2__question {
     font-size: var(--text-small);
-    font-weight: var(--weight-medium);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
-    color: #ff8a80;
-  }
-
-  .round2__gain h4 {
-    margin-top: var(--space-2);
-    font-size: var(--text-h3);
-    font-weight: var(--weight-medium);
-    color: #ffffff;
-  }
-
-  .round2__gain-text {
-    margin-top: var(--space-2);
-    font-size: var(--text-small);
+    line-height: 1.45;
     color: #d5deeb;
   }
 
-  .round2__bars {
-    display: grid;
-    gap: var(--space-4);
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  @media (min-width: 48rem) {
+    .round2__results {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
-
-  .round2__bars li {
-    display: grid;
-    grid-template-columns: 5.5rem 1fr 3.5rem;
-    gap: var(--space-3);
-    align-items: center;
-    font-size: var(--text-small);
-    color: #d5deeb;
-  }
-
-  .round2__bar {
-    height: 0.85rem;
-    border-radius: var(--radius-pill);
-    background: rgb(255 255 255 / 0.12);
-  }
-
-  .round2__bar span {
-    display: block;
-    height: 100%;
-    border-radius: inherit;
-  }
-
-  .round2__bars li[data-tone='before'] .round2__bar span { background: #ff8a80; }
-  .round2__bars li[data-tone='after'] .round2__bar span { background: #9fd0f7; }
-
-  .round2__bar-value {
-    font-size: var(--text-h3);
-    font-weight: var(--weight-bold);
-    text-align: right;
-    color: #ffffff;
-  }
-
-  .round2__bars li[data-tone='before'] .round2__bar-value { color: #ff8a80; }
 
   @media (min-width: 64rem) {
-    .round2__grid {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-8);
-      align-items: center;
+    .round2__headline {
+      grid-template-columns: 1.6fr 1fr;
     }
 
-    .round2__gain {
-      grid-template-columns: 1fr 1.2fr;
-      gap: var(--space-8);
-      padding: var(--space-6) var(--space-7);
+    .round2__results {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>

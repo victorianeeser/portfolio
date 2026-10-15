@@ -543,24 +543,13 @@ I reviewed the current Oura app against Nielsen’s ten usability heuristics.
 
 <Panel id="testing-2" level={2} eyebrow="Usability testing" title="Version 2: Retested" highlight="Retested" intro="I tested the refined version with four tasks again, then asked testers to rate each part.">
   <UsabilityRound2
-    tasks={[
-      'Navigate to the Home screen and find your Readiness, Sleep and Activity scores.',
-      'Tap the Nova card to view your personalized AI insights for Readiness, Sleep and Activity.',
-      'Navigate to Readiness and find Nova’s breakdown.',
-      'Use the AI chat to ask Nova: “How have my sleep patterns changed?”',
+    improvement={{ question: 'How helpful did the overview feel?', before: 71, after: 100 }}
+    completed={{ done: 5, of: 5, text: 'testers completed all four tasks' }}
+    results={[
+      { task: 'Navigate to the Home screen and find your Readiness, Sleep and Activity scores.', question: 'How easy was it to find your key scores on the Home screen?', percent: 100 },
+      { task: 'Tap the Nova card to view your personalized AI insights for Readiness, Sleep and Activity.', question: 'How helpful did the updated overview feel to you?', percent: 100, focus: true },
+      { task: 'Navigate to Readiness and find Nova’s breakdown.', question: 'How likely are you to use the breakdown feature?', percent: 100 },
+      { task: 'Use the AI chat to ask Nova: “How have my sleep patterns changed?”', question: 'How natural did the chat interaction feel?', percent: 100 },
     ]}
-    completed="All 5 testers completed all four tasks"
-    scores={[
-      { question: 'How easy was it to find your key scores on the Home screen?', percent: 100 },
-      { question: 'How likely are you to use the breakdown feature?', percent: 100 },
-      { question: 'How natural did the chat interaction feel?', percent: 100 },
-      { question: 'How helpful did the updated overview feel to you?', percent: 100, focus: true },
-    ]}
-    improvement={{
-      question: 'How helpful did the overview feel?',
-      before: 71,
-      after: 100,
-      text: 'In the first round it scored 71% and needed improvement. After the refinement, it scored 100%.',
-    }}
   />
 </Panel>
