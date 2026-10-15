@@ -4,7 +4,7 @@
 //
 // With one phone, notes sit on both sides of it on wide screens, like the slide's
 // callouts: give each note `side: 'left'` or `'right'`. With two phones (before / after),
-// the notes stack beside them. Pins are percentages of the screen (x from the left, y from
+// the phones are the same size, side by side, and the notes stack beside them. Pins are percentages of the screen (x from the left, y from
 // the top). Wrap words in **double asterisks** to bold them in a note.
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -119,18 +119,15 @@ const groups = flank
     width: min(100%, 17rem);
   }
 
+  /* Before / after: two phones of the same size, tops level */
   .pins__phones[data-count='2'] {
-    grid-template-columns: 0.8fr 1fr;
-    width: min(100%, 30rem);
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    width: min(100%, 32rem);
   }
 
   .pins__phone {
     margin: 0;
-  }
-
-  /* The "before" phone is smaller and quieter, so the eye goes to the redesign */
-  .pins__phone.is-before .pins__device {
-    opacity: 0.85;
   }
 
   .pins__label {
@@ -142,11 +139,16 @@ const groups = flank
     text-transform: uppercase;
   }
 
-  .pins__phone:not(.is-before) .pins__label {
+  /* Both labels are pills: outlined for before, filled for after */
+  .pins__label {
     width: fit-content;
     margin-inline: auto;
     padding: 0.15em 0.8em;
+    border: var(--border-width) solid var(--case-heading-1, #2f4a73);
     border-radius: var(--radius-pill);
+  }
+
+  .pins__phone:not(.is-before) .pins__label {
     background: var(--case-heading-1, #2f4a73);
     color: var(--color-bg);
   }
@@ -321,7 +323,8 @@ const groups = flank
 
     /* Before / after: phones on the left, the list of changes beside them */
     .pins[data-layout='stack'] {
-      grid-template-columns: 30rem 1fr;
+      grid-template-columns: 32rem 1fr;
+      gap: var(--space-8);
     }
 
     .pins[data-layout='stack'] .pins__phones {
