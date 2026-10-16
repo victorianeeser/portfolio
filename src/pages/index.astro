@@ -7,13 +7,13 @@ import { site } from '../site.config';
 import { getProjects } from '../lib/projects';
 import headshot from '../assets/headshot.jpg';
 
-const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 6);
+const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 4);
 ---
 
 <BaseLayout>
   <HomeHero />
 
-  <section class="section container" aria-labelledby="work-title">
+  <section id="work" class="section container" aria-labelledby="work-title">
     <div class="section-head">
       <h2 id="work-title" class="eyebrow">Selected work</h2>
       <a href="/work/" class="link-arrow">All projects</a>

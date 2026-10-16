@@ -1,6 +1,7 @@
 ---
 // The home page header, in black and white:
-// - the name's letters rise in one by one, and each hops on hover
+// - the name's letters rise in one by one, and each hops and turns light grey on hover
+// - a small "Jump to work" button scrolls down to the selected work
 // - "I design ___" cycles through what the projects are, each word drawing its underline in
 // With reduced motion everything holds still and the sentence reads in full.
 import { site } from '../site.config';
@@ -38,6 +39,13 @@ const sentence = `I design ${words.slice(0, -1).join(', ')} and ${words.at(-1)}.
     </p>
 
     <p class="hhero__statement lead">{site.positioning}</p>
+
+    <a href="#work" class="hhero__jump">
+      Jump to work
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 2.5v11M3.5 9 8 13.5 12.5 9" />
+      </svg>
+    </a>
   </div>
 </section>
 
@@ -98,11 +106,14 @@ const sentence = `I design ${words.slice(0, -1).join(', ')} and ${words.at(-1)}.
   .hhero__letter {
     animation: hhero-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
     animation-delay: calc(0.15s + var(--i) * 0.045s);
-    transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+    transition:
+      color 0.25s var(--ease-out),
+      transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
   }
 
-  /* …and hops on hover */
+  /* …and hops and turns light grey on hover */
   .hhero__letter:hover {
+    color: #b3b3b3;
     transform: translateY(-0.12em) rotate(-4deg);
   }
 
@@ -189,9 +200,46 @@ const sentence = `I design ${words.slice(0, -1).join(', ')} and ${words.at(-1)}.
     animation: hhero-fade 0.8s var(--ease-out) 1.1s both;
   }
 
+  /* ---------- Jump to work ---------- */
+  .hhero__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    padding: 0.55em 1.1em;
+    border: var(--border-width) solid var(--color-text);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    color: var(--color-text);
+    animation: hhero-fade 0.8s var(--ease-out) 1.3s both;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .hhero__jump:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  /* The arrow nudges down now and then, hinting at what's below */
+  .hhero__jump svg {
+    animation: hhero-nudge 2.4s ease-in-out 2s infinite;
+  }
+
+  @keyframes hhero-nudge {
+    0%, 70%, 100% { transform: none; }
+    80% { transform: translateY(3px); }
+    90% { transform: translateY(-1px); }
+  }
+
   /* ---------- Reduced motion: hold still, read in full ---------- */
   @media (prefers-reduced-motion: reduce) {
     .hhero__letter,
+    .hhero__jump,
+    .hhero__jump svg,
     .hhero__hello,
     .hhero__line,
     .hhero__statement {
